@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+    <head>
+        <title>Simple Leaflet Map</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet.draw.css'%}"/>
+        <script src="{% static 'community_app/leaflet.js'%} "></script>
+        <script src="{% static 'community_app/leaflet.draw.js' %}"> </script>
+        <script src="{% static 'community_app/jquery-2.1.4.min.js' %}"></script>
+         <link rel="stylesheet" href="{% static 'community_app/leaflet.contextmenu.css' %}"/>
+        <script src="{% static 'community_app/jquery.jsontotable.min.js' %}"></script>
+        <script src="{% static 'community_app/leaflet.contextmenu.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'community_app/bootstrap-3.3.5-dist/css/bootstrap.min.css' %}">
+        <script src="{% static 'community_app/bootstrap-3.3.5-dist/js/bootstrap.min.js' %}"></script>
+    </head>
+    <body>
+        <div id="map" style="width: 600px; height: 400px"></div>
+        <div id="jsontotable" class="jsontotable"></div>
+        <div id="schema_field_div" hidden="true">{{ schema_field }}</div>
+        <div id="schema_json_str_div" hidden="false">{{ schema_json_str}}</div>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                  <p>Some text in the modal.</p>
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="button" onclick="saveGeometry()" class="btn btn-default" data-dismiss="modal">Save</button>
+                </div>
+              </div>
+            </div>
+         </div>
+
+        <script>
+            $("input").addClass("form-control");
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+
+            /*
+            The functions below will create a header with csrftoken
+            */
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            function sameOrigin(url) {
+                // test that a given url is a same-origin URL
+                // url could be relative or scheme relative or absolute
+                var host = document.location.host; // host + port
+                var protocol = document.location.protocol;
+                var sr_origin = '//' + host;
+                var origin = protocol + sr_origin;
+                // Allow absolute or scheme relative URLs to same origin
+                return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                    (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                    // or any other URL that isn't scheme relative or absolute i.e relative.
+                    !(/^(\/\/|http:|https:).*/.test(url));
+            }
+
+            // is need when the javascript file was a static file. In this case is not need.
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                        // Send the token to same-origin, relative URLs only.
+                        // Send the token only if the method warrants CSRF protection
+                        // Using the CSRFToken value acquired earlier
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            var map = L.map('map', initializeContextMenuMap()).setView([-21.2858, -41.78682], 2);
+            var geojsonlayer = null;
+            var jsons_div = document.getElementById("json_div");
+            var editableGeojson = null;
+            var json_properties = [];
+            var schema = document.getElementById("schema_field_div");
+            var schema_community_information_array = JSON.parse(schema.innerHTML);
+            var sjs = document.getElementById("schema_json_str_div");
+            var empty_properties = sjs.innerHTML;
+            var actuallayer = null;
+
+            mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+            L.tileLayer(
+                'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; ' + mapLink + ' Contributors',
+                maxZoom: 18
+                }).addTo(map);
+
+            function clickOnLayer(feature, layer ){
+                console.log(layer);
+                actuallayer = layer;
+            }
+            function dragEndLayer(feature, layer ){
+                console.log(layer.getLatLng());
+            }
+
+             function showCoordinates (e) {
+                console.log(e.latlng);
+             }
+
+            function centerMap (e) {
+              map.panTo(e.latlng);
+            }
+
+          function zoomIn (e) {
+              map.zoomIn();
+          }
+
+          function zoomOut (e) {
+              map.zoomOut();
+          }
+
+          function populateFeatureWhithModal() {
+           aFeature = actuallayer.feature;
+           propers = JSON.parse(aFeature.properties.properties);
+           for (i = 0; i < schema_community_information_array.length; i++) {
+
+               field_name = schema_community_information_array[i];
+               field_html = document.getElementById('id_' + field_name);
+               propers[field_name]= field_html.value;
+
+           }
+            actuallayer.feature.properties.properties = JSON.stringify(propers);
+          }
+
+          function featureIsNew(feature){
+              return feature.id == null;
+          }
+
+          function saveGeometry(){
+              populateFeatureWhithModal();
+              var content = actuallayer.feature;
+              console.log(content);
+
+              var dataJson = JSON.stringify(content);
+              alert("Alerta"+dataJson);
+
+              console.log(actuallayer);
+             // if (actuallayer.id)
+                //Layer is not new and need update
+              var url = "";
+              if(featureIsNew(content)) {
+                  url = "{{url_create}}";
+
+              }
+              else {
+                  url = "{{ url_update }}"+content.id;
+              }
+
+              var jqxhr = $.post(url, {
+                      _content_type: "application/json",
+                      _content: dataJson
+                  }, function (data) {
+                      console.log(data);
+                  });
+
+          }
+
+          function editingAttributes(layer){
+
+             populateModalWithFeature(layer);
+              $('#myModal').modal('show');
+          }
+
+         function populateModalWithFeature(layer) {
+            actuallayer = layer;
+            aFeature = layer.feature;
+            for (i = 0; i < schema_community_information_array.length; i++) {
+
+                field_name = schema_community_information_array[i];
+                field_value = (JSON.parse(aFeature.properties.properties))[field_name];
+                field_html = document.getElementById('id_' + field_name);
+                field_html.value=field_value;
+            }
+
+         }
+
+         String.prototype.capitalize = function() {
+               return this.charAt(0).toUpperCase() + this.slice(1);
+         }
+          function initializeContextMenuMap() {
+               return {
+                  zoom: 15,
+                  contextmenu: true,
+                  contextmenuWidth: 140,
+                  contextmenuItems: [{
+                      text: 'Show coordinates',
+                      callback: showCoordinates
+                  }, {
+                      text: 'Center map here',
+                      callback: centerMap
+                  }, '-', {
+                      text: 'Zoom in',
+                      callback: zoomIn
+                  }, {
+                      text: 'Zoom out',
+                      callback: zoomOut
+                  }]
+              }
+          }
+
+        </script>
+        <script>
+            function onEachFeature(feature, layer) {
+                layer.options.draggable = true;
+                layer.on('click', function() { clickOnLayer(feature, layer); });
+                layer.on('dragend', function() { dragEndLayer(feature, layer)});
+                binderMenuContextTo(layer);
+                json_properties.push(feature.properties);
+
+            }
+            function binderMenuContextTo(layer) {
+                layer.bindContextMenu({
+                    contextmenu: true,
+                    contextmenuInheritItems: true,
+                    contextmenuItems: [
+                        {
+                            text: 'Marker ',
+                            callback: function () { alert('Marker: ' + layer.feature.id);      }
+                        }, {
+                            text: 'Edit attributes',
+                            callback: function () { editingAttributes(layer);  }
+                        }, {
+                            separator: true
+
+                        }]
+                });
+
+            }
+            function pointToLayer(data, latLng) {
+                if (data.geometry.type != 'Point')
+                    return;
+                var marker;
+                marker = new L.Marker(latLng, {
+                      title: data.id,
+                      contextmenu: true,
+                      contextmenuItems: [{
+                          text: 'Marker item',
+                          index: 0,
+                          callback: function () {
+                              alert('Marker: ' + marker.feature.id);
+                          }
+                      }, {
+                          text: 'Edit attributes',
+                          index: 1,
+                          callback: function () { editingAttributes(data); }
+                      },
+                          {
+                          separator: true,
+                          index: 1
+                      }]
+                });
+                return marker;
+            }
+        </script>
+        <script>
+            var geojsonMarkerOptions = {
+                radius: 8,
+                fillColor: "#ff7800",
+                color: "#000",
+                weight: 1,
+                opacity: 0.8,
+                fillOpacity: 0.1,
+                draggable: true
+            };
+            function initializeEditableGeoJson(geoJsons) {
+                editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
+
+                map.addLayer(editableGeojson);
+                options = function(editableGeojson) {
+                    return {
+                        position: 'topleft',
+                        draw: {
+
+                            rectangle: true,
+                            polygon: true,
+                            polyline: true,
+                            circle: true,
+                            marker: true
+                        },
+                        edit: {
+                            featureGroup: editableGeojson, //REQUIRED!!
+                            remove: true
+                        }
+                    };
+                };
+                var drawControl = new L.Control.Draw(options(editableGeojson));
+                map.addControl(drawControl);
+
+                map.on('draw:created', function (e) {
+                    var type = e.layerType,
+                        layer = e.layer,
+                        a_feature = layer.toGeoJSON();
+                    a_feature.id = null;
+                    console.log(a_feature);
+                    a_feature.properties.properties = empty_properties;
+                    layer.feature = a_feature;
+                    editableGeojson.addLayer( layer);
+                    actuallayer = layer;
+
+                    if (type === 'marker') {
+                        // Do marker specific actions
+                        console.log(type);
+                    }
+
+                    // Do whatever else you need to. (save to db, add to map etc)
+                    map.addLayer(layer);
+                    binderMenuContextTo(layer);
+                });
+
+                map.on('draw:edited', function (e) {
+                    var layers = e.layers;
+                        layers.eachLayer(function (layer) {
+                            //do whatever you want, most likely save back to db
+                            console.log('entrei');
+                            console.log(layer);
+                        });
+                });
+
+                map.on("draw:deleted", function(e){
+                    var layers = e.layers;
+                    layers.eachLayer(function (layer) {
+                        //do whatever you want, most likely save back to db
+                        console.log('entrei_no delete');
+                        console.log(layer);
+                        var id = layer.feature.id;
+                        console.log(id);
+                        var url = "{{ url_update }}"+id;
+                        $.ajax({
+                            method: "DELETE",
+                            url: url
+                        });
+                    });
+                });
+            };
+        </script>
+        <script>
+
+            var jqxhr = $.getJSON( "{{url_json}}", function(geoJsons) {
+
+                initializeEditableGeoJson(geoJsons);
+            }) .done(function() {
+                    $.jsontotable(json_properties, { id: '#json_table', header: false });
+
+
+                });
+
+        </script>
+    </body>
+</html>

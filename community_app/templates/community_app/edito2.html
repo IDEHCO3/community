@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+
+<head>
+    <title>Simple Leaflet Map</title>
+    <meta charset="utf-8" />
+    <link
+        rel="stylesheet"
+        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    />
+    <link
+        rel="stylesheet"
+        href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css"
+    />
+    <script
+        src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+    </script>
+    <script
+        src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js">
+    </script>
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <div id="map" style="width: 600px; height: 400px"></div>
+    <div id="json">{{url_json}}</div>
+
+    <script>
+        var map = L.map('map').setView([-21.2858, -41.78682], 9);
+        var selected_object = null;
+        var jsons_div = document.getElementById("json_div");
+
+        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 18
+            }).addTo(map);
+        var marker = L.marker([-21.2858, -41.78682],{title: 'Um texto', opacity: 0.5, draggable: true, abc: 'abc'}).addTo(map);
+        marker.bindPopup("fdfdsfjdsf");
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        var drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems
+            }
+        });
+        map.addControl(drawControl);
+
+        map.on('draw:created', function (e) {
+            var type = e.layerType,
+                layer = e.layer;
+            drawnItems.addLayer(layer);
+        });
+
+    </script>
+    <script>var jqxhr = $.getJSON( "{{url_json}}", function(geoJsons) {
+            console.log( "success" );
+            console.log( geoJsons );
+        L.geoJson(geoJsons, style={opacity: 0.5, draggable: true}).addTo(map);
+            })
+            .done(function() {
+                console.log( "second success" );
+            })
+            .fail(function() {
+                console.log( "error" );
+            })
+            .always(function() {
+                console.log( "complete" );
+            });
+             // Perform other work here ...
+             // Set another completion function for the request above
+            jqxhr.complete(function() {
+                console.log( "second complete" );
+    });
+    </script>
+</body>
+</html>

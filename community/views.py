@@ -1,19 +1,13 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView,DeleteView, FormView
-from idehco3.community.models import Community
-from idehco3.community.forms import CommunityForm
-from django.core.mail import send_mail
+from django.views.generic.edit import UpdateView, DeleteView, FormView
+from community.models import Community
+from community.forms import CommunityForm
 
-
-#rest framework
-from rest_framework.views import APIView
 from rest_framework import generics
+from community.serializers import CommunitySerializer
 
-#REST api
-from idehco3.community.serializers import CommunitySerializer
+
 
 #List communities
 class CommunityList(generic.ListView):
@@ -24,20 +18,15 @@ class CommunityDetail(generic.DetailView):
 
 class CommunityCreate(FormView):
 
-    #model = Community
+    template_name = 'community/community_form.html'
+    form_class = CommunityForm
+
     def __init__(self):
         community = None
 
-    template_name = 'community/community_form.html'
-
-    form_class = CommunityForm
-
     def form_valid(self, form):
-
         self.community = form.instance
-
         self.community.manager = self.request.user
-
         return super(CommunityCreate, self).form_valid(form)
 
     def get_success_url(self):
@@ -57,11 +46,7 @@ class CommunityDelete(DeleteView):
 
 
 class CommunityListRest(generics.ListCreateAPIView):
-    """
-    List all Communities, or create a new community.
-    """
     queryset = Community.objects.all()
-
     serializer_class = CommunitySerializer
 
 #class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):

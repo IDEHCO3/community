@@ -7,7 +7,6 @@ from community.models import Community
 class Community_Information(models.Model):
 
     properties = JsonBField()  # can pass attributes like null, blank, ecc.
-
     geom = models.GeometryField(null=True)
     community = models.ForeignKey(Community, blank=True)
 

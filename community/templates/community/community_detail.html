@@ -1,5 +1,6 @@
 {% extends "site_base.html" %}
 {% load i18n %}
+{% load map %}
 {% block body %}
         <div class="row">
                 <div class="row">
@@ -22,6 +23,7 @@
                 </div>
                 <div class="row">
                     <!-- append the map aplication here -->
+                    {% map %}
                 </div>
         </div>
 {% endblock %}

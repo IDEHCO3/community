@@ -21,9 +21,14 @@
                         {% endfor %}
                         </ul>
                 </div>
+                {% if community.community_information_field_schema_set.count == 0 %}
                 <div class="row">
-                    <!-- append the map aplication here -->
+                        <a href="#">Create your map.</a>
+                </div>
+                {% else %}
+                <div class="row">
                     {% map community%}
                 </div>
+                {% endif %}
         </div>
 {% endblock %}

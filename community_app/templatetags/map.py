@@ -10,9 +10,10 @@ def as_json_str(community_information_field_schema_set):
     a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in community_information_field_schema_set)
     return "{" + (",".join(a_list)) + "}"
 
-@register.inclusion_tag("community_app/editor_tag.html", takes_context=True)
-def map(context, community):
+@register.inclusion_tag("community_app/editor_tag.html")
+def map(community):
 
+    context = {}
     cifs = community.community_information_field_schema_set.all()
     a_list = list(cif.name_field for cif in cifs)
 

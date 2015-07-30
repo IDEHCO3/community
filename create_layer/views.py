@@ -7,11 +7,14 @@ from community.models import Community
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-
-class Community_Information_Field_Schema_List(generics.ListAPIView):
-    queryset = Community_Information_Field_Schema.objects.all()
+class Community_Information_Field_Schema_ListFilter(generics.ListAPIView):
     serializer_class = Community_Information_Field_Schema_Serializer
+    lookup_url_kwarg = "pk"
 
+    def get_queryset(self):
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = Community_Information_Field_Schema.objects.filter(community_id=pk)
+        return queryset
 
 class Community_Information_Field_Schema_Detail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Community_Information_Field_Schema.objects.all()

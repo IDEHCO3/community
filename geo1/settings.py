@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'rest_framework_gis',
     'community_app',
     'community',
+    'create_layer',
 )
 
 MIDDLEWARE_CLASSES = (

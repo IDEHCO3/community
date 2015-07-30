@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^community/', include('community.urls', namespace='community')),
     url(r'^community_app/', include('community_app.urls')),
+    url(r'^create_layer/', include('create_layer.urls', namespace='create_layer')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

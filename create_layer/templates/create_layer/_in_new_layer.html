@@ -1,0 +1,77 @@
+{% load staticfiles %}
+{% load i18n %}
+
+    <div class="row" ng-app="layer_app">
+        <div class="row page-header">
+            <h4><b>{% trans 'New Layer' %}</b></h4>
+            {% if community %}
+                <h5>{% trans 'Layer to community: ' %}{{ community.name }}</h5>
+            {% endif %}
+        </div>
+        <div class="row" ng-controller="LayerController as layerCtrl">
+
+            <div class="row">
+                <div class="col-md-8">
+                        <label>{% trans 'Layer name' %}</label>
+                        <input type="text" class="form-control" id="layer_name" ng-model="layerName" name="layer_name" placeholder="name">
+                </div>
+                <div class="col-md-4">
+                    <label>{% trans 'Type of layer' %}</label>
+                    <select class="form-control" id="layer_type" name="layer_type" ng-model="layerType">
+                        <option value="Point">{% trans 'Point' %}</option>
+                        <option value="Line">{% trans 'Line' %}</option>
+                        <option value="Polygon">{% trans 'Polygon' %}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row page-header"></div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <label>{% trans 'Name of attribute' %}</label>
+                    <input id="attr_name" type="text" class="form-control" ng-model="attributeName">
+                </div>
+                <div class="col-md-3" >
+                    <label>{% trans 'Type of attribute' %}</label>
+                    <select class="form-control" id="attr_type" ng-model="attributeType">
+                        <option value="Character" >{% trans 'Character' %}</option>
+                        <option value="Number" >{% trans 'Number' %}</option>
+                        <option value="Logical" >{% trans 'Logical' %}</option>
+                        <option value="Date" >{% trans 'Date' %}</option>
+                    </select>
+                </div>
+                <div class="col-md-3" ng-show="layerCtrl.hasSize()">
+                    <label>{% trans 'size of attribute' %}</label>
+                    <input id="attr_size" type="number" ng-model="attributeSize" min="0" max="255" class="form-control">
+                </div>
+                <div class="col-md-3" ng-show="layerCtrl.hasDecimal()">
+                    <label>{% trans 'precision' %}</label>
+                    <input id="attr_decimal" type="number" ng-model="attributeDecimal" min="0" max="255" class="form-control">
+                </div>
+
+            </div>
+            <div class="row page-header"></div>
+            <div class="row">
+                <div id="add-line" class="btn btn-default btn-sm pull-right" ng-click="layerCtrl.createAttribute()">
+                    {% trans 'Add' %}
+                </div>
+            </div>
+
+            <div class="row page-header">
+                <h5><b>{% trans 'list of attributes' %}</b></h5>
+
+                <!--<form role="form" action="{% url 'create_layer:detail' community.id %}" method="post">-->
+                <div class="row">
+
+                    <layer-input></layer-input>
+
+                    <attributes-list></attributes-list>
+
+                    <button class="btn btn-lg btn-primary pull-right" ng-click="">{% trans 'Create layer' %}</button>
+                </div>
+                <!--</form>-->
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'create_layer/angular.min.js' %}"></script>
+    <script src="{% static 'create_layer/new_layer.js' %}"></script>

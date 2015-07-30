@@ -12,16 +12,14 @@ var removeMessages = function(){
 
 (function(){
     var app = angular.module("layer_app",[]);
-    var data = {'layerName' : '',
-                'layerType' : '',
-                'attributes': [],
-                'jsonData': {}};
+    var data = [];
 
     app.layerController = function($scope){
 
         $scope.layerName = 'myLayer';
         $scope.layerType = 'Point';
         $scope.attributes = [{  'id': 0,
+                                'pk': null,
                                 'attributeName': 'id',
                                 'attributeType': 'Number',
                                 'attributeSize': 10,
@@ -31,6 +29,59 @@ var removeMessages = function(){
         $scope.attributeType = 'Character';
         $scope.attributeSize = 50;
         $scope.attributeDecimal = 0;
+
+        var getSize = function(options){
+            var obj = JSON.parse(options);
+            return obj['max_length'];
+        };
+
+        var getDecimal = function(attr){
+            if(attr['type_field'] == 'DecimalField'){
+                return 5;
+            }
+            else
+                return 0;
+        };
+
+        var getTypeFromRestFul = function(type){
+            switch(type){
+                case 'CharField':
+                    type = 'Character';
+                    break;
+                case 'DecimalField':
+                case 'IntegerField':
+                    type = 'Number';
+                    break;
+                case 'BooleanField':
+                    type = 'Logical';
+                    break;
+                case 'DateTimeField':
+                    type = 'Date';
+                    break;
+            }
+
+            return type;
+        };
+
+        var loadData = function(dataIncoming){
+            for(var i=0; i<dataIncoming.length; i++){
+                var attr = dataIncoming[i];
+                var newAttr = { 'id': i,
+                                'pk': attr['id'],
+                                'attributeName': attr['name_field'],
+                                'attributeType': getTypeFromRestFul(attr['type_field']),
+                                'attributeSize': getSize(attr['options']),
+                                'attributeDecimal': getDecimal(attr)};
+
+                data.push(newAttr);
+            }
+        };
+
+        $.get(url_filter).done(loadData);
+
+        if(data.length > 0){
+            $scope.attributes = data;
+        }
 
         this.setAttributeType = function(type){
             $scope.attributeType = type;
@@ -186,11 +237,6 @@ var removeMessages = function(){
                 $("#errorToSendData").removeClass();
             }
         };
-
-        this.loadData = function(){
-            //TODO
-        };
-
     };
 
     app.controller("LayerController",['$scope', app.layerController]);
@@ -210,6 +256,8 @@ var removeMessages = function(){
             controllerAs: 'layer'
         };
     });
+
+
 
 })();
 

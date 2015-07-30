@@ -9,7 +9,7 @@
             {% endif %}
         </div>
         <div class="row" ng-controller="LayerController as layerCtrl">
-
+            <div onload="layerCtrl.loadData()" class="hidden"></div>
             <div class="row">
                 <div class="col-md-8">
                         <label>{% trans 'Layer name' %}</label>
@@ -75,6 +75,7 @@
         var url_create = '/create_layer/create/';
         var url_update = '/create_layer/detail/';
         var community_id = {{ community.id }};
+        var url_filter = '/create_layer/list/'+community_id+'/';
     </script>
     <script src="{% static 'create_layer/angular.min.js' %}"></script>
     <script src="{% static 'create_layer/new_layer.js' %}"></script>

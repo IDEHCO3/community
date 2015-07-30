@@ -58,20 +58,21 @@
             </div>
 
             <div class="row page-header">
-                <h5><b>{% trans 'list of attributes' %}</b></h5>
-
-                <!--<form role="form" action="{% url 'create_layer:detail' community.id %}" method="post">-->
-                <div class="row">
-
-                    <layer-input></layer-input>
-
-                    <attributes-list></attributes-list>
-
-                    <button class="btn btn-lg btn-primary pull-right" ng-click="">{% trans 'Create layer' %}</button>
+                <div class="row" >
+                    <h5><b>{% trans 'list of attributes' %}</b></h5>
                 </div>
-                <!--</form>-->
+                <div class="row">
+                    <layer-input></layer-input>
+                    <attributes-list></attributes-list>
+                    <button class="btn btn-lg btn-primary pull-right" ng-click="layerCtrl.sendData()">{% trans 'Create layer' %}</button>
+                </div>
             </div>
         </div>
     </div>
+    <script>
+        var url_create = '/create_layer/create/';
+        var url_update = '/create_layer/detail/';
+        var community_id = {{ community.id }};
+    </script>
     <script src="{% static 'create_layer/angular.min.js' %}"></script>
     <script src="{% static 'create_layer/new_layer.js' %}"></script>

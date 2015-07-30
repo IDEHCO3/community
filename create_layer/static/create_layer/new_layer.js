@@ -3,7 +3,7 @@
     var data = {'layerName' : '',
                 'layerType' : '',
                 'attributes': [],
-                'csrfmiddlewaretoken': ''};
+                'jsonData': {}};
 
     app.layerController = function($scope){
 
@@ -100,6 +100,61 @@
             $scope.attributeSize = $scope.attributes[index]['attributeSize'];
             $scope.attributeDecimal = $scope.attributes[index]['attributeDecimal'];
             this.removeAttribute(index);
+        };
+
+        var convertType = function(type, decimal){
+            switch(type){
+                case 'Character':
+                    type = "CharField";
+                    break;
+                case 'Number':
+                    type = "DecimalField";
+                    break;
+                case 'Logical':
+                    type = "BooleanField";
+                    break;
+                case 'Date':
+                    type = "DateTimeField";
+                    break;
+                default:
+                    type = "CharField";
+                    break;
+            }
+
+            if(type == "DecimalField" && decimal == 0) {
+                return "IntegerField";
+            }
+
+            return type;
+        };
+
+        var convertToRestFul = function(attribute){
+            var type = convertType(attribute['attributeType'], attribute['attributeDecimal']);
+            return {
+                "id": null,
+                "name_field": attribute['attributeName'],
+                "type_field": type,
+                "name_module_field": "django.forms",
+                "options": "{\"max_length\": \""+attribute['attributeSize']+"\", \"blank\": \"false\"}",
+                "community": community_id
+            };
+        };
+
+        this.sendData = function(){
+            for(var i=0; i<$scope.attributes.length; i++) {
+
+                var data = convertToRestFul($scope.attributes[i]);
+                var dataJson = JSON.stringify(data);
+
+                $.post(url_create,
+                    {
+                        _content_type: "application/json",
+                        _content: dataJson
+                    }, function (dataIncoming) {
+                        console.log(dataIncoming);
+                    }
+                );
+            }
         };
 
     };

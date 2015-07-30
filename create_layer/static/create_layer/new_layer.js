@@ -1,3 +1,15 @@
+var showMessage = function(message, type){
+    var element = '<div class="alert alert-'+type+'">';
+    element += '<button class="close" data-dismiss="alert" aria-label="close">&times;</button>';
+    element += '<strong>'+message+'</strong>';
+    element += '</div>';
+    $("#alertMessages").append(element);
+};
+
+var removeMessages = function(){
+    $("#alertMessages").empty();
+};
+
 (function(){
     var app = angular.module("layer_app",[]);
     var data = {'layerName' : '',
@@ -131,7 +143,7 @@
         var convertToRestFul = function(attribute){
             var type = convertType(attribute['attributeType'], attribute['attributeDecimal']);
             return {
-                "id": null,
+                "id": 1,
                 "name_field": attribute['attributeName'],
                 "type_field": type,
                 "name_module_field": "django.forms",
@@ -141,6 +153,7 @@
         };
 
         this.sendData = function(){
+            removeMessages();
             for(var i=0; i<$scope.attributes.length; i++) {
 
                 var data = convertToRestFul($scope.attributes[i]);
@@ -150,11 +163,32 @@
                     {
                         _content_type: "application/json",
                         _content: dataJson
-                    }, function (dataIncoming) {
-                        console.log(dataIncoming);
                     }
-                );
+                ).done(function () {
+                        console.log("done!");
+                        showMessage("Succes to save attribute!", "success");
+
+                }).fail(function(){
+                        console.log("fail!");
+                        showMessage("Error to save attribute!", "danger");
+                });
             }
+
+            console.log("attr:"+$scope.attributes.length);
+            console.log("count:"+this.count);
+
+            if($scope.count == $scope.attributes.length){
+                $("#succesToSendData").removeClass();
+                $("#errorToSendData").addClass('hidden');
+            }
+            else{
+                $("#succesToSendData").addClass('hidden');
+                $("#errorToSendData").removeClass();
+            }
+        };
+
+        this.loadData = function(){
+            //TODO
         };
 
     };

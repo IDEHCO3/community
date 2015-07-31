@@ -52,8 +52,8 @@
             </div>
             <div class="row page-header"></div>
             <div class="row">
-                <div id="add-line" class="btn btn-default btn-sm pull-right" ng-click="layerCtrl.createAttribute()">
-                    {% trans 'Add' %}
+                <div id="add-line" class="btn btn-primary btn-sm pull-right" ng-click="layerCtrl.createAttribute()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@
                 <div class="row">
                     <layer-input></layer-input>
                     <attributes-list></attributes-list>
-                    <button class="btn btn-lg btn-primary pull-right" ng-click="layerCtrl.sendData()">{% trans 'Create layer' %}</button>
+                    <button class="btn btn-lg btn-primary pull-right" ng-click="layerCtrl.sendData()">{% trans 'Save Changes' %}</button>
                 </div>
             </div>
             <div id="alertMessages" class="row">

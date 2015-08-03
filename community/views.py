@@ -4,6 +4,8 @@ from django.views.generic.edit import UpdateView, DeleteView, FormView
 from community.models import Community
 from community.forms import CommunityForm
 
+from django.contrib.auth.models import User
+
 from rest_framework import generics
 from community.serializers import CommunitySerializer
 
@@ -26,7 +28,11 @@ class CommunityCreate(FormView):
 
     def form_valid(self, form):
         self.community = form.instance
-        self.community.manager = self.request.user
+        if self.request.user.pk == None:
+            user = User.objects.get_by_natural_key(username='indeco')
+            self.community.manager = user
+        else:
+            self.community.manager = self.request.user
         return super(CommunityCreate, self).form_valid(form)
 
     def get_success_url(self):

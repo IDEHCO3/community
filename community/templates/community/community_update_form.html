@@ -1,10 +1,27 @@
-
+{% extends 'site_base.html' %}
 {% load i18n %}
 {% block body %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <p></p>
-        {{ form.as_p }}
-        <input type="submit" value="Atualizar" />
-    </form>
-{% endblock %}
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans 'Update Community Information' %}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-default" type="submit" value="{% trans 'Update' %}" />
+        </form>
+    </div>
+{% endblock body %}
+
+{% block scripts %}
+    <script>
+        $("input").each(function(){
+            var type = $(this).attr("type");
+            if( type != "checkbox" && type != "submit" )
+                $(this).addClass("form-control");
+        });
+        $("textarea").addClass("form-control");
+    </script>
+{% endblock scripts %}

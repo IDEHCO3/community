@@ -87,6 +87,7 @@ WSGI_APPLICATION = 'geo1.wsgi.application'
 DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
+         'HOST': 'localhost',
          'NAME': 'geodjango',
          'USER': 'geonode',
          'PASSWORD': 'geonode'

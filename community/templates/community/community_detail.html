@@ -6,29 +6,48 @@
                 <div class="row">
                         <div class="page-header">
                                 <h1>{{ community.name }}</h1>
-                                <p> {% trans 'Creator:' %}{{ community.manager }}</p>
                         </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-6">
                         <div class="well-sm">
                             <p>{{ community.description }}</p>
                         </div>
-
-                        <p> {% trans 'Members:' %}</p>
-                        <ul>
-                        {% for user in community.users %}
-                                <li>{{ user }}</li>
-                        {% endfor %}
-                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                            <div class="pull-right">
+                                <a class="btn btn-primary" href="{% url 'community:update' community.id %}">  {% trans 'Update' %}</a>
+                                <a class="btn btn-danger" href="{% url 'community:delete' community.id %}">  {% trans 'Delete' %}</a>
+                            </div>
+                    </div>
                 </div>
-                {% if community.community_information_field_schema_set.count == 0 %}
                 <div class="row">
-                        <a href="#">Create your map.</a>
+                        {% if community.community_information_field_schema_set.count == 0 %}
+                                <div class="col-md-8">
+                                        <div class="page-header">
+                                            <h3>{% trans 'Map of Community' %}</h3>
+                                        </div>
+                                        <a class="btn btn-default" href="{% url 'create_layer:new_layer' community.id %}">Create your map.</a>
+                                </div>
+                        {% else %}
+                                <div class="col-md-8">
+                                        <div class="page-header">
+                                            <h3>{% trans 'Map of Community' %}</h3>
+                                        </div>
+                                    {% map community%}
+                                </div>
+                        {% endif %}
+                        <div class="col-md-4">
+                                <div class="page-header">
+                                    <h3>{% trans 'Members:' %}</h3>
+                                </div>
+                                <div class="list-group">
+                                        <a class="list-group-item list-group-item-info"><h4>{{ community.manager }}</h4></a>
+                                {% for user in community.users %}
+                                        <a class="list-group-item"><h4>{{ user }}</h4></a>
+                                {% endfor %}
+                                </div>
+                        </div>
                 </div>
-                {% else %}
-                <div class="row">
-                    {% map community%}
-                </div>
-                {% endif %}
         </div>
-{% endblock %}
+{% endblock body %}

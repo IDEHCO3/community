@@ -6,7 +6,7 @@ class CommunityForm(forms.ModelForm):
 
     class Meta:
         model = Community
-        exclude = ['manager', 'members']
+        exclude = ['manager', 'members', 'date_creation']
 
     name = forms.CharField(label= ugettext('Name:'), max_length=100 )
     description = forms.CharField(label= ugettext('Description:'), max_length=1000)

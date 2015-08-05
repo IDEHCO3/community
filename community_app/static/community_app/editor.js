@@ -59,7 +59,7 @@ function featureIsNew(feature){
 function saveGeometry(){
     populateFeatureWhithModal();
     var content = actuallayer.feature;
-
+    var dataJson = JSON.stringify(content);
     var url = "";
     if(featureIsNew(content)) {
         url = url_create;

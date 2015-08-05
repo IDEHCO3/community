@@ -27,13 +27,14 @@
                                         <div class="page-header">
                                             <h3>{% trans 'Map of Community' %}</h3>
                                         </div>
-                                        <a class="btn btn-default" href="{% url 'create_layer:new_layer' community.id %}">Create your map.</a>
+                                        <a class="btn btn-default" href="{% url 'create_layer:new_layer' community.id %}">{% trans 'Create your map' %}</a>
                                 </div>
                         {% else %}
                                 <div class="col-md-8">
                                         <div class="page-header">
                                             <h3>{% trans 'Map of Community' %}</h3>
                                         </div>
+                                        <a class="btn btn-default" href="{% url 'create_layer:new_layer' community.id %}">{% trans 'Edit atributes' %}</a>
                                     {% map community%}
                                 </div>
                         {% endif %}

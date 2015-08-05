@@ -1,4 +1,8 @@
-$("input").addClass("form-control");
+$("input").each(function(){
+    var type = $(this).attr("type");
+    if( type != "checkbox" && type != "submit" )
+        $(this).addClass("form-control");
+});
 
 var map = L.map('map', initializeContextMenuMap()).setView([-21.2858, -41.78682], 2);
 var editableGeojson = null;
@@ -6,6 +10,8 @@ var json_properties = [];
 var schema_community_information_array = JSON.parse($schema.text());
 var empty_properties = $sjs.text();
 var actuallayer = null;
+var drawControl = null;
+var $editable = $("#editable");
 
 mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 L.tileLayer(
@@ -193,29 +199,44 @@ function pointToLayer(data, latLng) {
     return marker;
 }
 
+function editableMode(activate){
+    if(activate){
+        var options = function(editableLayer) {
+            return {
+                position: 'topleft',
+                draw: {
+
+                    rectangle: false,
+                    polygon: true,
+                    polyline: true,
+                    circle: false,
+                    marker: true
+                },
+                edit: {
+                    featureGroup: editableLayer, //REQUIRED!!
+                    remove: true
+                }
+            };
+        };
+        if(drawControl == null) drawControl = new L.Control.Draw(options(editableGeojson));
+        map.addControl(drawControl);
+    }
+    else{
+        if(drawControl != null)map.removeControl(drawControl);
+    }
+}
+
+$editable.on('click', function(){
+    var edit = $(this).prop("checked");
+    editableMode(edit);
+});
+
 function initializeEditableGeoJson(geoJsons) {
     editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
 
     map.addLayer(editableGeojson);
-    var options = function(editableGeojson) {
-        return {
-            position: 'topleft',
-            draw: {
 
-                rectangle: true,
-                polygon: true,
-                polyline: true,
-                circle: true,
-                marker: true
-            },
-            edit: {
-                featureGroup: editableGeojson, //REQUIRED!!
-                remove: true
-            }
-        };
-    };
-    var drawControl = new L.Control.Draw(options(editableGeojson));
-    map.addControl(drawControl);
+    editableMode($editable.prop("checked"));
 
     map.on('draw:created', function (e) {
         var type = e.layerType;

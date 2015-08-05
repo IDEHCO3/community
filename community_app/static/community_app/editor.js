@@ -14,6 +14,24 @@ L.tileLayer(
     maxZoom: 18
     }).addTo(map);
 
+function convertDicCoordinatesToArray(coordinates){
+    var output = [];
+    for(var i=0; i<coordinates.length; i++){
+        var coordinate = [coordinates[i].lng, coordinates[i].lat];
+        output.push(coordinate);
+    }
+    return output;
+}
+
+function convertMultiDicToArray(coordinates){
+    var output = [];
+    for(var i=0; i<coordinates.length; i++){
+        var coordinate = convertDicCoordinatesToArray(coordinates[i]);
+        output.push(coordinate);
+    }
+    return output;
+}
+
 function clickOnLayer(feature, layer ){
     console.log(layer);
     actuallayer = layer;
@@ -21,7 +39,6 @@ function clickOnLayer(feature, layer ){
 
 function dragEndLayer(feature, layer ){
     console.log(layer.getLatLng());
-    layer.newLatLng = layer.getLatLng();
 }
 
 function showCoordinates (e) {
@@ -127,7 +144,7 @@ function initializeContextMenuMap() {
 }
 
 function onEachFeature(feature, layer) {
-    layer.options.draggable = true;
+    layer.options.draggable = false;
     layer.on('click', function() { clickOnLayer(feature, layer); });
     layer.on('dragend', function() { dragEndLayer(feature, layer)});
     binderMenuContextTo(layer);
@@ -177,7 +194,7 @@ function pointToLayer(data, latLng) {
 }
 
 function initializeEditableGeoJson(geoJsons) {
-    var editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
+    editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
 
     map.addLayer(editableGeojson);
     var options = function(editableGeojson) {
@@ -201,9 +218,10 @@ function initializeEditableGeoJson(geoJsons) {
     map.addControl(drawControl);
 
     map.on('draw:created', function (e) {
-        var type = e.layerType,
-            layer = e.layer,
-            a_feature = layer.toGeoJSON();
+        var type = e.layerType;
+        var layer = e.layer;
+        var a_feature = layer.toGeoJSON();
+
         a_feature.id = null;
         a_feature.properties.properties = empty_properties;
         layer.feature = a_feature;
@@ -214,7 +232,6 @@ function initializeEditableGeoJson(geoJsons) {
             // Do marker specific actions
             console.log(type);
         }
-
         // Do whatever else you need to. (save to db, add to map etc)
         map.addLayer(layer);
         binderMenuContextTo(layer);
@@ -223,8 +240,21 @@ function initializeEditableGeoJson(geoJsons) {
     map.on('draw:edited', function (e) {
         var layers = e.layers;
         layers.eachLayer(function (layer) {
+            if(layer.feature.geometry.type != 'Point'){
+                if(layer.feature.geometry.type.indexOf("Poly") > -1){
+                    layer.feature.geometry.coordinates = convertMultiDicToArray(layer.getLatLngs());
+                }
+                else {
+                    layer.feature.geometry.coordinates = convertDicCoordinatesToArray(layer.getLatLngs());
+                }
+            }
+            else{
+                var coordinates = convertDicCoordinatesToArray([layer.getLatLng()]);
+                layer.feature.geometry.coordinates = coordinates[0];
+                console.log(coordinates);
+            }
+            console.log(layer);
             //do whatever you want, most likely save back to db
-            layer.feature.geometry.coordinates = [layer.newLatLng.lng, layer.newLatLng.lat];
             updateGeometry(layer);
         });
     });
@@ -234,11 +264,13 @@ function initializeEditableGeoJson(geoJsons) {
         layers.eachLayer(function (layer) {
             //do whatever you want, most likely save back to db
             var id = layer.feature.id;
-            var url = url_update+id;
-            $.ajax({
-                method: "DELETE",
-                url: url
-            });
+            if(id != null){
+                var url = url_update+id;
+                $.ajax({
+                    method: "DELETE",
+                    url: url
+                });
+            }
         });
     });
 };

@@ -21,6 +21,7 @@ function clickOnLayer(feature, layer ){
 
 function dragEndLayer(feature, layer ){
     console.log(layer.getLatLng());
+    layer.newLatLng = layer.getLatLng();
 }
 
 function showCoordinates (e) {
@@ -56,9 +57,8 @@ function featureIsNew(feature){
     return feature.id == null;
 }
 
-function saveGeometry(){
-    populateFeatureWhithModal();
-    var content = actuallayer.feature;
+function updateGeometry(layer){
+    var content = layer.feature;
     var dataJson = JSON.stringify(content);
     var url = "";
     if(featureIsNew(content)) {
@@ -73,8 +73,15 @@ function saveGeometry(){
             _content_type: "application/json",
             _content: dataJson
         }).done(function(data){
-            actuallayer.feature.id = data.id;
+            layer.feature.id = data.id;
+        }).fail(function(){
+            console.log("Error in save geometry.");
         });
+}
+
+function saveGeometry(){
+    populateFeatureWhithModal();
+    updateGeometry(actuallayer);
 }
 
 function editingAttributes(layer){
@@ -198,7 +205,6 @@ function initializeEditableGeoJson(geoJsons) {
             layer = e.layer,
             a_feature = layer.toGeoJSON();
         a_feature.id = null;
-        console.log(a_feature);
         a_feature.properties.properties = empty_properties;
         layer.feature = a_feature;
         editableGeojson.addLayer( layer);
@@ -216,21 +222,18 @@ function initializeEditableGeoJson(geoJsons) {
 
     map.on('draw:edited', function (e) {
         var layers = e.layers;
-            layers.eachLayer(function (layer) {
-                //do whatever you want, most likely save back to db
-                console.log('entrei');
-                console.log(layer);
-            });
+        layers.eachLayer(function (layer) {
+            //do whatever you want, most likely save back to db
+            layer.feature.geometry.coordinates = [layer.newLatLng.lng, layer.newLatLng.lat];
+            updateGeometry(layer);
+        });
     });
 
     map.on("draw:deleted", function(e){
         var layers = e.layers;
         layers.eachLayer(function (layer) {
             //do whatever you want, most likely save back to db
-            console.log('entrei_no delete');
-            console.log(layer);
             var id = layer.feature.id;
-            console.log(id);
             var url = url_update+id;
             $.ajax({
                 method: "DELETE",

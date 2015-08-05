@@ -40,12 +40,12 @@ function zoomOut (e) {
 }
 
 function populateFeatureWhithModal() {
-    aFeature = actuallayer.feature;
-    propers = JSON.parse(aFeature.properties.properties);
+    var aFeature = actuallayer.feature;
+    var propers = JSON.parse(aFeature.properties.properties);
     for (i = 0; i < schema_community_information_array.length; i++) {
 
-        field_name = schema_community_information_array[i];
-        field_html = document.getElementById('id_' + field_name);
+        var field_name = schema_community_information_array[i];
+        var field_html = document.getElementById('id_' + field_name);
         propers[field_name]= field_html.value;
 
     }
@@ -72,11 +72,9 @@ function saveGeometry(){
         {
             _content_type: "application/json",
             _content: dataJson
-        },
-        function (data) {
-            console.log(data);
-        }
-    );
+        }).done(function(data){
+            actuallayer.feature.id = data.id;
+        });
 }
 
 function editingAttributes(layer){
@@ -86,12 +84,12 @@ function editingAttributes(layer){
 
 function populateModalWithFeature(layer) {
     actuallayer = layer;
-    aFeature = layer.feature;
+    var aFeature = layer.feature;
 
     for (i = 0; i < schema_community_information_array.length; i++) {
-        field_name = schema_community_information_array[i];
-        field_value = (JSON.parse(aFeature.properties.properties))[field_name];
-        field_html = document.getElementById('id_' + field_name);
+        var field_name = schema_community_information_array[i];
+        var field_value = (JSON.parse(aFeature.properties.properties))[field_name];
+        var field_html = document.getElementById('id_' + field_name);
         field_html.value=field_value;
     }
 }
@@ -172,10 +170,10 @@ function pointToLayer(data, latLng) {
 }
 
 function initializeEditableGeoJson(geoJsons) {
-    editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
+    var editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
 
     map.addLayer(editableGeojson);
-    options = function(editableGeojson) {
+    var options = function(editableGeojson) {
         return {
             position: 'topleft',
             draw: {

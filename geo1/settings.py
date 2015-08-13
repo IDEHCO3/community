@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'community_app',
     'community',
     'create_layer',
+    'authentication',
 )
 
 MIDDLEWARE_CLASSES = (

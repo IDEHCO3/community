@@ -1,6 +1,6 @@
 from rest_framework import generics
-from community_app.models import Community_Information_Field_Schema
-from .serializers import Community_Information_Field_Schema_Serializer
+from community_app.models import CommunityInformationFieldSchema
+from .serializers import CommunityInformationFieldSchemaSerializer
 
 from community.models import Community
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -10,26 +10,26 @@ from django.template import RequestContext
 
 from global_module.permissions import IsOwnerOrReadOnly
 
-class Community_Information_Field_Schema_ListFilter(generics.ListAPIView):
-    serializer_class = Community_Information_Field_Schema_Serializer
+class CommunityInformationFieldSchemaListFilter(generics.ListAPIView):
+    serializer_class = CommunityInformationFieldSchemaSerializer
     lookup_url_kwarg = "pk"
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         pk = self.kwargs.get(self.lookup_url_kwarg)
-        queryset = Community_Information_Field_Schema.objects.filter(community_id=pk)
+        queryset = CommunityInformationFieldSchema.objects.filter(community_id=pk)
         return queryset
 
-class Community_Information_Field_Schema_Detail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Community_Information_Field_Schema.objects.all()
-    serializer_class = Community_Information_Field_Schema_Serializer
+class CommunityInformationFieldSchemaDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CommunityInformationFieldSchema.objects.all()
+    serializer_class = CommunityInformationFieldSchemaSerializer
 
-    permission_classes = (IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
-class Community_Information_Field_Schema_Create(generics.CreateAPIView):
-    queryset = Community_Information_Field_Schema.objects.all()
-    serializer_class = Community_Information_Field_Schema_Serializer
+class CommunityInformationFieldSchemaCreate(generics.CreateAPIView):
+    queryset = CommunityInformationFieldSchema.objects.all()
+    serializer_class = CommunityInformationFieldSchemaSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
 

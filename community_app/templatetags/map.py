@@ -5,16 +5,16 @@ from community.models import Community
 register = template.Library()
 
 
-def as_json_str(community_information_field_schema_set):
-    print(community_information_field_schema_set)
-    a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in community_information_field_schema_set)
+def as_json_str(communityinformationfieldschema_set):
+    print(communityinformationfieldschema_set)
+    a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in communityinformationfieldschema_set)
     return "{" + (",".join(a_list)) + "}"
 
 @register.inclusion_tag("community_app/editor_tag.html")
 def map(community):
 
     context = {}
-    cifs = community.community_information_field_schema_set.all()
+    cifs = community.communityinformationfieldschema_set.all()
     a_list = list(cif.name_field for cif in cifs)
 
     schema_field = str(a_list).replace("'", '"')

@@ -4,13 +4,13 @@ from django_pgjson.fields import JsonBField
 from community.models import Community
 
 
-class Community_Information(models.Model):
+class CommunityInformation(models.Model):
 
     properties = JsonBField()  # can pass attributes like null, blank, ecc.
     geom = models.GeometryField(null=True)
     community = models.ForeignKey(Community, blank=True)
 
-class Community_Information_Field_Schema(models.Model):
+class CommunityInformationFieldSchema(models.Model):
     name_field = models.CharField(max_length=100)
     type_field = models.CharField(max_length=20)
     #widget_field = models.CharField(max_length=80, blank=True)

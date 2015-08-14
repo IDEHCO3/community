@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from .models import Community_Information
+from community_app.models import CommunityInformation
 
-class Community_InformationSerializer( GeoFeatureModelSerializer ):
+class CommunityInformationSerializer(GeoFeatureModelSerializer):
     class Meta:
-        model = Community_Information
+        model = CommunityInformation
         geo_field = 'geom'
         fields = ['id', 'properties', 'community']

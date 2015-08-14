@@ -64,22 +64,3 @@ def as_json_str(community_information_field_schema_set):
     a_list = list(('\"' + cif + '\"' + ':'  + '\"\"') for cif in community_information_field_schema_set)
     return "{" + (",".join(a_list)) + "}"
 
-def basic(request):
-
-    com = Community.objects.get(pk=1)
-    cifs = com.community_information_field_schema_set.all()
-    a_list = list(cif.name_field for cif in cifs)
-
-    schema_field = str(a_list).replace("'", '"')
-    schema_field = schema_field.replace("u", "")
-
-    a_form = FactoryForm.create(cifs)
-    schema_json_str = as_json_str(a_list)
-
-    url_list = "http://127.0.0.1:8000/community_app/1/community_information_list/?format=json"
-    url_create = "http://127.0.0.1:8000/community_app/1/community_information_create/"
-    url_update = "http://127.0.0.1:8000/community_app/community_information_detail/"
-    context = {'jsons': '', 'url_json' : url_list,  'form': a_form, 'schema_field': schema_field, 'schema_json_str': schema_json_str, 'url_create': url_create, 'url_update': url_update }
-
-    return render(request, 'community_app/editor.html', context)
-

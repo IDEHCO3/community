@@ -27,35 +27,26 @@
             <div class="row page-header"></div>
 
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label>{% trans 'Name of attribute' %}</label>
                     <input id="attr_name" type="text" class="form-control" ng-model="attributeName">
                 </div>
-                <div class="col-md-3" >
+                <div class="col-md-4" >
                     <label>{% trans 'Type of attribute' %}</label>
                     <select class="form-control" id="attr_type" ng-model="attributeType">
-                        <option value="Character" >{% trans 'Character' %}</option>
-                        <option value="Number" >{% trans 'Number' %}</option>
-                        <option value="Logical" >{% trans 'Logical' %}</option>
-                        <option value="Date" >{% trans 'Date' %}</option>
+                        <option value="CharField" >{% trans 'Character' %}</option>
+                        <option value="DecimalField" >{% trans 'Number' %}</option>
+                        <option value="BooleanField" >{% trans 'Logical' %}</option>
+                        <option value="DateTimeField" >{% trans 'Date' %}</option>
                     </select>
                 </div>
-                <div class="col-md-3" ng-show="layerCtrl.hasSize()">
-                    <label>{% trans 'size of attribute' %}</label>
-                    <input id="attr_size" type="number" ng-model="attributeSize" min="0" max="255" class="form-control">
+                <div class="col-md-4">
+                    <div id="add-line" class="btn btn-primary btn-sm pull-right" ng-click="layerCtrl.createAttribute()">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </div>
                 </div>
-                <div class="col-md-3" ng-show="layerCtrl.hasDecimal()">
-                    <label>{% trans 'precision' %}</label>
-                    <input id="attr_decimal" type="number" ng-model="attributeDecimal" min="0" max="255" class="form-control">
-                </div>
-
             </div>
             <div class="row page-header"></div>
-            <div class="row">
-                <div id="add-line" class="btn btn-primary btn-sm pull-right" ng-click="layerCtrl.createAttribute()">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </div>
-            </div>
 
             <div class="row page-header">
                 <div class="row" >
@@ -70,18 +61,12 @@
                         <div class="col-md-2">
                             <p id="attr_text_type{$ attr.id $}" class="well well-sm">{$ attr.attributeType $}</p>
                         </div>
-                        <div class="col-md-2">
-                            <p id="attr_text_size{$ attr.id $}" class="well well-sm">{$ attr.attributeSize $}</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p id="attr_text_decimal{$ attr.id $}" ng-hide="attr.attributeDecimal == 0" class="well well-sm">{$ attr.attributeDecimal $}</p>
-                        </div>
                         <div class="btn-group col-md-3" role="group">
                             <!--<div class="btn btn-primary" ng-click="editAttribute(attr.id)">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </div>-->
                             <div class="btn btn-danger" ng-click="removeAttribute(attr.id)">
-                                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             </div>
                         </div>
                     </div>

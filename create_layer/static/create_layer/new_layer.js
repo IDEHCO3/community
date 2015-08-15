@@ -10,82 +10,21 @@ var removeMessages = function(){
     $("#alertMessages").empty();
 };
 
-var getSize = function(options){
-    var obj = JSON.parse(options);
-    return obj['max_length'];
-};
-
-var getDecimal = function(attr){
-    if(attr['type_field'] == 'DecimalField'){
-        return 5;
-    }
-    else
-        return 0;
-};
-
-var getTypeFromRestFul = function(type){
-    switch(type){
-        case 'CharField':
-            type = 'Character';
-            break;
-        case 'DecimalField':
-        case 'IntegerField':
-            type = 'Number';
-            break;
-        case 'BooleanField':
-            type = 'Logical';
-            break;
-        case 'DateTimeField':
-            type = 'Date';
-            break;
-    }
-
-    return type;
-};
-
 var convertToNG = function(attr,i){
     var newAttr = { 'id': i,
                     'pk': attr['id'],
                     'attributeName': attr['name_field'],
-                    'attributeType': getTypeFromRestFul(attr['type_field']),
-                    'attributeSize': getSize(attr['options']),
-                    'attributeDecimal': getDecimal(attr)};
+                    'attributeType': attr['type_field']}
     return newAttr;
 };
 
-var convertType = function(type, decimal){
-    switch(type){
-        case 'Character':
-            type = "CharField";
-            break;
-        case 'Number':
-            type = "DecimalField";
-            break;
-        case 'Logical':
-            type = "BooleanField";
-            break;
-        case 'Date':
-            type = "DateTimeField";
-            break;
-        default:
-            type = "CharField";
-            break;
-    }
-
-    if(type == "DecimalField" && decimal == 0) {
-        return "IntegerField";
-    }
-
-    return type;
-};
-
 var convertToRestFul = function(attribute){
-    var type = convertType(attribute.attributeType, attribute.attributeDecimal);
+    var type = attribute.attributeType;
     return {
         "name_field": attribute.attributeName,
         "type_field": type,
         "name_module_field": "django.forms",
-        "options": "{\"max_length\": \""+attribute.attributeSize+"\", \"blank\": \"false\"}",
+        "options": "{}",
         "community": community_id
     };
 };
@@ -121,9 +60,7 @@ var loadData = function(dataIncoming){
         $scope.attributes = [];
 
         $scope.attributeName = 'attributeName';
-        $scope.attributeType = 'Character';
-        $scope.attributeSize = 50;
-        $scope.attributeDecimal = 0;
+        $scope.attributeType = 'CharField';
 
         $scope.deletedList = [];
 
@@ -131,72 +68,20 @@ var loadData = function(dataIncoming){
             $scope.attributes = loadData(dataIncoming);
         });
 
-        this.setAttributeType = function(type){
-            $scope.attributeType = type;
-        };
-
-        this.isSet = function(type){
-            return $scope.attributeType === type;
-        };
-
-        this.hasSize = function(){
-            if( $scope.attributeType === 'Date' || $scope.attributeType === 'Logical'){
-                return false;
-            }
-            else{
-                return true;
-            }
-        };
-
-        this.hasDecimal = function(){
-            if( $scope.attributeType === 'Number' ){
-                return true;
-            }
-            else{
-                return false;
-            }
-        };
-
         this.createAttribute = function(){
 
             if( $scope.attributeName === '' )
                 return;
 
-            if( this.hasSize() && $scope.attributeSize === 0 )
-                return;
-
-            if( $scope.attributeType === 'Date'){
-                $scope.attributeSize = 8;
-            }
-            else if( $scope.attributeType === 'Logical' ){
-                $scope.attributeSize = 1;
-            }
-
-            if( typeof $scope.attributeSize != 'number' )
-                return;
-
-            if( typeof $scope.attributeDecimal != 'number' )
-                return;
-
-            if( $scope.attributeSize > 255 || $scope.attributeSize <= 0 )
-                return;
-
-            if( $scope.attributeDecimal > 255 || $scope.attributeDecimal < 0 )
-                return;
-
             var attr = {id: $scope.attributes.length,
                         pk: null,
                         attributeName: $scope.attributeName,
-                        attributeType:  $scope.attributeType,
-                        attributeSize: $scope.attributeSize,
-                        attributeDecimal: $scope.attributeDecimal };
+                        attributeType: $scope.attributeType};
 
             $scope.attributes.push(attr);
 
             $scope.attributeName = 'attributeName';
-            $scope.attributeType = 'Character';
-            $scope.attributeSize = 50;
-            $scope.attributeDecimal = 0;
+            $scope.attributeType = 'CharField';
         };
 
         $scope.removeAttribute = function(index){
@@ -213,8 +98,6 @@ var loadData = function(dataIncoming){
         $scope.editAttribute = function(index){
             $scope.attributeName = $scope.attributes[index]['attributeName'];
             $scope.attributeType = $scope.attributes[index]['attributeType'];
-            $scope.attributeSize = $scope.attributes[index]['attributeSize'];
-            $scope.attributeDecimal = $scope.attributes[index]['attributeDecimal'];
             this.removeAttribute(index);
         };
 
@@ -254,11 +137,12 @@ var loadData = function(dataIncoming){
                     .success(function (dataIncoming) {
                         var x = findNullPK();
                         $scope.attributes[x] = convertToNG(dataIncoming, x);
-                        showMessage("Succes to save attribute: '"+attr.attributeName+"'!", "success");
+                        showMessage("Succes to save attribute: '"+$scope.attributes[x].attributeName+"'!", "success");
 
                     })
                     .error(function(){
-                        showMessage("Error to save attribute: '"+attr.attributeName+"'!", "danger");
+                        var x = findNullPK();
+                        showMessage("Error to save attribute: '"+$scope.attributes[x].attributeName+"'!", "danger");
                     }
                 );
             }

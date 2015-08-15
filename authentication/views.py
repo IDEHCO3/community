@@ -5,5 +5,5 @@ from django.template import RequestContext
 
 # Create your views here.
 def login(request):
-    context = {'destiny': '/communities/'}
+    context = {'destiny': '/communities/index'}
     return render_to_response('authentication/index.html', RequestContext(request, context))

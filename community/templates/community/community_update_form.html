@@ -1,18 +1,25 @@
 {% extends 'site_base.html' %}
 {% load i18n %}
+{% load auth_tag %}
 {% block body %}
-    <div class="row">
-        <div class="page-header">
-            <h1>{% trans 'Update Community Information' %}</h1>
+    {% if request.user.is_authenticated %}
+        <div class="row">
+            <div class="page-header">
+                <h1>{% trans 'Update Community Information' %}</h1>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-default" type="submit" value="{% trans 'Update' %}" />
-        </form>
-    </div>
+        <div class="row">
+            <div class="col-md-5">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-default" type="submit" value="{% trans 'Update' %}" />
+                </form>
+            </div>
+        </div>
+    {% else %}
+        {% auth_tag request.path %}
+    {% endif %}
 {% endblock body %}
 
 {% block scripts %}

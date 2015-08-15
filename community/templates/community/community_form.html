@@ -1,18 +1,25 @@
 {% extends 'site_base.html' %}
 {% load i18n %}
+{% load auth_tag %}
 {% block body %}
-    <div class="row">
-        <div class="page-header">
-            <h1>{% trans 'Create a Community' %}</h1>
+    {% if request.user.is_authenticated %}
+        <div class="row">
+            <div class="page-header">
+                <h1>{% trans 'Create a Community' %}</h1>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <form action="{% url 'community:create' %}" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="btn btn-default" value="{% trans 'Create' %}" />
-        </form>
-    </div>
+        <div class="row">
+            <div class="col-md-5">
+                <form action="{% url 'community:create' %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" class="btn btn-default" value="{% trans 'Create' %}" />
+                </form>
+            </div>
+        </div>
+    {% else %}
+        {% auth_tag request.path %}
+    {% endif %}
 {% endblock body %}
 
 {% block scripts %}

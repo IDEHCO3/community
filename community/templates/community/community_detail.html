@@ -3,6 +3,7 @@
 {% load map %}
 {% load auth_tag %}
 {% block body %}
+    {% if request.user.is_authenticated %}
         <div class="row">
                 <div class="row">
                         <div class="page-header">
@@ -52,4 +53,7 @@
                         </div>
                 </div>
         </div>
+    {% else %}
+        {% auth_tag request.path %}
+    {% endif %}
 {% endblock body %}

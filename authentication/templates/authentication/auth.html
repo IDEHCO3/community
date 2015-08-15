@@ -9,6 +9,7 @@
         <form action="/api-auth/login/" role="form" method="post">
             <fielset>
                 {% csrf_token %}
+                <input class="hidden" type="text" name="next" value="{{ destiny }}"/>
                 <div class="form-group">
                     <label>{% trans 'Login' %}</label>
                     <input type="text" class="form-control" name="username"/>

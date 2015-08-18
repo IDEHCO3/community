@@ -5,10 +5,11 @@
     {% if request.user.is_authenticated %}
         <div class="row">
             <div class="page-header">
-                <h1>{% trans 'You are authenticated!' %}</h1>
+                <h1>{% trans 'You are authenticated: ' %}{{ request.user }}</h1>
             </div>
+            {% logout request.path %}
         </div>
     {% else %}
-        {% auth_tag destiny %}
+        {% login request.path %}
     {% endif %}
 {% endblock body %}

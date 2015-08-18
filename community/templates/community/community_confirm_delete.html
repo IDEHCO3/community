@@ -17,6 +17,6 @@
             </form>
         </div>
     {% else %}
-        {% auth_tag request.path %}
+        {% login request.path %}
     {% endif %}
 {% endblock body %}

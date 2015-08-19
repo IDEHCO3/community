@@ -3,3 +3,4 @@ psycopg2>=2.6
 djangorestframework
 djangorestframework-gis
 django-pgjson
+django-cors-headers

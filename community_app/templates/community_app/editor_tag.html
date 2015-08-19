@@ -1,4 +1,5 @@
 {% load staticfiles%}
+{% load i18n %}
 {% block extra_head %}
     <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet/leaflet.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet/draw/leaflet.draw.css' %}"/>
@@ -9,7 +10,9 @@
     <script src="{% static 'community_app/jquery-2.1.4/jquery.jsontotable.min.js' %}"></script>
     <script src="{% static 'community_app/leaflet/contextmenu/leaflet.contextmenu.js' %}"></script>
 {% endblock extra_head %}
-<label>Editable</label><input id="editable" type="checkbox" />
+<div class="form-group"><input id="editable" type="checkbox" /><label>Editable</label></div>
+<div class="form-group"><button class="btn btn-primary" onclick="bookmarker()">{% trans 'Bookmark map' %}</button></div>
+
 <div id="map" style="width: 600px; height: 400px"></div>
 <div id="jsontotable" class="jsontotable"></div>
 <div class="modal fade" id="myModal" role="dialog">
@@ -36,6 +39,10 @@
 <script>
     var $schema = $("#schema_field_div");
     var $sjs = $("#schema_json_str_div");
+
+    var url_visual = "{{request.path}}";
+    var user_id = {{request.user.id}};
+    var url_community = "{{url_community}}";
 
     var url_create = "{{url_create}}";
     var url_update = "{{url_update}}";

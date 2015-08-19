@@ -20,6 +20,41 @@ L.tileLayer(
     maxZoom: 18
     }).addTo(map);
 
+
+function dicToArray(coordinates){
+    var coordinate = [coordinates.lng, coordinates.lat];
+    return coordinate;
+}
+
+function bookmarker(){
+
+    var center = JSON.stringify(dicToArray(map.getCenter()));
+
+    var bookmark = {
+        "url_visual": url_visual,
+        "url_api": url_community,
+        "zoom": map.getZoom(),
+        "resourceType": "communities",
+        "coordinates": center,
+        "user": user_id
+    };
+
+    var dataJson = JSON.stringify(bookmark);
+
+    console.log(dataJson);
+
+    $.post("http://10.0.0.130:8000/bookmarks/",
+        {
+            _content_type: "application/json",
+            _content: dataJson
+        }).done(function(data){
+            console.log(data);
+        }).fail(function(data){
+            console.log(data);
+            console.log("Error in save bookmark.");
+        });
+}
+
 function convertDicCoordinatesToArray(coordinates){
     var output = [];
     for(var i=0; i<coordinates.length; i++){

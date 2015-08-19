@@ -10,10 +10,9 @@ def as_json_str(communityinformationfieldschema_set):
     a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in communityinformationfieldschema_set)
     return "{" + (",".join(a_list)) + "}"
 
-@register.inclusion_tag("community_app/editor_tag.html")
-def map(community):
+@register.inclusion_tag("community_app/editor_tag.html", takes_context=True)
+def map(context, community):
 
-    context = {}
     cifs = community.communityinformationfieldschema_set.all()
     a_list = list(cif.name_field for cif in cifs)
 
@@ -26,8 +25,9 @@ def map(community):
     url_list = "/community_app/"+str(community.pk)+"/community_information_list/?format=json"
     url_create = "/community_app/"+str(community.pk)+"/community_information_create/"
     url_update = "/community_app/community_information_detail/"
+    url_community = "/communities/"+str(community.pk)+"/"
 
-    context['jsons'] = ''
+    context['url_community'] = url_community
     context['url_json'] = url_list
     context['form'] = a_form
     context['schema_field'] = schema_field

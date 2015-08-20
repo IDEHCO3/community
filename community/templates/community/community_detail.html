@@ -35,7 +35,8 @@
                                     <h3>{% trans 'Bookmarks:' %}</h3>
                                 </div>
                                 <div class="list-group" ng-controller="BookmarkerController as bmCtrl">
-                                        <a class="list-group-item" ng-repeat="bookmark in bookmarks" href="{$ bookmark.url_visual $}">
+                                        <a class="list-group-item" ng-repeat="bookmark in bookmarks"
+                                           href="{$ bookmark.url_visual $}?zoom={$ bookmark.zoom $}&lat={$ bookmark.lat $}&lng={$ bookmark.lng $}">
                                             <h4>{$ bookmark.name $}</h4>
                                         </a>
                                 </div>
@@ -54,7 +55,7 @@
                                             <h3>{% trans 'Map of Community' %}</h3>
                                         </div>
                                         <a class="btn btn-default" href="{% url 'create_layer:new_layer' community.id %}">{% trans 'Edit atributes' %}</a>
-                                    {% map community%}
+                                    {% map community %}
                                 </div>
                         {% endif %}
                         <div class="col-md-2">

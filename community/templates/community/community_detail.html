@@ -2,6 +2,12 @@
 {% load i18n %}
 {% load map %}
 {% load auth_tag %}
+{% load staticfiles %}
+
+{% block head %}
+    <script src="/static/angular/angular.min.js"></script>
+{% endblock head %}
+
 {% block body %}
     {% if request.user.is_authenticated %}
         <div class="row">
@@ -24,7 +30,18 @@
                     </div>
                 </div>
                 <div class="row">
-                        {% if community.community_information_field_schema_set.count == 0 %}
+                        <div class="col-md-2" ng-app="community_app">
+                                <div class="page-header">
+                                    <h3>{% trans 'Bookmarks:' %}</h3>
+                                </div>
+                                <div class="list-group" ng-controller="BookmarkerController as bmCtrl">
+                                        <a class="list-group-item" ng-repeat="bookmark in bookmarks" href="{$ bookmark.url_visual $}">
+                                            <h4>{$ bookmark.name $}</h4>
+                                        </a>
+                                </div>
+
+                        </div>
+                        {% if community.communityinformationfieldschema_set.count == 0 %}
                                 <div class="col-md-8">
                                         <div class="page-header">
                                             <h3>{% trans 'Map of Community' %}</h3>
@@ -40,7 +57,7 @@
                                     {% map community%}
                                 </div>
                         {% endif %}
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                                 <div class="page-header">
                                     <h3>{% trans 'Members:' %}</h3>
                                 </div>
@@ -57,3 +74,7 @@
         {% login request.path %}
     {% endif %}
 {% endblock body %}
+
+{% block scripts %}
+    <script src="{% static 'community/community_controller.js' %}"></script>
+{% endblock scripts %}

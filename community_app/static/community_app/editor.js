@@ -22,28 +22,30 @@ L.tileLayer(
 
 
 function dicToArray(coordinates){
-    var coordinate = [coordinates.lng, coordinates.lat];
+    var coordinate = [coordinates.lat, coordinates.lng];
     return coordinate;
 }
 
 function bookmarker(){
 
     var center = JSON.stringify(dicToArray(map.getCenter()));
+    var name = $("#bookmark_name").val();
 
     var bookmark = {
+        "name": name,
         "url_visual": url_visual,
         "url_api": url_community,
         "zoom": map.getZoom(),
         "resourceType": "communities",
         "coordinates": center,
-        "user": user_id
+        "owner": user_id
     };
 
     var dataJson = JSON.stringify(bookmark);
 
     console.log(dataJson);
 
-    $.post("http://10.0.0.130:8000/bookmarks/",
+    $.post("http://127.0.0.1:8000/bookmarks/",
         {
             _content_type: "application/json",
             _content: dataJson
@@ -53,6 +55,8 @@ function bookmarker(){
             console.log(data);
             console.log("Error in save bookmark.");
         });
+
+    location.reload();
 }
 
 function convertDicCoordinatesToArray(coordinates){
@@ -329,6 +333,11 @@ function initializeEditableGeoJson(geoJsons) {
             }
         });
     });
+
+    if(global_zoom != 0){
+        var latlng = L.latLng(global_lat, global_lng);
+        map.setView(latlng, global_zoom);
+    }
 };
 
 $.getJSON( url_json, function(geoJsons) {

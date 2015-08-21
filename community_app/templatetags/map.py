@@ -27,6 +27,22 @@ def map(context, community):
     url_update = "/community_app/community_information_detail/"
     url_community = "/communities/"+str(community.pk)+"/"
 
+    request = context['request']
+    zoom = 0
+    if request.GET.has_key('zoom'):
+        zoom = float(request.GET['zoom'])
+
+    lat = 0
+    if request.GET.has_key('lat'):
+        lat = float(request.GET['lat'])
+
+    lng = 0
+    if request.GET.has_key('lng'):
+        lng = float(request.GET['lng'])
+
+    context['zoom'] = zoom
+    context['lat'] = lat
+    context['lng'] = lng
     context['url_community'] = url_community
     context['url_json'] = url_list
     context['form'] = a_form

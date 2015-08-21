@@ -11,7 +11,7 @@
     <script src="{% static 'community_app/leaflet/contextmenu/leaflet.contextmenu.js' %}"></script>
 {% endblock extra_head %}
 <div class="form-group"><input id="editable" type="checkbox" /><label>Editable</label></div>
-<div class="form-group"><button class="btn btn-primary" onclick="bookmarker()">{% trans 'Bookmark map' %}</button></div>
+<div class="form-group"><button class="btn btn-primary" data-toggle="modal" data-target="#bookmarkModal">{% trans 'Bookmark map' %}</button></div>
 
 <div id="map" style="width: 600px; height: 400px"></div>
 <div id="jsontotable" class="jsontotable"></div>
@@ -34,6 +34,28 @@
       </div>
     </div>
 </div>
+
+<div class="modal fade" id="bookmarkModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{% trans 'Bookmark' %}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>{% trans 'Name of bookmark' %}</label>
+                <input id="bookmark_name" type="text" class="form-control"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+          <button type="button" onclick="bookmarker()" class="btn btn-default" data-dismiss="modal">{% trans 'Save' %}</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <div id="schema_field_div" hidden="true">{{ schema_field }}</div>
 <div id="schema_json_str_div" hidden="true">{{ schema_json_str}}</div>
 <script>
@@ -43,6 +65,10 @@
     var url_visual = "{{request.path}}";
     var user_id = {{request.user.id}};
     var url_community = "{{url_community}}";
+
+    var global_zoom = {{ zoom }};
+    var global_lat = {{ lat }};
+    var global_lng = {{ lng }};
 
     var url_create = "{{url_create}}";
     var url_update = "{{url_update}}";

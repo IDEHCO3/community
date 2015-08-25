@@ -108,8 +108,7 @@ function populateFeatureWhithModal() {
     for (i = 0; i < schema_community_information_array.length; i++) {
 
         var field_name = schema_community_information_array[i];
-        var $field_html = $('#id_' + field_name);
-        propers[field_name]= $field_html.val();
+        propers[field_name]= $('#id_' + field_name).val();
 
     }
     actuallayer.feature.properties.properties = JSON.stringify(propers);
@@ -158,8 +157,7 @@ function populateModalWithFeature(layer) {
     for (i = 0; i < schema_community_information_array.length; i++) {
         var field_name = schema_community_information_array[i];
         var field_value = (JSON.parse(aFeature.properties.properties))[field_name];
-        var $field_html = $('#id_' + field_name);
-        $field_html.val(field_value);
+        $('#id_' + field_name).val(field_value);
     }
 }
 

@@ -4,7 +4,6 @@ from community.models import Community
 
 register = template.Library()
 
-
 def as_json_str(communityinformationfieldschema_set):
     print(communityinformationfieldschema_set)
     a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in communityinformationfieldschema_set)
@@ -17,7 +16,7 @@ def map(context, community):
     a_list = list(cif.name_field for cif in cifs)
 
     schema_field = str(a_list).replace("'", '"')
-    schema_field = schema_field.replace("u", "")
+    schema_field = schema_field.replace('u"', '"')
 
     a_form = FactoryForm.create(cifs)
     schema_json_str = as_json_str(a_list)

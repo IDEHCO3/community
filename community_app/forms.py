@@ -6,7 +6,8 @@ class FactoryForm():
     def create(cls, community_Information_Field_Schema_list):
         a_form = DinamicForm()
         for dinamic_field in community_Information_Field_Schema_list:
-            a_form.fields[dinamic_field.name_field] = dinamic_field.field_object_type()
+            if dinamic_field.name_field != 'geometry':
+                a_form.fields[dinamic_field.name_field] = dinamic_field.field_object_type()
 
         return a_form
 

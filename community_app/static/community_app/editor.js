@@ -244,10 +244,10 @@ function editableMode(activate){
                 draw: {
 
                     rectangle: false,
-                    polygon: true,
-                    polyline: true,
+                    polygon: "polygon" == geometry_type,
+                    polyline: "line" == geometry_type,
                     circle: false,
-                    marker: true
+                    marker: "point" == geometry_type
                 },
                 edit: {
                     featureGroup: editableLayer, //REQUIRED!!

@@ -21,6 +21,12 @@ def map(context, community):
     a_form = FactoryForm.create(cifs)
     schema_json_str = as_json_str(a_list)
 
+    geometry_type = ""
+    for type in cifs:
+        if type.name_field == "geometry":
+            geometry_type = str(type.type_field)
+            break
+
     url_list = "/community_app/"+str(community.pk)+"/community_information_list/?format=json"
     url_create = "/community_app/"+str(community.pk)+"/community_information_create/"
     url_update = "/community_app/community_information_detail/"
@@ -42,6 +48,7 @@ def map(context, community):
     context['zoom'] = zoom
     context['lat'] = lat
     context['lng'] = lng
+    context['geometry_type'] = geometry_type
     context['url_community'] = url_community
     context['url_json'] = url_list
     context['form'] = a_form

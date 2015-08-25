@@ -33,9 +33,26 @@ var loadData = function(dataIncoming){
     var data = [];
     for(var i=0; i<dataIncoming.length; i++){
         var attr = dataIncoming[i];
+        if(attr.name_field == "geometry")
+            continue;
+
         var newAttr = convertToNG(attr,i);
 
         data.push(newAttr);
+    }
+
+    return data;
+};
+
+var loadGeometryType = function(dataIncoming){
+    var data = {type: "point", id: null};
+    for(var i=0; i<dataIncoming.length; i++){
+        var attr = dataIncoming[i];
+        if(attr.name_field == "geometry"){
+            data.type = attr.type_field;
+            data.id = attr.id;
+            break;
+        }
     }
 
     return data;
@@ -56,7 +73,8 @@ var loadData = function(dataIncoming){
     app.layerController = function($scope, $http){
 
         $scope.layerName = 'myLayer';
-        $scope.layerType = 'Point';
+        $scope.layerType = 'point';
+        $scope.layerTypeId = null;
         $scope.attributes = [];
 
         $scope.attributeName = 'attributeName';
@@ -65,6 +83,9 @@ var loadData = function(dataIncoming){
         $scope.deletedList = [];
 
         $http.get(url_filter).success(function(dataIncoming){
+            var local_data = loadGeometryType(dataIncoming);
+            $scope.layerType = local_data.type;
+            $scope.layerTypeId = local_data.id;
             $scope.attributes = loadData(dataIncoming);
         });
 
@@ -120,9 +141,35 @@ var loadData = function(dataIncoming){
             return x;
         };
 
+        var updateGeometryType = function(){
+
+            var attrGeometry = {
+                "name_field": "geometry",
+                "type_field": $scope.layerType,
+                "name_module_field": "",
+                "options": "{}",
+                "community": community_id
+            };
+
+            if($scope.layerTypeId == null){
+                $http.post(url_create, attrGeometry,
+                    {
+                        headers: {'Content-Type': "application/json"}
+                    })
+            }
+            else{
+                var url_geometry = url_update + $scope.layerTypeId;
+                $http.put(url_geometry, attrGeometry,
+                    {
+                        headers: {'Content-Type': "application/json"}
+                    })
+            }
+        };
+
         $scope.sendData = function(){
             removeMessages();
             deleteAttributesFromDB();
+            updateGeometryType();
 
             for(var i=0; i<$scope.attributes.length; i++) {
                 if($scope.attributes[i].pk != null) continue;

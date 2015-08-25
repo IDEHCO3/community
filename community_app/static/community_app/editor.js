@@ -108,8 +108,8 @@ function populateFeatureWhithModal() {
     for (i = 0; i < schema_community_information_array.length; i++) {
 
         var field_name = schema_community_information_array[i];
-        var field_html = document.getElementById('id_' + field_name);
-        propers[field_name]= field_html.value;
+        var $field_html = $('#id_' + field_name);
+        propers[field_name]= $field_html.val();
 
     }
     actuallayer.feature.properties.properties = JSON.stringify(propers);
@@ -158,8 +158,8 @@ function populateModalWithFeature(layer) {
     for (i = 0; i < schema_community_information_array.length; i++) {
         var field_name = schema_community_information_array[i];
         var field_value = (JSON.parse(aFeature.properties.properties))[field_name];
-        var field_html = document.getElementById('id_' + field_name);
-        field_html.value=field_value;
+        var $field_html = $('#id_' + field_name);
+        $field_html.val(field_value);
     }
 }
 
@@ -273,7 +273,13 @@ $editable.on('click', function(){
 function initializeEditableGeoJson(geoJsons) {
     editableGeojson = L.geoJson(geoJsons,  {onEachFeature: onEachFeature});
 
+    var bounds = editableGeojson.getBounds();
+    if(Object.keys(bounds).length != 0){
+        map.fitBounds(bounds);
+    }
+
     map.addLayer(editableGeojson);
+
 
     editableMode($editable.prop("checked"));
 

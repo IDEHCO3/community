@@ -34,9 +34,12 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
 var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
     landMap = L.tileLayer(landUrl, {attribution: thunAttrib});
-var a_controlayer = L.control.layers().addTo(map);
-a_controlayer.addBaseLayer(osmMap,'OSM Mapnik');
-a_controlayer.addBaseLayer(landMap,'Landscape');
+//var a_controlayer = L.control.layers().addTo(map);
+var a_controlayer  = L.Control.styledLayerControl();
+map.addControl(a_controlayer);
+a_controlayer.addBaseLayer(osmMap,'OSM Mapnik', {groupName : "Fixed Layers", expanded: true});
+a_controlayer.addBaseLayer(landMap,'Landscape', {groupName : "Fixed Layers", expanded: true});
+
 
 
 
@@ -176,7 +179,7 @@ function loadReadOnlyLayer() {
     }).done(function(data){
 
         overlays.layer= L.geoJson(data,{ });
-        a_controlayer.addOverlay(overlays.layer, url_string);
+        a_controlayer.addOverlay(overlays.layer, url_string, {groupName : "GeoJson", expanded: true});
        // overlays.layer.overlay = true;
 
        //console.log(a_controlayer._layers.length);

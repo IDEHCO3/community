@@ -14,6 +14,8 @@
 <div class="form-group"><button class="btn btn-primary" data-toggle="modal" data-target="#bookmarkModal">{% trans 'Bookmark map' %}</button></div>
 
 <div id="map" style="width: 600px; height: 400px"></div>
+<div class="form-group"><label>Layers</label><input id="layers" type="text" />
+ <button class="btn btn-primary" type="button" onclick="loadReadOnlyLayer()">{% trans 'Load layer' %}</button></div>
 <div id="jsontotable" class="jsontotable"></div>
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">

@@ -13,6 +13,7 @@ var actuallayer = null;
 var drawControl = null;
 var $editable = $("#editable");
 
+
 mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 L.tileLayer(
     'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -20,6 +21,26 @@ L.tileLayer(
     maxZoom: 18
     }).addTo(map);
 
+
+// começo de carregar layer
+var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+    thunLink = '<a href="http://thunderforest.com/">Thunderforest</a>';
+
+var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    osmAttrib = '&copy; ' + osmLink + ' Contributors',
+    landUrl = 'http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png',
+    thunAttrib = '&copy; '+osmLink+' Contributors & '+thunLink;
+
+
+var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+    landMap = L.tileLayer(landUrl, {attribution: thunAttrib});
+var a_controlayer = L.control.layers().addTo(map);
+a_controlayer.addBaseLayer(osmMap,'OSM Mapnik');
+a_controlayer.addBaseLayer(landMap,'Landscape');
+
+
+
+// fim de carregar layer
 
 function dicToArray(coordinates){
     var coordinate = [coordinates.lat, coordinates.lng];
@@ -143,6 +164,32 @@ function updateGeometry(layer){
 function saveGeometry(){
     populateFeatureWhithModal();
     updateGeometry(actuallayer);
+}
+
+
+function loadReadOnlyLayer() {
+
+    var overlays = {"layer": null};
+    var url_string = $("#layers").val();
+    $.ajax({ method: "GET",
+             url: url_string
+    }).done(function(data){
+
+        overlays.layer= L.geoJson(data,{ });
+        a_controlayer.addOverlay(overlays.layer, url_string);
+       // overlays.layer.overlay = true;
+
+       //console.log(a_controlayer._layers.length);
+
+
+
+    }).fail(function(data){
+
+    });
+
+
+
+
 }
 
 function editingAttributes(layer){

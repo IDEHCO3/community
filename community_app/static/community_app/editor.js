@@ -22,7 +22,7 @@ L.tileLayer(
     }).addTo(map);
 
 
-// começo de carregar layer
+// comeï¿½o de carregar layer
 var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
     thunLink = '<a href="http://thunderforest.com/">Thunderforest</a>';
 
@@ -189,9 +189,6 @@ function loadReadOnlyLayer() {
     }).fail(function(data){
 
     });
-
-
-
 
 }
 

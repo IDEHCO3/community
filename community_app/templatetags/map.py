@@ -34,15 +34,15 @@ def map(context, community):
 
     request = context['request']
     zoom = 0
-    if request.GET.has_key('zoom'):
+    if zoom in request.GET:
         zoom = float(request.GET['zoom'])
 
     lat = 0
-    if request.GET.has_key('lat'):
+    if 'lat' in request.GET:
         lat = float(request.GET['lat'])
 
     lng = 0
-    if request.GET.has_key('lng'):
+    if 'lng' in request.GET:
         lng = float(request.GET['lng'])
 
     context['zoom'] = zoom

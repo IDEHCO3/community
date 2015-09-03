@@ -1,21 +1,25 @@
 {% load i18n %}
-{% load auth_tag %}
 <div id="page-wrapper">
     <div class="row">
-        <div class="page-header">
-            <h1>{% trans 'Create a Community' %}</h1>
-        </div>
-    </div>
-    <div class="row">
-        {% if request.user.is_authenticated %}
+            <div class="page-header">
+                <h1>{% trans 'Create a Community' %}</h1>
+            </div>
             <fieldset>
                 <legend>{% trans 'Identification' %}</legend>
                 <div class="row">
                     <div class="col-md-5">
-                        <form action="{% url 'community:create' %}" method="post">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                        </form>
+                        <div class="form-group">
+                            <label>{% trans 'Name' %}:</label>
+                            <input type="text" class="form-control" ng-model="communityName" placeholder="{% trans 'name' %}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>{% trans 'Description' %}:</label>
+                            <input type="text" class="form-control" ng-model="description" placeholder="{% trans 'description' %}"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" ng-model="needInvitation" />
+                            <label>{% trans 'Need invitation' %}</label>
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -23,8 +27,5 @@
                 <legend>{% trans 'Create layer' %}</legend>
                 {% include 'community/create/create_layer.html' %}
             </fieldset>
-        {% else %}
-            {% login request.path %}
-        {% endif %}
     </div>
 </div>

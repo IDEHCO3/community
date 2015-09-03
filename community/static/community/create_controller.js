@@ -1,5 +1,5 @@
 (function(){
-    var app = angular.module("layer_app",[]).config(function($interpolateProvider) {
+    var app = angular.module("createApp",[]).config(function($interpolateProvider) {
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');
     }).run(run);
@@ -10,14 +10,20 @@
         $http.defaults.xsrfCookieName = 'csrftoken';
     }
 
-    app.layerController = function($scope, $http){
+    app.createController = function($scope, $http){
+
+        $scope.communityName = "";
+        $scope.description = "";
+        $scope.needInvitation = false;
+        
 
         $scope.attributes = [];
 
+        $scope.layerType = 'point';
         $scope.attributeName = 'attributeName';
         $scope.attributeType = 'CharField';
 
-        this.createAttribute = function(){
+        $scope.createAttribute = function(){
 
             if( $scope.attributeName === '' )
                 return;
@@ -39,8 +45,12 @@
                 $scope.attributes[i]['id'] = i;
             }
         };
+
+        $scope.save = function(){
+            console.log("save all data!");
+        };
     };
 
-    app.controller("LayerController",['$scope', '$http', app.layerController]);
+    app.controller("CreateController",['$scope', '$http', app.createController]);
 
 })();

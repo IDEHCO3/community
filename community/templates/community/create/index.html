@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load  staticfiles %}
+{% load auth_tag %}
 <html>
     <head>
         <meta charset="utf-8" />
@@ -12,28 +13,36 @@
         <link rel="stylesheet" href="{% static 'bootstrap-3.3.5/css/bootstrap-theme.min.css' %}">
 
         <!-- MetisMenu CSS -->
-        <link href="{% static 'startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css' %}">
 
         <!-- Custom CSS -->
-        <link href="{% static 'startbootstrap/dist/css/sb-admin-2.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'startbootstrap/dist/css/sb-admin-2.css' %}">
 
         <!-- Custom Fonts -->
-        <link href="{% static 'startbootstrap/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css' %}">
-
-        <script src="{% static 'jquery-2.1.4/jquery.min.js' %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'startbootstrap/bower_components/font-awesome/css/font-awesome.min.css' %}">
 
         <title>{% trans 'Community' %}</title>
 
     </head>
     <body>
-        <div id="wrapper">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-                {% include 'community/create/head.html' %}
-                {% include 'community/create/sidebar.html' %}
-            </nav>
-            {% include 'community/create/body.html' %}
-            {% include 'community/create/footer.html' %}
-        </div>
+        {% if request.user.is_authenticated %}
+            <div ng-app="createApp">
+                <div id="wrapper" ng-controller="CreateController as createCtrl">
+                    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                        {% include 'community/create/head.html' %}
+                        {% include 'community/create/sidebar.html' %}
+                    </nav>
+                    {% include 'community/create/body.html' %}
+                    {% include 'community/create/footer.html' %}
+                </div>
+            </div>
+        {% else %}
+            <div id="wrapper">
+                <div id="page-wrapper">
+                    {% login request.path %}
+                </div>
+            </div>
+        {% endif %}
 
         <script src="{% static 'jquery-2.1.4/jquery.min.js' %}"></script>
         <script src="{% static 'bootstrap-3.3.5/js/bootstrap.min.js' %}"></script>
@@ -48,19 +57,11 @@
         <script src="{% static 'angular/angular.min.js' %}"></script>
 
         <script>
-            $("input").each(function(){
-                var type = $(this).attr("type");
-                if( type != "checkbox" && type != "submit" )
-                    $(this).addClass("form-control");
-            });
-        </script>
-
-        <script>
             var url_create = '/create_layer/create/';
             var url_update = '/create_layer/detail/';
             var url_filter = '/create_layer/list/';
         </script>
 
-        <script src="{% static 'community/layer_controller.js' %}"></script>
+        <script src="{% static 'community/create_controller.js' %}"></script>
     </body>
 </html>

@@ -1,0 +1,23 @@
+{% load i18n %}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans 'Communities' %}</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% if community_list %}
+            <div class="list-group">
+            {% for community in community_list %}
+
+                <a class="list-group-item" href="{% url 'community:detail' community.id %}">
+                    <h3>{{ community.name }}</h3>
+                    <p>{{ community.description }}</p>
+                </a>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p> {% trans 'No communities are available' %}</p>
+        {% endif %}
+    </div>
+</div>

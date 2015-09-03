@@ -17,13 +17,14 @@ from community.serializers import CommunitySerializer
 #List communities
 class CommunityList(generic.ListView):
     model = Community
+    template_name = 'community/list/index.html'
 
 class CommunityDetail(generic.DetailView):
     model = Community
 
 class CommunityCreate(FormView):
 
-    template_name = 'community/community_form.html'
+    template_name = 'community/create/index.html'
     form_class = CommunityForm
 
     def __init__(self):

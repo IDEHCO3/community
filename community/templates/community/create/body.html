@@ -1,0 +1,30 @@
+{% load i18n %}
+{% load auth_tag %}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="page-header">
+            <h1>{% trans 'Create a Community' %}</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% if request.user.is_authenticated %}
+            <fieldset>
+                <legend>{% trans 'Identification' %}</legend>
+                <div class="row">
+                    <div class="col-md-5">
+                        <form action="{% url 'community:create' %}" method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                        </form>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>{% trans 'Create layer' %}</legend>
+                {% include 'community/create/create_layer.html' %}
+            </fieldset>
+        {% else %}
+            {% login request.path %}
+        {% endif %}
+    </div>
+</div>

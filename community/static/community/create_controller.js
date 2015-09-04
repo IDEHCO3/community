@@ -1,4 +1,9 @@
 (function(){
+
+    var community_url_post = "/communities/";
+
+    var schema_url_create = '/create_layer/create/';
+
     var app = angular.module("createApp",[]).config(function($interpolateProvider) {
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');
@@ -20,7 +25,7 @@
         $scope.attributes = [];
 
         $scope.layerType = 'point';
-        $scope.attributeName = 'attributeName';
+        $scope.attributeName = '';
         $scope.attributeType = 'CharField';
 
         $scope.createAttribute = function(){
@@ -46,8 +51,25 @@
             }
         };
 
+        var saveLayerSchema = function(community){
+            console.log(community);
+        };
+
         $scope.save = function(){
-            console.log("save all data!");
+            var community_input = {
+                "name": $scope.communityName,
+                "description": $scope.description,
+                "need_invitation": $scope.needInvitation,
+                "manager": user_id
+            };
+
+            $http.post(community_url_post, community_input)
+                .success(function(data){
+                    saveLayerSchema(data);
+                })
+                .error(function(data){
+                    console.log(data);
+                });
         };
     };
 

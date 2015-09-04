@@ -57,9 +57,11 @@
         <script src="{% static 'angular/angular.min.js' %}"></script>
 
         <script>
-            var url_create = '/create_layer/create/';
-            var url_update = '/create_layer/detail/';
-            var url_filter = '/create_layer/list/';
+            {% if request.user.is_authenticated %}
+            var user_id = {{ request.user.id }};
+            {% else %}
+            var user_id = null;
+            {% endif %}
         </script>
 
         <script src="{% static 'community/create_controller.js' %}"></script>

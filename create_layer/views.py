@@ -8,8 +8,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-from global_module.permissions import IsOwnerOrReadOnly
-
 class CommunityInformationFieldSchemaListFilter(generics.ListAPIView):
     serializer_class = CommunityInformationFieldSchemaSerializer
     lookup_url_kwarg = "pk"

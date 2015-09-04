@@ -7,7 +7,7 @@ from community.forms import CommunityForm
 from django.contrib.auth.models import User
 
 from rest_framework import permissions
-from global_module.permissions import IsOwnerOrReadOnly
+from permissions import IsOwnerOrReadOnly
 
 from rest_framework import generics
 from community.serializers import CommunitySerializer
@@ -59,7 +59,7 @@ class CommunityListRest(generics.ListCreateAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
 
 class CommunityDetailRest(generics.RetrieveUpdateDestroyAPIView):
     queryset = Community.objects.all()

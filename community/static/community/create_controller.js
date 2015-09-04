@@ -1,7 +1,7 @@
 (function(){
 
     var community_url_post = "/communities/";
-
+    var community_detail_url = "/communities/detail/";
     var schema_url_create = '/create_layer/create/';
 
     var app = angular.module("createApp",[]).config(function($interpolateProvider) {
@@ -15,7 +15,7 @@
         $http.defaults.xsrfCookieName = 'csrftoken';
     }
 
-    app.createController = function($scope, $http){
+    app.createController = function($scope, $http, $window){
 
         $scope.communityName = "";
         $scope.description = "";
@@ -39,7 +39,7 @@
 
             $scope.attributes.push(attr);
 
-            $scope.attributeName = 'attributeName';
+            $scope.attributeName = '';
             $scope.attributeType = 'CharField';
         };
 
@@ -53,6 +53,28 @@
 
         var saveLayerSchema = function(community){
             console.log(community);
+
+            for(var i=0; i < $scope.attributes.length; i++){
+
+                var attr = $scope.attributes[i];
+                var attribute = {
+                    "name_field": attr.name_field,
+                    "type_field": attr.type_field,
+                    "name_module_field": "django.forms",
+                    "options": "{}",
+                    "community": community.id
+                };
+
+                $http.post(schema_url_create, attribute)
+                    .success(function(data){
+                        console.log(data);
+                    })
+                    .error(function(data){
+                        console.log(data);
+                    });
+            }
+
+            $window.location.href = community_detail_url + community.id + "/";
         };
 
         $scope.save = function(){
@@ -73,6 +95,6 @@
         };
     };
 
-    app.controller("CreateController",['$scope', '$http', app.createController]);
+    app.controller("CreateController",['$scope', '$http', '$window', app.createController]);
 
 })();

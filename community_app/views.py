@@ -2,11 +2,12 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import CommunityInformationSerializer
-from .forms import FactoryForm
-from community.models import Community
-from django.shortcuts import render
 from .models import CommunityInformation
 
+from community.models import Community
+from community_app.forms import FactoryForm
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 @api_view(['GET', 'POST'])
 def community_information_list(request, pk, format=None):
@@ -58,3 +59,61 @@ def community_information_detail(request, pk, format=None):
         ci.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+def as_json_str(communityinformationfieldschema_set):
+    print(communityinformationfieldschema_set)
+    a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in communityinformationfieldschema_set)
+    return "{" + (",".join(a_list)) + "}"
+
+def community_detail(request, pk):
+    community = Community.objects.get(pk=pk)
+
+    cifs = community.communityinformationfieldschema_set.all()
+    a_list = list(cif.name_field for cif in cifs)
+
+    schema_field = str(a_list).replace("'", '"')
+    schema_field = schema_field.replace('u"', '"')
+
+    a_form = FactoryForm.create(cifs)
+    schema_json_str = as_json_str(a_list)
+
+    geometry_type = ""
+    for type in cifs:
+        if type.name_field == "geometry":
+            geometry_type = str(type.type_field)
+            break
+
+    url_list = "/community_app/"+str(pk)+"/community_information_list/?format=json"
+    url_create = "/community_app/"+str(pk)+"/community_information_create/"
+    url_update = "/community_app/community_information_detail/"
+    url_community = "/communities/"+str(pk)+"/"
+
+    zoom = 0
+    if zoom in request.GET:
+        zoom = float(request.GET['zoom'])
+
+    lat = 0
+    if 'lat' in request.GET:
+        lat = float(request.GET['lat'])
+
+    lng = 0
+    if 'lng' in request.GET:
+        lng = float(request.GET['lng'])
+
+    context = {
+        "request": request,
+        "community": community,
+        "zoom": zoom,
+        "lat": lat,
+        "lng": lng,
+        "geometry_type": geometry_type,
+        "url_community": url_community,
+        "url_json": url_list,
+        "form": a_form,
+        "schema_field": schema_field,
+        "schema_json_str": schema_json_str,
+        "url_create": url_create,
+        "url_update": url_update
+    }
+
+    return render_to_response('community_app/detail/index.html',
+                              RequestContext(request, context))

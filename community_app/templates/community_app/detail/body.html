@@ -1,10 +1,39 @@
 {% load i18n %}
 <div id="page-wrapper">
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">{% trans 'Community' %}</h1>
+        <div class="page-header">
+            <h1>{{ community.name }}</h1>
         </div>
-        <h1>{{ request.user }} something</h1>
-        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>{{ community.description }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="page-header">
+                <h2>{% trans 'Map' %}</h2>
+            </div>
+
+            {% include 'community_app/detail/map.html' %}
+
+        </div>
+        <div class="col-md-2">
+            <div class="page-header">
+                <h2>{% trans 'Members' %}</h2>
+            </div>
+            <div class="list-group">
+                    <a class="list-group-item list-group-item-info"><h4>{{ community.manager }}</h4></a>
+            {% for user in community.users %}
+                    <a class="list-group-item"><h4>{{ user }}</h4></a>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="page-header">
+            <h2>{% trans 'Discussion List' %}</h2>
+        </div>
     </div>
 </div>

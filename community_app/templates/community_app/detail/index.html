@@ -49,6 +49,10 @@
         <!-- Custom Theme JavaScript -->
         <script src="{% static 'startbootstrap/dist/js/sb-admin-2.js' %}"></script>
 
+
+        <!-- Angular library -->
+        <script src="{% static 'angular/angular.min.js' %}"></script>
+
         <!-- leaflet JavaScript -->
         <script src="{% static 'community_app/leaflet/leaflet.js' %} "></script>
         <script src="{% static 'community_app/leaflet/draw/leaflet.draw.js' %}"> </script>
@@ -61,7 +65,12 @@
             var $sjs = $("#schema_json_str_div");
 
             var url_visual = "{{request.path}}";
+
+            {% if request.user.is_authenticated %}
             var user_id = {{request.user.id}};
+            {% else %}
+            var user_id = null;
+            {% endif %}
             var url_community = "{{url_community}}";
 
             var geometry_type = "{{geometry_type}}";
@@ -76,5 +85,6 @@
         </script>
 
         <script src="{% static 'community_app/editor.js' %}"></script>
+        <script src="{% static 'community_app/community_controller.js' %}"></script>
     </body>
 </html>

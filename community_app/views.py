@@ -64,7 +64,7 @@ def as_json_str(communityinformationfieldschema_set):
     a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in communityinformationfieldschema_set)
     return "{" + (",".join(a_list)) + "}"
 
-def community_detail(request, pk):
+def community_detail(request, pk, lat=0, lng=0, zoom=0):
     community = Community.objects.get(pk=pk)
 
     cifs = community.communityinformationfieldschema_set.all()
@@ -86,18 +86,6 @@ def community_detail(request, pk):
     url_create = "/community_app/"+str(pk)+"/community_information_create/"
     url_update = "/community_app/community_information_detail/"
     url_community = "/communities/"+str(pk)+"/"
-
-    zoom = 0
-    if zoom in request.GET:
-        zoom = float(request.GET['zoom'])
-
-    lat = 0
-    if 'lat' in request.GET:
-        lat = float(request.GET['lat'])
-
-    lng = 0
-    if 'lng' in request.GET:
-        lng = float(request.GET['lng'])
 
     context = {
         "request": request,

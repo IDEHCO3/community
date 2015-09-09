@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="navbar-default sidebar" role="navigation">
+<div class="navbar-default sidebar" role="navigation" ng-app="community_app">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
             <li>
@@ -28,6 +28,16 @@
                     <li>
                         <a href="#" data-toggle="modal" data-target="#loadLayerModal">
                             <span class="glyphicon glyphicon-download"></span> {% trans 'Load layer' %}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li ng-controller="BookmarkerController as bmCtrl">
+                <a href="#"><span class="glyphicon glyphicon-star"></span> {% trans 'My bookmarks from maps' %}<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li ng-repeat="bookmark in bookmarks">
+                        <a href="{$ bookmark.url_visual $}{$ bookmark.lat $},{$ bookmark.lng $},{$ bookmark.zoom $}">
+                            {$ bookmark.name $}
                         </a>
                     </li>
                 </ul>

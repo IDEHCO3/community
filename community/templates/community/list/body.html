@@ -10,7 +10,7 @@
             <div class="list-group">
             {% for community in community_list %}
 
-                <a class="list-group-item" href="{% url 'community:detail' community.id %}">
+                <a class="list-group-item" href="{% url 'community_app:community_detail' community.id %}">
                     <h3>{{ community.name }}</h3>
                     <p>{{ community.description }}</p>
                 </a>

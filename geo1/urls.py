@@ -19,7 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^communities/', include('community.urls', namespace='community')),
-    url(r'^community_app/', include('community_app.urls')),
+    url(r'^community_app/', include('community_app.urls', namespace='community_app')),
     url(r'^create_layer/', include('create_layer.urls', namespace='create_layer')),
     url(r'^users/', include('authentication.urls', namespace='authentication'))
 ]

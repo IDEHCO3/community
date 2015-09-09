@@ -1,10 +1,7 @@
 {% load i18n %}
-<div class="form-group"><input id="editable" type="checkbox" /><label>Editable</label></div>
-<div class="form-group"><button class="btn btn-primary" data-toggle="modal" data-target="#bookmarkModal">{% trans 'Bookmark map' %}</button></div>
 
 <div id="map" style="width: 600px; height: 400px"></div>
-<div class="form-group"><label>Layers</label><input id="layers" type="text" />
- <button class="btn btn-primary" type="button" onclick="loadReadOnlyLayer()">{% trans 'Load layer' %}</button></div>
+
 <div id="jsontotable" class="jsontotable"></div>
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -28,22 +25,42 @@
 
 <div class="modal fade" id="bookmarkModal" role="dialog">
     <div class="modal-dialog">
-      <div class="modal-content">
+        <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">{% trans 'Bookmark' %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>{% trans 'Name of bookmark' %}</label>
+                    <input id="bookmark_name" type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+               <button type="button" onclick="bookmarker()" class="btn btn-default" data-dismiss="modal">{% trans 'Save' %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="loadLayerModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">{% trans 'Bookmark' %}</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{% trans 'Load layer by URL' %}</h4>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label>{% trans 'Name of bookmark' %}</label>
-                <input id="bookmark_name" type="text" class="form-control"/>
+                <label>{% trans 'Layers' %}</label><input id="layers" type="text" />
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
-          <button type="button" onclick="bookmarker()" class="btn btn-default" data-dismiss="modal">{% trans 'Save' %}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+            <button class="btn btn-primary" type="button" onclick="loadReadOnlyLayer()">{% trans 'Load layer' %}</button>
         </div>
-      </div>
+        </div>
     </div>
 </div>
 

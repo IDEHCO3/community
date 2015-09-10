@@ -21,10 +21,10 @@
         <link rel="stylesheet" type="text/css" href="{% static 'startbootstrap/bower_components/font-awesome/css/font-awesome.min.css' %}">
 
         <!-- leaflet CSS -->
-        <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet/leaflet.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet/draw/leaflet.draw.css' %}"/>
-        <link rel="stylesheet" href="{% static 'community_app/leaflet/contextmenu/leaflet.contextmenu.css' %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'community_app/leaflet/styledLayerControl/css/styledLayerControl.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'community_app/../../../../geo1/static/leaflet/leaflet.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'community_app/../../../../geo1/static/leaflet/draw/leaflet.draw.css' %}"/>
+        <link rel="stylesheet" href="{% static 'community_app/../../../../geo1/static/leaflet/contextmenu/leaflet.contextmenu.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'community_app/../../../../geo1/static/leaflet/styledLayerControl/css/styledLayerControl.css' %}" />
 
         <title>{% trans 'Community' %}</title>
 
@@ -54,11 +54,11 @@
         <script src="{% static 'angular/angular.min.js' %}"></script>
 
         <!-- leaflet JavaScript -->
-        <script src="{% static 'community_app/leaflet/leaflet.js' %} "></script>
-        <script src="{% static 'community_app/leaflet/draw/leaflet.draw.js' %}"> </script>
-        <script src="{% static 'community_app/jquery-2.1.4/jquery.jsontotable.min.js' %}"></script>
-        <script src="{% static 'community_app/leaflet/contextmenu/leaflet.contextmenu.js' %}"></script>
-        <script src="{% static 'community_app/leaflet/styledLayerControl/styledLayerControl.js' %}"></script>
+        <script src="{% static 'leaflet/leaflet.js' %} "></script>
+        <script src="{% static 'leaflet/draw/leaflet.draw.js' %}"> </script>
+        <script src="{% static 'jquery-2.1.4/jquery.jsontotable.min.js' %}"></script>
+        <script src="{% static 'leaflet/contextmenu/leaflet.contextmenu.js' %}"></script>
+        <script src="{% static 'leaflet/styledLayerControl/styledLayerControl.js' %}"></script>
 
         <script>
             var $schema = $("#schema_field_div");

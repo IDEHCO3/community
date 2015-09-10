@@ -47,12 +47,12 @@ class CommunityUpdate(UpdateView):
     model = Community
     fields = ['name', 'description']
     template_name_suffix = '_update_form'
-    success_url = '/communities'
+    success_url = '/communities/index'
 
 
 class CommunityDelete(DeleteView):
     model = Community
-    success_url = '/communities'
+    success_url = '/communities/index'
 
 
 class CommunityListRest(generics.ListCreateAPIView):

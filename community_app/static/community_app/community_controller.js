@@ -25,4 +25,5 @@
                 console.log("Error to load data: "+ data.detail);
             });
     }]);
+
 })();

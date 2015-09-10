@@ -30,7 +30,7 @@
 
     </head>
     <body>
-        <div id="wrapper">
+        <div id="wrapper" ng-app="community_app">
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
                 {% include 'community_app/detail/head.html' %}
                 {% include 'community_app/detail/sidebar.html' %}
@@ -63,6 +63,8 @@
         <script>
             var $schema = $("#schema_field_div");
             var $sjs = $("#schema_json_str_div");
+
+            var url_schema = "{% url 'create_layer:filter' community.id %}";
 
             var url_visual = "{{request.path}}";
 

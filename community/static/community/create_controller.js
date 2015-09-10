@@ -1,7 +1,7 @@
 (function(){
 
     var community_url_post = "/communities/";
-    var community_detail_url = "/communities/detail/";
+    var community_detail_url = "/community_app/detail/";
     var schema_url_create = '/create_layer/create/';
 
     var app = angular.module("createApp",[]).config(function($interpolateProvider) {
@@ -51,8 +51,29 @@
             }
         };
 
+        var saveLayerType = function(community){
+            var attribute = {
+                "name_field": "geometry",
+                "type_field": $scope.layerType,
+                "name_module_field": "",
+                "options": "{}",
+                "community": community.id
+            };
+
+            $http.post(schema_url_create, attribute)
+                .success(function(data){
+                    console.log(data);
+                })
+                .error(function(data){
+                    console.log(data);
+                });
+
+        };
+
         var saveLayerSchema = function(community){
             console.log(community);
+
+            saveLayerType(community);
 
             for(var i=0; i < $scope.attributes.length; i++){
 

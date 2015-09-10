@@ -21,10 +21,10 @@
         <link rel="stylesheet" type="text/css" href="{% static 'startbootstrap/bower_components/font-awesome/css/font-awesome.min.css' %}">
 
         <!-- leaflet CSS -->
-        <link rel="stylesheet" type="text/css" href="{% static 'community_app/../../../../geo1/static/leaflet/leaflet.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'community_app/../../../../geo1/static/leaflet/draw/leaflet.draw.css' %}"/>
-        <link rel="stylesheet" href="{% static 'community_app/../../../../geo1/static/leaflet/contextmenu/leaflet.contextmenu.css' %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'community_app/../../../../geo1/static/leaflet/styledLayerControl/css/styledLayerControl.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'leaflet/leaflet.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'leaflet/draw/leaflet.draw.css' %}"/>
+        <link rel="stylesheet" href="{% static 'leaflet/contextmenu/leaflet.contextmenu.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'leaflet/styledLayerControl/css/styledLayerControl.css' %}" />
 
         <title>{% trans 'Community' %}</title>
 
@@ -32,11 +32,11 @@
     <body>
         <div id="wrapper" ng-app="community_app">
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-                {% include 'community_app/detail/head.html' %}
-                {% include 'community_app/detail/sidebar.html' %}
+                {% include 'community/detail/head.html' %}
+                {% include 'community/detail/sidebar.html' %}
             </nav>
-            {% include 'community_app/detail/footer.html' %}
-            {% include 'community_app/detail/body.html' %}
+            {% include 'community/detail/footer.html' %}
+            {% include 'community/detail/body.html' %}
         </div>
 
         <script src="{% static 'jquery-2.1.4/jquery.min.js' %}"></script>
@@ -86,7 +86,7 @@
             var url_json = "{{url_json}}";
         </script>
 
-        <script src="{% static 'community_app/editor.js' %}"></script>
-        <script src="{% static 'community_app/community_controller.js' %}"></script>
+        <script src="{% static 'community/editor.js' %}"></script>
+        <script src="{% static 'community/community_controller.js' %}"></script>
     </body>
 </html>

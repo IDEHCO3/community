@@ -56,6 +56,7 @@ class CommunityUpdate(UpdateView):
 
 class CommunityDelete(DeleteView):
     model = Community
+    template_name = 'community/delete/index.html'
     success_url = '/communities/index'
 
 

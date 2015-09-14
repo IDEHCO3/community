@@ -7,9 +7,9 @@
             <div class="page-header">
                 <h1>{% trans 'You are authenticated: ' %}{{ request.user }}</h1>
             </div>
-            {% logout request.path %}
+            {% include 'authentication/auth_logout.html' %}
         </div>
     {% else %}
-        {% login request.path %}
+        {% include 'authentication/auth_login.html' %}
     {% endif %}
 {% endblock body %}

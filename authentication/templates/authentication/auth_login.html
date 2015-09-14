@@ -9,17 +9,34 @@
         <form action="{% url 'authentication:login' %}" role="form" method="post">
             <fielset>
                 {% csrf_token %}
-                <input class="hidden" type="text" name="next" value="{{ destiny }}"/>
+                <input class="hidden" type="text" name="next" value="{{ next }}"/>
                 <div class="form-group">
                     <label>{% trans 'Login' %}</label>
                     <input type="text" class="form-control" name="username"/>
+                    {% if form.username.errors %}
+                        <p class="text-error">
+                          {{ form.username.errors|striptags }}
+                        </p>
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     <label>{% trans 'Password' %}</label>
                     <input type="password" class="form-control" name="password"/>
+                    {% if form.password.errors %}
+                        <p class="text-error">
+                          {{ form.password.errors|striptags }}
+                        </p>
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary form-control" value="{% trans 'Login' %}"/>
+                </div>
+                <div class="form-group">
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                          <div class="well well-small text-error" style="border: none">{{ error }}</div>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </fielset>
         </form>

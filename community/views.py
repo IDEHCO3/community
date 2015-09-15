@@ -29,7 +29,7 @@ class CommunityDetail(DetailView):
 class CommunityCreate(TemplateView):
     template_name = 'community/create/index.html'
 
-class CommunityUpdate(TemplateView):
+class CommunityUpdate(DetailView):
     model = Community
     template_name = 'community/update/index.html'
 

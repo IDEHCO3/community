@@ -1,0 +1,76 @@
+{% load i18n %}
+{% load  staticfiles %}
+{% load auth_tag %}
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.5/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap-3.3.5/css/bootstrap-theme.min.css' %}">
+
+        <!-- MetisMenu CSS -->
+        <link rel="stylesheet" href="{% static 'startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css' %}">
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{% static 'startbootstrap/dist/css/sb-admin-2.css' %}">
+
+        <!-- Custom Fonts -->
+        <link rel="stylesheet" type="text/css" href="{% static 'startbootstrap/bower_components/font-awesome/css/font-awesome.min.css' %}">
+
+        <title>{% trans 'Community' %}</title>
+
+    </head>
+    <body>
+        {% if request.user.is_authenticated %}
+            <div ng-app="updateApp">
+                <div id="wrapper" ng-controller="UpdateController as updateCtrl">
+                    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                        {% include 'community/update/head.html' %}
+                        {% include 'community/update/sidebar.html' %}
+                    </nav>
+                    {% include 'community/update/body.html' %}
+                    {% include 'community/update/footer.html' %}
+                </div>
+            </div>
+        {% else %}
+            <div id="wrapper">
+                <div id="page-wrapper">
+                    {% login request.path %}
+                </div>
+            </div>
+        {% endif %}
+
+        <script src="{% static 'jquery-2.1.4/jquery.min.js' %}"></script>
+        <script src="{% static 'bootstrap-3.3.5/js/bootstrap.min.js' %}"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static 'startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js' %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static 'startbootstrap/dist/js/sb-admin-2.js' %}"></script>
+
+        <!-- Angular library -->
+        <script src="{% static 'angular/angular.min.js' %}"></script>
+
+        <script>
+            {% if request.user.is_authenticated %}
+            var user_id = {{ request.user.id }};
+            {% else %}
+            var user_id = null;
+            {% endif %}
+
+            var url_update_community = "{% url 'community:detail_rest' community.id %}";
+            var url_load_schema = "{% url 'create_layer:filter' community.id %}";
+
+            var community_detail_url = "/communities/detail/";
+            var schema_url_create = "{% url 'create_layer:create' %}";
+            var schema_url_update = "/create_layer/detail/";
+        </script>
+
+        <script src="{% static 'community/update_controller.js' %}"></script>
+    </body>
+</html>

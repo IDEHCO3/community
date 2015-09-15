@@ -62,6 +62,10 @@
             {% else %}
             var user_id = null;
             {% endif %}
+
+            var community_url_post = "{% url 'community:list_rest' %}";
+            var community_detail_url = "/communities/detail/";
+            var schema_url_create = "{% url 'create_layer:create' %}";
         </script>
 
         <script src="{% static 'community/create_controller.js' %}"></script>

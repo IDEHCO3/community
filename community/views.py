@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.views import generic
+from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, FormView
 from community.models import Community
 from community.forms import CommunityForm
@@ -19,39 +19,19 @@ from django.template import RequestContext
 
 
 #List communities
-class CommunityList(generic.ListView):
+class CommunityList(ListView):
     model = Community
     template_name = 'community/list/index.html'
 
-class CommunityDetail(generic.DetailView):
+class CommunityDetail(DetailView):
     model = Community
 
-class CommunityCreate(FormView):
-
+class CommunityCreate(TemplateView):
     template_name = 'community/create/index.html'
-    form_class = CommunityForm
 
-    def __init__(self):
-        community = None
-
-    def form_valid(self, form):
-        self.community = form.instance
-        if self.request.user.pk == None:
-            user = User.objects.get_by_natural_key(username='indeco')
-            self.community.manager = user
-        else:
-            self.community.manager = self.request.user
-        return super(CommunityCreate, self).form_valid(form)
-
-    def get_success_url(self):
-        self.community.save()
-        return reverse('community:detail', kwargs={'pk': self.community.pk})
-
-class CommunityUpdate(UpdateView):
+class CommunityUpdate(TemplateView):
     model = Community
-    fields = ['name', 'description']
-    template_name_suffix = '_update_form'
-    success_url = '/communities/index'
+    template_name = 'community/update/index.html'
 
 
 class CommunityDelete(DeleteView):

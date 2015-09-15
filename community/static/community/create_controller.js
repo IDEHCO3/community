@@ -1,9 +1,5 @@
 (function(){
 
-    var community_url_post = "/communities/";
-    var community_detail_url = "/community_app/detail/";
-    var schema_url_create = '/create_layer/create/';
-
     var app = angular.module("createApp",[]).config(function($interpolateProvider) {
         $interpolateProvider.startSymbol('{$');
         $interpolateProvider.endSymbol('$}');

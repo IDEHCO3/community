@@ -10,5 +10,7 @@ class CommunityInformationSerializer(GeoFeatureModelSerializer):
         fields = ['id', 'properties', 'community']
 
 class CommunityInformationFieldSchemaSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = CommunityInformationFieldSchema
+        fields = ['id', 'name_field', 'type_field', 'community']

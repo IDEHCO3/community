@@ -56,6 +56,8 @@
                 "community": community.id
             };
 
+            var schema_url_create = community_url_post + community.id + "/schema/";
+
             $http.post(schema_url_create, attribute)
                 .success(function(data){
                     console.log(data);
@@ -70,6 +72,8 @@
             console.log(community);
 
             saveLayerType(community);
+
+            var schema_url_create = community_url_post + community.id + "/schema/";
 
             for(var i=0; i < $scope.attributes.length; i++){
 

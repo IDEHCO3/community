@@ -64,7 +64,7 @@
             var $schema = $("#schema_field_div");
             var $sjs = $("#schema_json_str_div");
 
-            var url_schema = "{% url 'communityLayer:listSchema' %}?community={{ community.id }}";
+            var url_schema = "{% url 'communityLayer:listSchema' community.id %}";
 
             var url_visual = "{{request.path}}";
 
@@ -73,7 +73,7 @@
             {% else %}
             var user_id = null;
             {% endif %}
-            var url_community = "{{url_community}}";
+            var url_community = "{% url 'community:detail_rest' community.id %}";
 
             var geometry_type = "{{geometry_type}}";
 
@@ -81,9 +81,9 @@
             var global_lat = {{ lat }};
             var global_lng = {{ lng }};
 
-            var url_create = "{{url_create}}";
-            var url_update = "{{url_update}}";
-            var url_json = "{{url_json}}";
+            var url_json = "{% url 'communityLayer:listLayer' community.id %}";
+            var url_create = url_json;
+            var url_update = url_json;
         </script>
 
         <script src="{% static 'community/editor.js' %}"></script>

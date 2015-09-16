@@ -45,7 +45,6 @@ INSTALLED_APPS = (
     'corsheaders',
     'rest_framework',
     'rest_framework_gis',
-    'community_app',
     'community',
     'authentication',
     'community_layer_api',

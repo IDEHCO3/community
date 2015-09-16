@@ -135,6 +135,7 @@ function populateFeatureWhithModal() {
         propers[field_name]= $('#id_' + field_name).val();
 
     }
+
     actuallayer.feature.properties.properties = JSON.stringify(propers);
 }
 
@@ -145,23 +146,47 @@ function featureIsNew(feature){
 function updateGeometry(layer){
     var content = layer.feature;
     var dataJson = JSON.stringify(content);
-    var url = "";
-    if(featureIsNew(content)) {
-        url = url_create;
-    }
-    else {
-        url = url_update+content.id;
-    }
 
-    $.post(url,
+    if(featureIsNew(content)) {
+        var url = url_create;
+        $.post(url,
         {
             _content_type: "application/json",
             _content: dataJson
         }).done(function(data){
             layer.feature.id = data.id;
-        }).fail(function(){
-            console.log("Error in save geometry.");
+        }).fail(function(data){
+            if(data != null){
+                console.log("Error in save geometry:");
+                console.log(data);
+            }
+            else{
+                console.log("Connection error!");
+            }
         });
+    }
+    else {
+        var url = url_update+content.id+"/";
+        $.ajax(
+            {
+                url: url,
+                method: "PUT",
+                contentType: "application/json",
+                data: dataJson
+            }).done(function(data){
+            layer.feature.id = data.id;
+        }).fail(function(data){
+            if(data != null){
+                console.log("Error in save geometry:");
+                console.log(data);
+            }
+            else{
+                console.log("Connection error!");
+            }
+        });
+    }
+
+
 }
 
 function saveGeometry(){

@@ -14,9 +14,9 @@ class CommunityInformationFieldSchema(models.Model):
     name_field = models.CharField(max_length=100)
     type_field = models.CharField(max_length=20)
     #widget_field = models.CharField(max_length=80, blank=True)
-    name_module_field = models.CharField(max_length=100, blank=True)
+    name_module_field = models.CharField(max_length=100, blank=True, default="django.forms")
     #name_module_widget_field = models.CharField(max_length=100, blank=True)
-    options = JsonBField()
+    options = JsonBField(default='{}')
     community = models.ForeignKey(Community)
 
     def field_object_type(self):

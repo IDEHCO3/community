@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import CommunityInformationFieldSchema
-from .serializers import CommunityInformationFieldSchemaSerializer
+from .serializers import *
+from .models import *
 
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
@@ -10,12 +10,15 @@ class CommunityInformationFieldSchemaList(generics.ListCreateAPIView):
     serializer_class = CommunityInformationFieldSchemaSerializer
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
+    def post(self, request, *args, **kwargs):
+        community = kwargs.get("community", None)
+        request.data['community'] = community
+        return self.create(request, *args, **kwargs)
+
     def get_queryset(self):
 
-        community = self.request.query_params.get('community', None)
-
+        community = self.kwargs.get("community")
         if community is not None:
-            community = int(community)
             queryset_filter = CommunityInformationFieldSchema.objects.filter(community_id=community)
             return queryset_filter
 
@@ -27,3 +30,60 @@ class CommunityInformationFieldSchemaDetail(generics.RetrieveUpdateDestroyAPIVie
     serializer_class = CommunityInformationFieldSchemaSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def put(self, request, *args, **kwargs):
+        community = kwargs.get("community", None)
+        request.data['community'] = community
+        return self.update(request, *args, **kwargs)
+
+    def get_queryset(self):
+
+        community = self.kwargs.get("community")
+        if community is not None:
+            queryset_filter = CommunityInformationFieldSchema.objects.filter(community_id=community)
+            return queryset_filter
+
+        queryset = CommunityInformationFieldSchema.objects.all()
+        return queryset
+
+class CommunityInformationList(generics.ListCreateAPIView):
+    queryset = CommunityInformation.objects.all()
+    serializer_class = CommunityInformationSerializer
+
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def post(self, request, *args, **kwargs):
+        community = kwargs.get("community", None)
+        request.data['properties']['community'] = community
+        return self.create(request, *args, **kwargs)
+
+    def get_queryset(self):
+
+        community = self.kwargs.get("community")
+        if community is not None:
+            queryset_filter = CommunityInformation.objects.filter(community_id=community)
+            return queryset_filter
+
+        queryset = CommunityInformation.objects.all()
+        return queryset
+
+class CommunityInformationDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CommunityInformation.objects.all()
+    serializer_class = CommunityInformationSerializer
+
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+    def put(self, request, *args, **kwargs):
+        community = kwargs.get("community", None)
+        request.data['properties']['community'] = community
+        return self.update(request, *args, **kwargs)
+
+    def get_queryset(self):
+
+        community = self.kwargs.get("community")
+        if community is not None:
+            queryset_filter = CommunityInformation.objects.filter(community_id=community)
+            return queryset_filter
+
+        queryset = CommunityInformation.objects.all()
+        return queryset

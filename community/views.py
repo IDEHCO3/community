@@ -9,7 +9,7 @@ from permissions import IsOwnerOrReadOnly
 from rest_framework import generics
 from community.serializers import CommunitySerializer
 
-from community_app.forms import FactoryForm
+from community_layer_api.forms import FactoryForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
@@ -83,11 +83,6 @@ def community_detail(request, pk, lat=0, lng=0, zoom=0):
             geometry_type = str(type.type_field)
             break
 
-    url_list = "/community_app/"+str(pk)+"/community_information_list/?format=json"
-    url_create = "/community_app/"+str(pk)+"/community_information_create/"
-    url_update = "/community_app/community_information_detail/"
-    url_community = "/communities/"+str(pk)+"/"
-
     context = {
         "request": request,
         "community": community,
@@ -95,13 +90,9 @@ def community_detail(request, pk, lat=0, lng=0, zoom=0):
         "lat": lat,
         "lng": lng,
         "geometry_type": geometry_type,
-        "url_community": url_community,
-        "url_json": url_list,
         "form": a_form,
         "schema_field": schema_field,
-        "schema_json_str": schema_json_str,
-        "url_create": url_create,
-        "url_update": url_update
+        "schema_json_str": schema_json_str
     }
 
     return render_to_response('community/detail/index.html',

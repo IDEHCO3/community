@@ -21,8 +21,13 @@
                         $scope.bookmarks.push(d);
                     }
                 });
-            }).error(function(data){
-                console.log("Error to load data: "+ data.detail);
+            }).error(function(data) {
+                if (data != null){
+                    console.log("Error to load data: " + data.detail);
+                }
+                else{
+                    console.log("Connection error!");
+                }
             });
     }]);
 })();

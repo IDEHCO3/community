@@ -64,7 +64,7 @@
             var $schema = $("#schema_field_div");
             var $sjs = $("#schema_json_str_div");
 
-            var url_schema = "{% url 'create_layer:filter' community.id %}";
+            var url_schema = "{% url 'communityLayer:listSchema' %}?community={{ community.id }}";
 
             var url_visual = "{{request.path}}";
 

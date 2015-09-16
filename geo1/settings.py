@@ -47,8 +47,8 @@ INSTALLED_APPS = (
     'rest_framework_gis',
     'community_app',
     'community',
-    'create_layer',
     'authentication',
+    'community_layer_api',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True

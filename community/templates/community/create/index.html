@@ -64,8 +64,10 @@
             {% endif %}
 
             var community_url_post = "{% url 'community:list_rest' %}";
-            var community_detail_url = "/communities/detail/";
-            var schema_url_create = "{% url 'create_layer:create' %}";
+            var community_detail_url = "{% url 'community:detail' 0 %}";
+            community_detail_url = community_detail_url.substring(0, community_detail_url.length-2);
+
+            var schema_url_create = "{% url 'communityLayer:listSchema' %}";
         </script>
 
         <script src="{% static 'community/create_controller.js' %}"></script>

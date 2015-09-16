@@ -1,10 +1,7 @@
-from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView, ListView, DetailView
-from django.views.generic.edit import UpdateView, DeleteView, FormView
+from django.views.generic.edit import DeleteView
 from community.models import Community
-from community.forms import CommunityForm
 
-from django.contrib.auth.models import User
 
 from rest_framework import permissions
 from permissions import IsOwnerOrReadOnly

@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import CommunityInformationSerializer
-from .models import CommunityInformation
+from community_layer_api.models import CommunityInformation
 
 @api_view(['GET', 'POST'])
 def community_information_list(request, pk, format=None):

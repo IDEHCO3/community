@@ -81,6 +81,7 @@
             var global_lat = {{ lat }};
             var global_lng = {{ lng }};
 
+            var url_schema = "{% url 'communityLayer:listSchema' community.id %}";
             var url_json = "{% url 'communityLayer:listLayer' community.id %}";
             var url_create = url_json;
             var url_update = url_json;

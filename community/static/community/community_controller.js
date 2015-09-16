@@ -30,4 +30,29 @@
                 }
             });
     }]);
+
+    app.controller("LayerController",['$http','$scope', function($http, $scope){
+        $scope.schema = [];
+        $scope.layers = [];
+
+        $http.get(url_schema)
+            .success(function(data){
+                $scope.schema = data;
+                console.log(data);
+            }).error(function(data){
+                console.log("Error to load schema data!");
+                console.log(data);
+            });
+
+        $http.get(url_json)
+            .success(function(data){
+                $scope.layers = data;
+                initializeEditableGeoJson($scope.layers);
+                $.jsontotable(json_properties, { id: '#json_table', header: false });
+
+            }).error(function(data){
+                console.log("Error to load layers data!");
+                console.log(data);
+            });
+    }]);
 })();

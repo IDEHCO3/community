@@ -416,13 +416,6 @@ function initializeEditableGeoJson(geoJsons) {
     }
 };
 
-$.getJSON( url_json, function(geoJsons) {
-        initializeEditableGeoJson(geoJsons);
-    })
-    .done(function() {
-        $.jsontotable(json_properties, { id: '#json_table', header: false });
-    }
-);
 
 function getCookie(name) {
     var cookieValue = null;

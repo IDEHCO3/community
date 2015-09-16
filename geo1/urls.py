@@ -19,6 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^communities/', include('community.urls', namespace='community')),
+    url(r'^communities/', include('community_api.urls', namespace='communityAPI')),
     url(r'^communities/', include('community_layer_api.urls', namespace='communityLayer')),
     url(r'^users/', include('authentication.urls', namespace='authentication'))
 ]

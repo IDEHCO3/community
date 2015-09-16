@@ -1,7 +1,7 @@
 import importlib
 from django.contrib.gis.db import models
 from django_pgjson.fields import JsonBField
-from community.models import Community
+from community_api.models import Community
 
 
 class CommunityInformation(models.Model):

@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import DeleteView
-from community.models import Community
+from community_api.models import Community
 
 
 from rest_framework import permissions

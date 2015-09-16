@@ -73,7 +73,7 @@
             {% else %}
             var user_id = null;
             {% endif %}
-            var url_community = "{% url 'community:detail_rest' community.id %}";
+            var url_community = "{% url 'community:detail' community.id %}";
 
             var geometry_type = "{{geometry_type}}";
 

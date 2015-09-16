@@ -2,13 +2,9 @@ from django.conf.urls import patterns, url
 from community import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.CommunityListRest.as_view(), name='list_rest'),
-    url(r'^(?P<pk>\d+)/$', views.CommunityDetailRest.as_view(), name='detail_rest'),
-
     url(r'^index$', views.CommunityList.as_view(), name='list'),
-    #url(r'detail/(?P<pk>\d+)/$', views.CommunityDetail.as_view(), name='detail'),
-    url(r'^detail/(?P<pk>\d+)/$', views.community_detail, name='detail'),
 
+    url(r'^detail/(?P<pk>\d+)/$', views.community_detail, name='detail'),
     url(r'^detail/(?P<pk>\d+)/(?P<lat>\-?\d+\.?\d*),(?P<lng>\-?\d+\.?\d*),(?P<zoom>\d+)$', views.community_detail, name='detail_coordinates'),
 
     url(r'create/$', views.CommunityCreate.as_view(), name='create'),

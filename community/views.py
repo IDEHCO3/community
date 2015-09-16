@@ -2,13 +2,6 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import DeleteView
 from community_api.models import Community
 
-
-from rest_framework import permissions
-from permissions import IsOwnerOrReadOnly
-
-from rest_framework import generics
-from community.serializers import CommunitySerializer
-
 from community_layer_api.forms import FactoryForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
@@ -35,19 +28,6 @@ class CommunityDelete(DeleteView):
     model = Community
     template_name = 'community/delete/index.html'
     success_url = '/communities/index'
-
-
-class CommunityListRest(generics.ListCreateAPIView):
-    queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
-
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
-
-class CommunityDetailRest(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
-
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class InviteSomeone():
     """

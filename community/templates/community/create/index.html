@@ -63,8 +63,8 @@
             var user_id = null;
             {% endif %}
 
-            var community_url_post = "{% url 'community:list_rest' %}";
-            var community_detail_url = "{% url 'community:detail' 0 %}";
+            var community_url_post = "{% url 'community:list' %}";
+            var community_detail_url = "{% url 'communityPage:detail' 0 %}";
             community_detail_url = community_detail_url.substring(0, community_detail_url.length-2);
 
         </script>

@@ -32,7 +32,7 @@
                     </li>
                 </ul>
             </li>
-            <li ng-controller="BookmarkerController as bmCtrl">
+            <li id="bookmarkers" ng-controller="BookmarkerController as bmCtrl">
                 <a href="#"><span class="glyphicon glyphicon-star"></span> {% trans 'My bookmarks from maps' %}<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li ng-repeat="bookmark in bookmarks">

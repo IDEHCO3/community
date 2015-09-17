@@ -40,39 +40,16 @@ class InviteSomeone():
     """
    # send_mail("subject", "message", "sender", ["recipients"])
 
-def as_json_str(communityinformationfieldschema_set):
-    print(communityinformationfieldschema_set)
-    a_list = list(('\"' + cif + '\"' + ':' + '\"\"') for cif in communityinformationfieldschema_set)
-    return "{" + (",".join(a_list)) + "}"
 
 def community_detail(request, pk, lat=0, lng=0, zoom=0):
     community = Community.objects.get(pk=pk)
-
-    cifs = community.communityinformationfieldschema_set.all()
-    a_list = list(cif.name_field for cif in cifs)
-
-    schema_field = str(a_list).replace("'", '"')
-    schema_field = schema_field.replace('u"', '"')
-
-    a_form = FactoryForm.create(cifs)
-    schema_json_str = as_json_str(a_list)
-
-    geometry_type = ""
-    for type in cifs:
-        if type.name_field == "geometry":
-            geometry_type = str(type.type_field)
-            break
 
     context = {
         "request": request,
         "community": community,
         "zoom": zoom,
         "lat": lat,
-        "lng": lng,
-        "geometry_type": geometry_type,
-        "form": a_form,
-        "schema_field": schema_field,
-        "schema_json_str": schema_json_str
+        "lng": lng
     }
 
     return render_to_response('community/detail/index.html',

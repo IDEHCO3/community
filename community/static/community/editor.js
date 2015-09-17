@@ -1,14 +1,6 @@
-$("input").each(function(){
-    var type = $(this).attr("type");
-    if( type != "checkbox" && type != "submit" )
-        $(this).addClass("form-control");
-});
-
 var map = L.map('map', initializeContextMenuMap()).setView([-21.2858, -41.78682], 2);
 var editableGeojson = null;
 var json_properties = [];
-var schema_community_information_array = JSON.parse($schema.text());
-var empty_properties = $sjs.text();
 var actuallayer = null;
 var drawControl = null;
 var $editable = $("#editable");
@@ -51,36 +43,8 @@ function dicToArray(coordinates){
 }
 
 function bookmarker(){
-
-    var center = JSON.stringify(dicToArray(map.getCenter()));
-    var name = $("#bookmark_name").val();
-
-    var bookmark = {
-        "name": name,
-        "url_visual": url_visual,
-        "url_api": url_community,
-        "zoom": map.getZoom(),
-        "resourceType": "communities",
-        "coordinates": center,
-        "owner": user_id
-    };
-
-    var dataJson = JSON.stringify(bookmark);
-
-    console.log(dataJson);
-
-    $.post("http://127.0.0.1:8000/bookmarks/",
-        {
-            _content_type: "application/json",
-            _content: dataJson
-        }).done(function(data){
-            console.log(data);
-        }).fail(function(data){
-            console.log(data);
-            console.log("Error in save bookmark.");
-        });
-
-    location.reload();
+    var controllerScope = angular.element($('#bookmarkers')).scope();
+    controllerScope.bookmarker();
 }
 
 function convertDicCoordinatesToArray(coordinates){
@@ -102,7 +66,6 @@ function convertMultiDicToArray(coordinates){
 }
 
 function clickOnLayer(feature, layer ){
-    console.log(layer);
     actuallayer = layer;
 }
 
@@ -126,75 +89,6 @@ function zoomOut (e) {
     map.zoomOut();
 }
 
-function populateFeatureWhithModal() {
-    var aFeature = actuallayer.feature;
-    var propers = JSON.parse(aFeature.properties.properties);
-    for (i = 0; i < schema_community_information_array.length; i++) {
-
-        var field_name = schema_community_information_array[i];
-        propers[field_name]= $('#id_' + field_name).val();
-
-    }
-
-    actuallayer.feature.properties.properties = JSON.stringify(propers);
-}
-
-function featureIsNew(feature){
-    return feature.id == null;
-}
-
-function updateGeometry(layer){
-    var content = layer.feature;
-    var dataJson = JSON.stringify(content);
-
-    if(featureIsNew(content)) {
-        var url = url_create;
-        $.post(url,
-        {
-            _content_type: "application/json",
-            _content: dataJson
-        }).done(function(data){
-            layer.feature.id = data.id;
-        }).fail(function(data){
-            if(data != null){
-                console.log("Error in save geometry:");
-                console.log(data);
-            }
-            else{
-                console.log("Connection error!");
-            }
-        });
-    }
-    else {
-        var url = url_update+content.id+"/";
-        $.ajax(
-            {
-                url: url,
-                method: "PUT",
-                contentType: "application/json",
-                data: dataJson
-            }).done(function(data){
-            layer.feature.id = data.id;
-        }).fail(function(data){
-            if(data != null){
-                console.log("Error in save geometry:");
-                console.log(data);
-            }
-            else{
-                console.log("Connection error!");
-            }
-        });
-    }
-
-
-}
-
-function saveGeometry(){
-    populateFeatureWhithModal();
-    updateGeometry(actuallayer);
-}
-
-
 function loadReadOnlyLayer() {
 
     var overlays = {"layer": null};
@@ -215,22 +109,6 @@ function loadReadOnlyLayer() {
 
     });
 
-}
-
-function editingAttributes(layer){
-    populateModalWithFeature(layer);
-    $('#myModal').modal('show');
-}
-
-function populateModalWithFeature(layer) {
-    actuallayer = layer;
-    var aFeature = layer.feature;
-
-    for (i = 0; i < schema_community_information_array.length; i++) {
-        var field_name = schema_community_information_array[i];
-        var field_value = (JSON.parse(aFeature.properties.properties))[field_name];
-        $('#id_' + field_name).val(field_value);
-    }
 }
 
 String.prototype.capitalize = function() {
@@ -275,51 +153,33 @@ function binderMenuContextTo(layer) {
                 callback: function () { alert('Marker: ' + layer.feature.id);      }
             }, {
                 text: 'Edit attributes',
-                callback: function () { editingAttributes(layer);  }
+                callback: function () {
+                    var controllerScope = angular.element($('#page-wrapper')).scope();
+                    controllerScope.populateForm(layer);
+                }
             }, {
                 separator: true
             }]
     });
 
 }
-function pointToLayer(data, latLng) {
-    if (data.geometry.type != 'Point')
-        return;
-    var marker;
-    marker = new L.Marker(latLng, {
-          title: data.id,
-          contextmenu: true,
-          contextmenuItems: [{
-              text: 'Marker item',
-              index: 0,
-              callback: function () {
-                  alert('Marker: ' + marker.feature.id);
-              }
-          }, {
-              text: 'Edit attributes',
-              index: 1,
-              callback: function () { editingAttributes(data); }
-          },
-              {
-              separator: true,
-              index: 1
-          }]
-    });
-    return marker;
-}
 
 function editableMode(activate){
     if(activate){
+        var controllerScope = angular.element($("#page-wrapper")).scope();
+        var geometry = controllerScope.geometry.type_field;
+
         var options = function(editableLayer) {
+
             return {
                 position: 'topleft',
                 draw: {
 
                     rectangle: false,
-                    polygon: "polygon" == geometry_type,
-                    polyline: "line" == geometry_type,
+                    polygon: "polygon" == geometry,
+                    polyline: "line" == geometry,
                     circle: false,
-                    marker: "point" == geometry_type
+                    marker: "point" == geometry
                 },
                 edit: {
                     featureGroup: editableLayer, //REQUIRED!!
@@ -350,8 +210,9 @@ function initializeEditableGeoJson(geoJsons) {
 
     map.addLayer(editableGeojson);
 
-
     editableMode($editable.prop("checked"));
+
+    var controllerScope = angular.element($('#page-wrapper')).scope();
 
     map.on('draw:created', function (e) {
         var type = e.layerType;
@@ -359,7 +220,7 @@ function initializeEditableGeoJson(geoJsons) {
         var a_feature = layer.toGeoJSON();
 
         a_feature.id = null;
-        a_feature.properties.properties = empty_properties;
+        a_feature.properties.properties = controllerScope.emptyProperties;
         layer.feature = a_feature;
         editableGeojson.addLayer( layer);
         actuallayer = layer;
@@ -391,7 +252,7 @@ function initializeEditableGeoJson(geoJsons) {
             }
             console.log(layer);
             //do whatever you want, most likely save back to db
-            updateGeometry(layer);
+            controllerScope.updateGeometry(layer);
         });
     });
 

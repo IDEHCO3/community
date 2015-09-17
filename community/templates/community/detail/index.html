@@ -61,9 +61,6 @@
         <script src="{% static 'leaflet/styledLayerControl/styledLayerControl.js' %}"></script>
 
         <script>
-            var $schema = $("#schema_field_div");
-            var $sjs = $("#schema_json_str_div");
-
             var url_schema = "{% url 'communityLayer:listSchema' community.id %}";
 
             var url_visual = "{{request.path}}";
@@ -74,8 +71,6 @@
             var user_id = null;
             {% endif %}
             var url_community = "{% url 'community:detail' community.id %}";
-
-            var geometry_type = "{{geometry_type}}";
 
             var global_zoom = {{ zoom }};
             var global_lat = {{ lat }};

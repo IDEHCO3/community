@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^communities/', include('community.urls', namespace='communityPage')),
     url(r'^communities/', include('community_api.urls', namespace='community')),
     url(r'^communities/', include('community_layer_api.urls', namespace='communityLayer')),
-    url(r'^authetication/', include('authentication.urls', namespace='authentication'))
+    url(r'^authetication/', include('authentication.urls', namespace='authentication')),
+    url(r'^users/', include('users.urls', namespace='user'))
 ]

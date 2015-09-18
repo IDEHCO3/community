@@ -34,7 +34,13 @@
 
         if($window.sessionStorage.token != null){
             $scope.user.username = 'deco';
-            //$http.get().success().error();
+            /*$http.get('/users/')
+                .success(function(data){
+                    console.log(data);
+                })
+                .error(function(data){
+                    console.log(data);
+                });*/
         }
 
         $scope.submit = function () {

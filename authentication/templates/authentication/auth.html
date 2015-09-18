@@ -1,0 +1,23 @@
+{% extends 'site_base.html' %}
+{% load auth_tag %}
+{% load staticfiles %}
+{% load i18n %}
+{% block body %}
+    <div ng-app="UserApp">
+        <div ng-controller="UserCtrl">
+            <div class="row" ng-if="isAutheticated()">
+                <div class="page-header">
+                    <h1>{% trans 'You are authenticated: ' %}{$ user.username $}</h1>
+                </div>
+                {% include 'authentication/auth_logout_jwt.html' %}
+            </div>
+            <div ng-if="!isAutheticated()">
+                {% include 'authentication/auth_login_jwt.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}
+{% block scripts %}
+    <script src="{% static 'angular/angular.min.js' %}"></script>
+    <script src="{% static 'authentication/user_controller.js' %}"></script>
+{% endblock scripts %}

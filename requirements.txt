@@ -2,5 +2,7 @@ django==1.8.3
 psycopg2>=2.6
 djangorestframework
 djangorestframework-gis
+djangorestframework-jwt
+PyJWT
 django-pgjson
 django-cors-headers

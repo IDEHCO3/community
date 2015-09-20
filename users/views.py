@@ -6,7 +6,6 @@ from .serializers import UserSerializer, UserCreateSerializer
 from .permissions import IsOwner
 
 class UserCreate(generics.CreateAPIView):
-    model = User
     serializer_class = UserCreateSerializer
 
 
@@ -14,5 +13,5 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated, IsOwner)
     authentication_classes = (JSONWebTokenAuthentication, )

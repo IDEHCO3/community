@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="dropdown">
     <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        {$ user.username $} <b class="caret"></b></button>
+        {$ user.name $} <b class="caret"></b></button>
     <ul class="dropdown-menu">
         <li>
             <a href='#' type="button" ng-click="logout()">{% trans 'Log out'%}</a>

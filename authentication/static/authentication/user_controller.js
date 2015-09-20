@@ -10,7 +10,7 @@
             request: function (config) {
                 config.headers = config.headers || {};
                 if ($window.sessionStorage.token) {
-                    config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+                    config.headers.Authorization = 'JWT ' + $window.sessionStorage.token;
                 }
                 return config;
         },
@@ -28,23 +28,23 @@
     });
 
     app.controller('UserCtrl', function ($scope, $http, $window) {
-        $scope.user = {username: '', password: ''};
+        $scope.user = {username: '', password: '', name: ''};
         $scope.message = '';
         $scope.next = '';
 
         if($window.sessionStorage.token != null){
-            $scope.user.username = 'deco';
-            /*$http.get('/users/')
+            $http.get(url_authetication_me)
                 .success(function(data){
                     console.log(data);
+                    $scope.user.name = data.first_name;
                 })
                 .error(function(data){
                     console.log(data);
-                });*/
+                });
         }
 
         $scope.submit = function () {
-            $http.post('/authetication/token/', $scope.user)
+            $http.post(url_authetication_token, $scope.user)
                 .success(function (data, status, headers, config) {
                     $window.sessionStorage.token = data.token;
                     $scope.message = 'Welcome';
@@ -64,7 +64,7 @@
         $scope.logout = function(){
             if($window.sessionStorage.token != null){
                 delete $window.sessionStorage.token;
-                $window.location = '/authetication/';
+                $window.location = url_authetication_index;
             }
         };
 

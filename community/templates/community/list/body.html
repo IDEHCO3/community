@@ -1,23 +1,18 @@
 {% load i18n %}
-<div id="page-wrapper">
+<div id="page-wrapper" ng-app="ListApp">
     <div class="row">
         <div class="page-header">
             <h1>{% trans 'Communities' %}</h1>
         </div>
     </div>
-    <div class="row">
-        {% if community_list %}
-            <div class="list-group">
-            {% for community in community_list %}
-
-                <a class="list-group-item" href="{% url 'communityPage:detail' community.id %}">
-                    <h3>{{ community.name }}</h3>
-                    <p>{{ community.description }}</p>
-                </a>
-            {% endfor %}
-            </div>
-        {% else %}
-            <p> {% trans 'No communities are available' %}</p>
-        {% endif %}
+    <div class="row" ng-controller="ListCommunituController as list">
+        <div class="list-group">
+            <a class="list-group-item" ng-repeat="community in communities"
+               href="{$ getURLDetail(community) $}">
+                <h3>{$ community.name $}</h3>
+                <p>{$ community.description $}</p>
+            </a>
+        </div>
+        <p ng-if="communities.length == 0"> {% trans 'No communities are available' %}</p>
     </div>
 </div>

@@ -3,12 +3,15 @@ from .serializers import *
 from .models import *
 
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 # Create your views here.
 
 class CommunityInformationFieldSchemaList(generics.ListCreateAPIView):
     serializer_class = CommunityInformationFieldSchemaSerializer
+
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    #authentication_classes = (JSONWebTokenAuthentication, )
 
     def post(self, request, *args, **kwargs):
         community = kwargs.get("community", None)
@@ -30,6 +33,7 @@ class CommunityInformationFieldSchemaDetail(generics.RetrieveUpdateDestroyAPIVie
     serializer_class = CommunityInformationFieldSchemaSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    #authentication_classes = (JSONWebTokenAuthentication, )
 
     def put(self, request, *args, **kwargs):
         community = kwargs.get("community", None)
@@ -51,6 +55,7 @@ class CommunityInformationList(generics.ListCreateAPIView):
     serializer_class = CommunityInformationSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    #authentication_classes = (JSONWebTokenAuthentication, )
 
     def post(self, request, *args, **kwargs):
         community = kwargs.get("community", None)
@@ -72,6 +77,7 @@ class CommunityInformationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommunityInformationSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    #authentication_classes = (JSONWebTokenAuthentication, )
 
     def put(self, request, *args, **kwargs):
         community = kwargs.get("community", None)

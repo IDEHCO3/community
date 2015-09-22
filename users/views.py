@@ -11,7 +11,7 @@ class UserCreate(generics.CreateAPIView):
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    serializer_class = UserCreateSerializer
+    serializer_class = UserSerializer
 
     permission_classes = (permissions.IsAuthenticated, IsOwner)
     authentication_classes = (JSONWebTokenAuthentication, )

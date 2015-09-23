@@ -4,7 +4,7 @@ from permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 
 from rest_framework import generics
-from community.serializers import CommunitySerializer
+from .serializers import CommunitySerializer
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 

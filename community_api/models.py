@@ -36,7 +36,7 @@ class Community(models.Model):
 class RoleMembership(models.Model):
 
     name = models.CharField(max_length=255)
-    action = JsonBField()
+    actions = JsonBField()
 
 class MembershipCommunity(models.Model):
 

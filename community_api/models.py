@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from geo1 import settings
+from django_pgjson.fields import JsonBField
 
 class Community(models.Model):
 
@@ -32,10 +33,16 @@ class Community(models.Model):
     def join_us(self, interested_user):
         pass
 
+class RoleMembership(models.Model):
+
+    name = models.CharField(max_length=255)
+    action = JsonBField()
+
 class MembershipCommunity(models.Model):
 
     member = models.ForeignKey(settings.AUTH_USER_MODEL)
     community = models.ForeignKey(Community)
+    role = models.ForeignKey(RoleMembership)
     date_joined = models.DateField(default=datetime.datetime.now())
     is_blocked = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)

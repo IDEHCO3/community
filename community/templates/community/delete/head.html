@@ -135,7 +135,11 @@
             <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
             </li>
             <li class="divider"></li>
-            <li><a href="#" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <li ng-if="authenticated">
+                <a href="#" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            </li>
+            <li ng-if="!authenticated">
+                <a href="#" ng-click="login()"><i class="fa fa-sign-in fa-fw"></i> Login</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

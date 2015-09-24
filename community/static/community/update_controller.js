@@ -52,6 +52,11 @@
 
             $window.location = '';
         };
+
+        $scope.login = function(){
+            path = $window.location.pathname;
+            $window.location = '/authentication/?next='+path;
+        };
     }]);
 
     app.updateController = function($scope, $http, $window){

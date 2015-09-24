@@ -198,6 +198,16 @@
             $scope.updateGeometry(actuallayer);
         };
 
+        $scope.deleteGeometry = function(url){
+            $http.delete(url)
+                .success(function(){
+                    console.log('deleted!');
+                })
+                .error(function(){
+                    console.log('Error on delete!');
+                });
+        };
+
         $http.get(url_schema)
             .success(function(data){
                 for(var i=0; i<data.length; i++){

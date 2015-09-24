@@ -61,8 +61,6 @@
         <script src="{% static 'leaflet/styledLayerControl/styledLayerControl.js' %}"></script>
 
         <script>
-            var url_schema = "{% url 'communityLayer:listSchema' community.id %}";
-
             var url_visual = "{{request.path}}";
 
             {% if request.user.is_authenticated %}

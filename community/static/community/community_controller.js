@@ -29,7 +29,7 @@
 
     app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
 
-        $scope.user = {username: "", first_name: ""}
+        $scope.user = {username: "unknown", first_name: "Unknown"}
         var url_authentication_me = "/authentication/me/";
         $scope.authenticated = false;
 
@@ -44,6 +44,14 @@
                     console.log(data);
                 });
         }
+
+        $scope.logout = function(){
+            if($window.sessionStorage.token != null){
+                delete $window.sessionStorage.token;
+            }
+
+            $window.location = '';
+        };
     }]);
 
     app.controller("BookmarkerController",['$http','$scope', function($http, $scope){

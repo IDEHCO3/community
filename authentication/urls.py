@@ -11,6 +11,8 @@ template_name = {'template_name': 'authentication/index.html'}
 
 urlpatterns = patterns('',
     url(r'^token/', 'rest_framework_jwt.views.obtain_jwt_token', name='token'),
+    url(r'^token-refresh/', 'rest_framework_jwt.views.refresh_jwt_token', name='tokenRefresh'),
+    url(r'^token-verify/', 'rest_framework_jwt.views.verify_jwt_token'),
     url(r'^me/$', WhoAmI.as_view(), name='me'),
     url(r'^$', authetication, name='index'),
     url(r'^login/$', login, template_name, name='login'),

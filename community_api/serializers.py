@@ -24,7 +24,6 @@ class CommunitySerializer(serializers.ModelSerializer):
         instance.name = validated_data.get('name', instance.name)
         instance.description = validated_data.get('description', instance.description)
         instance.need_invitation = validated_data.get('need_invitation', instance.need_invitation)
-        instance.manager = validated_data.get('manager', instance.manager)
 
         instance.save()
 

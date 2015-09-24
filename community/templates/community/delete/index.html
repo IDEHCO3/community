@@ -24,8 +24,8 @@
 
     </head>
     <body>
-        <div id="wrapper">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div id="wrapper" ng-app="deleteApp">
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
                 {% include 'community/delete/head.html' %}
                 {% include 'community/delete/sidebar.html' %}
             </nav>
@@ -42,5 +42,10 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="{% static 'startbootstrap/dist/js/sb-admin-2.js' %}"></script>
+
+        <!-- AngularJS -->
+        <script src="{% static 'angular/angular.min.js' %}"></script>
+
+        <script src="{% static 'community/delete_controller.js' %}"></script>
     </body>
 </html>

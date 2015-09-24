@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module('ListApp', [])
+    var app = angular.module("deleteApp", [])
         .config(function ($interpolateProvider) {
             $interpolateProvider.startSymbol('{$');
             $interpolateProvider.endSymbol('$}');
@@ -27,25 +27,25 @@
         $httpProvider.interceptors.push('authInterceptor');
     });
 
-    app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
+    app.controller("UserController", ['$http', '$scope', '$window', function ($http, $scope, $window) {
 
         $scope.user = {username: "unknown", first_name: "Unknown"}
         var url_authentication_me = "/authentication/me/";
         $scope.authenticated = false;
 
-        if($window.sessionStorage.token != null){
+        if ($window.sessionStorage.token != null) {
             $http.get(url_authentication_me)
-                .success(function(data){
+                .success(function (data) {
                     $scope.user = data;
                     $scope.authenticated = true;
                 })
-                .error(function(data){
+                .error(function (data) {
                     console.log(data);
                 });
         }
 
-        $scope.logout = function(){
-            if($window.sessionStorage.token != null){
+        $scope.logout = function () {
+            if ($window.sessionStorage.token != null) {
                 delete $window.sessionStorage.token;
             }
 
@@ -53,18 +53,4 @@
         };
     }]);
 
-    app.controller('ListCommunituController', ['$http', '$scope', function($http, $scope){
-        $scope.communities = [];
-
-        $http.get(url_communities)
-            .success(function(data){
-                $scope.communities = data;
-            }).error(function(data){
-                console.log(data);
-            });
-
-        $scope.getURLDetail = function(community){
-            return url_detail + community.id + "/";
-        };
-    }]);
 })();

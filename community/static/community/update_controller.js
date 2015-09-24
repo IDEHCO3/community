@@ -28,30 +28,44 @@
         $httpProvider.interceptors.push('authInterceptor');
     });
 
+    app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
+
+        $scope.user = {username: "unknown", first_name: "Unknown"}
+        var url_authentication_me = "/authentication/me/";
+        $scope.authenticated = false;
+
+        if($window.sessionStorage.token != null){
+            $http.get(url_authentication_me)
+                .success(function(data){
+                    $scope.user = data;
+                    $scope.authenticated = true;
+                })
+                .error(function(data){
+                    console.log(data);
+                });
+        }
+
+        $scope.logout = function(){
+            if($window.sessionStorage.token != null){
+                delete $window.sessionStorage.token;
+            }
+
+            $window.location = '';
+        };
+    }]);
+
     app.updateController = function($scope, $http, $window){
 
         $scope.community = {
             name: "",
             description: "",
-            need_invitation: "",
-            manager: user_id,
+            need_invitation: false,
             schema: []
         };
 
         $scope.layerType = 'point';
         $scope.attributeName = '';
         $scope.attributeType = 'CharField';
-
-        /*if($window.sessionStorage.token != null){
-            $http.get(url_authetication_me)
-                .success(function(data){
-                    console.log(data);
-                    $scope.user.name = data.first_name;
-                })
-                .error(function(data){
-                    console.log(data);
-                });
-        }*/
 
         if(url_update_community != null) {
             $http.get(url_update_community)

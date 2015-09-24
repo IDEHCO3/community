@@ -36,7 +36,6 @@
         if($window.sessionStorage.token != null){
             $http.get(url_authentication_me)
                 .success(function(data){
-                    console.log(data);
                     $scope.user = data;
                     $scope.authenticated = true;
                 })

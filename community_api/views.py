@@ -15,6 +15,10 @@ class CommunityList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
     authentication_classes = (JSONWebTokenAuthentication, )
 
+    def post(self, request, *args, **kwargs):
+        request.data['manager'] = request.user.id
+        return self.create(request, *args, **kwargs)
+
 class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer

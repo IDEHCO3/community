@@ -13,7 +13,7 @@
                 </div>
                 <!-- /input-group -->
             </li>
-            <li>
+            <li ng-if="authenticated">
                 <a href="{% url 'communityPage:create'%}">
                     <span class="glyphicon glyphicon-plus"></span> {% trans 'Create community' %}
                 </a>

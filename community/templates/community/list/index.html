@@ -24,8 +24,8 @@
 
     </head>
     <body>
-        <div id="wrapper">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div id="wrapper" ng-app="ListApp">
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
                 {% include 'community/list/head.html' %}
                 {% include 'community/list/sidebar.html' %}
             </nav>

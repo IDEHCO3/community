@@ -25,24 +25,18 @@
 
     </head>
     <body>
-        {% if request.user.is_authenticated %}
-            <div ng-app="updateApp">
-                <div id="wrapper" ng-controller="UpdateController as updateCtrl">
-                    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div ng-app="updateApp">
+            <div id="wrapper" ng-controller="UpdateController as updateCtrl">
+                <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div id="header-user" ng-controller="UserController">
                         {% include 'community/create/head.html' %}
-                        {% include 'community/create/sidebar.html' %}
-                    </nav>
-                    {% include 'community/create/body.html' %}
-                    {% include 'community/create/footer.html' %}
-                </div>
+                    </div>
+                    {% include 'community/create/sidebar.html' %}
+                </nav>
+                {% include 'community/create/body.html' %}
+                {% include 'community/create/footer.html' %}
             </div>
-        {% else %}
-            <div id="wrapper">
-                <div id="page-wrapper">
-                    {% login request.path %}
-                </div>
-            </div>
-        {% endif %}
+        </div>
 
         <script src="{% static 'jquery-2.1.4/jquery.min.js' %}"></script>
         <script src="{% static 'bootstrap-3.3.5/js/bootstrap.min.js' %}"></script>
@@ -57,12 +51,7 @@
         <script src="{% static 'angular/angular.min.js' %}"></script>
 
         <script>
-            {% if request.user.is_authenticated %}
-            var user_id = {{ request.user.id }};
-            {% else %}
             var user_id = null;
-            {% endif %}
-
             var url_update_community = null;
             var community_url_post = "{% url 'community:list' %}";
             var community_detail_url = "{% url 'communityPage:detail' 0 %}";

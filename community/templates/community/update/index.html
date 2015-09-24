@@ -28,7 +28,7 @@
         {% if request.user.is_authenticated %}
             <div ng-app="updateApp">
                 <div id="wrapper" ng-controller="UpdateController as updateCtrl">
-                    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
                         {% include 'community/update/head.html' %}
                         {% include 'community/update/sidebar.html' %}
                     </nav>

@@ -11,7 +11,7 @@ class CommunityInformationFieldSchemaList(generics.ListCreateAPIView):
     serializer_class = CommunityInformationFieldSchemaSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    #authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (JSONWebTokenAuthentication, )
 
     def post(self, request, *args, **kwargs):
         community = kwargs.get("community", None)
@@ -33,7 +33,7 @@ class CommunityInformationFieldSchemaDetail(generics.RetrieveUpdateDestroyAPIVie
     serializer_class = CommunityInformationFieldSchemaSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    #authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (JSONWebTokenAuthentication, )
 
     def put(self, request, *args, **kwargs):
         community = kwargs.get("community", None)
@@ -55,7 +55,7 @@ class CommunityInformationList(generics.ListCreateAPIView):
     serializer_class = CommunityInformationSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    #authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (JSONWebTokenAuthentication, )
 
     def post(self, request, *args, **kwargs):
         community = kwargs.get("community", None)
@@ -77,7 +77,7 @@ class CommunityInformationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommunityInformationSerializer
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    #authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (JSONWebTokenAuthentication, )
 
     def put(self, request, *args, **kwargs):
         community = kwargs.get("community", None)

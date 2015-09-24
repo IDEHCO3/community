@@ -154,6 +154,8 @@ function binderMenuContextTo(layer) {
             }, {
                 text: 'Edit attributes',
                 callback: function () {
+                    if(!$editable.prop("checked")) return;
+
                     var controllerScope = angular.element($('#page-wrapper')).scope();
                     controllerScope.populateForm(layer);
                 }

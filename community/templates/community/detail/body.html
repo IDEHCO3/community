@@ -2,33 +2,21 @@
 <div id="page-wrapper" ng-controller="LayerController as layerCtrl">
     <div class="row">
         <div class="page-header">
-            <h1>{{ community.name }}</h1>
+            <h1>{$ community.name $}</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <p>{{ community.description }}</p>
+            <p>{$ community.description $}</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8 col-md-offset-1">
+        <div class="col-md-9">
             <div class="page-header">
                 <h2>{% trans 'Map' %}</h2>
             </div>
 
             {% include 'community/detail/map.html' %}
-
-        </div>
-        <div class="col-md-2">
-            <div class="page-header">
-                <h2>{% trans 'Members' %}</h2>
-            </div>
-            <div class="list-group">
-                    <a class="list-group-item list-group-item-info"><h4>{{ community.manager }}</h4></a>
-            {% for user in community.users %}
-                    <a class="list-group-item"><h4>{{ user }}</h4></a>
-            {% endfor %}
-            </div>
         </div>
     </div>
     <div class="row">

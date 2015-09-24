@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div id="map" style="width: 600px; height: 400px"></div>
+<div id="map" style="width: 100%; height: 60%"></div>
 
 <div id="jsontotable" class="jsontotable"></div>
 
@@ -12,7 +12,7 @@
                <h4 class="modal-title">{% trans 'Attributes' %}</h4>
             </div>
             <div class="modal-body">
-                <p ng-repeat="(index, attr) in schema">
+                <p ng-repeat="(index, attr) in community.schema">
                     <label ng-if="attr.type_field == 'BooleanField'">
                         <input id="attribute_{$index$}" type="checkbox" />
                         {$ attr.name_field $}

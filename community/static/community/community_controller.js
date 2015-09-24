@@ -127,6 +127,30 @@
         $scope.layers = [];
         $scope.geometry = null;
         $scope.emptyProperties = {};
+        $scope.community = {name: "Unknown", description: "unknown", schema: []};
+
+        $http.get(url_community)
+            .success(function(data){
+                $scope.community = data;
+                var schema = data.schema;
+                var attributes = [];
+
+                for(var i=0; i<schema.length; i++){
+                    if(!isGeometryField(schema[i].type_field)){
+                        attributes.push(schema[i]);
+                    }
+                    else{
+                        $scope.geometry = schema[i];
+                    }
+
+                    $scope.emptyProperties[schema[i].name_field] = "";
+                }
+
+                $scope.community.schema = attributes;
+            })
+            .error(function(data){
+                console.log(data);
+            });
 
         var getProperties = function () {
 
@@ -211,23 +235,6 @@
                     console.log('Error on delete!');
                 });
         };
-
-        $http.get(url_schema)
-            .success(function(data){
-                for(var i=0; i<data.length; i++){
-                    if(!isGeometryField(data[i].type_field)){
-                        $scope.schema.push(data[i]);
-                    }
-                    else{
-                        $scope.geometry = data[i];
-                    }
-
-                    $scope.emptyProperties[data[i].name_field] = "";
-                }
-            }).error(function(data){
-                console.log("Error to load schema data!");
-                console.log(data);
-            });
 
         $http.get(url_json)
             .success(function(data){

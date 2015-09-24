@@ -41,15 +41,15 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 form-group" ng-repeat="attr in attributes">
+            <div class="col-lg-12 form-group" ng-repeat="(idx,attr) in community.schema">
                 <div class="form-inline">
                     <div class="form-group">
-                        <input id="attr_text_name{$ attr.id $}" class="form-control" value="{$ attr.name_field $}" readonly>
+                        <input class="form-control" value="{$ attr.name_field $}" readonly>
                     </div>
                     <div class="form-group">
-                        <input id="attr_text_type{$ attr.id $}" class="form-control" value="{$ attr.type_field $}" readonly/>
+                        <input class="form-control" value="{$ attr.type_field $}" readonly/>
                     </div>
-                    <button class="btn btn-danger" ng-click="removeAttribute(attr.id)">
+                    <button class="btn btn-danger" ng-click="removeAttribute(idx)">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </div>

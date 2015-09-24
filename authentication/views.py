@@ -10,6 +10,9 @@ from .serializers import UserAutheticationSerializer
 
 def authetication(request):
     context = {}
+    if "next" in request.GET:
+        context['next'] = request.GET['next']
+
     return render_to_response('authentication/auth.html',
                               RequestContext(request, context))
 

@@ -13,11 +13,11 @@ class CommunityList(generics.ListCreateAPIView):
     serializer_class = CommunitySerializer
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
-    #authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (JSONWebTokenAuthentication, )
 
 class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    #authentication_classes = (JSONWebTokenAuthentication, )
+    authentication_classes = (JSONWebTokenAuthentication, )

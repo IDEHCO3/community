@@ -10,14 +10,14 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label>{% trans 'Name' %}:</label>
-                            <input type="text" class="form-control" ng-model="communityName" placeholder="{% trans 'name' %}"/>
+                            <input type="text" class="form-control" ng-model="community.name" placeholder="{% trans 'name' %}"/>
                         </div>
                         <div class="form-group">
                             <label>{% trans 'Description' %}:</label>
-                            <input type="text" class="form-control" ng-model="description" placeholder="{% trans 'description' %}"/>
+                            <input type="text" class="form-control" ng-model="community.description" placeholder="{% trans 'description' %}"/>
                         </div>
                         <div class="form-group">
-                            <input type="checkbox" ng-model="needInvitation" />
+                            <input type="checkbox" ng-model="community.need_invitation" />
                             <label>{% trans 'Need invitation' %}</label>
                         </div>
                     </div>

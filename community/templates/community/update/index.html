@@ -64,14 +64,8 @@
             {% endif %}
 
             var url_update_community = "{% url 'community:detail' community.id %}";
-            var url_load_schema = "{% url 'communityLayer:listSchema' community.id %}";
+            var community_detail_url = "{% url 'communityPage:detail' community.id %}";
 
-            var community_detail_url = "{% url 'communityPage:detail' 0 %}";
-            community_detail_url = community_detail_url.substring(0, community_detail_url.length-2);
-
-            var schema_url_create = "{% url 'communityLayer:listSchema' community.id %}";
-            var schema_url_update = "{% url 'communityLayer:detailSchema' community.id 0 %}";
-            schema_url_update = schema_url_update.substring(0, schema_url_update.length-2);
         </script>
 
         <script src="{% static 'community/update_controller.js' %}"></script>

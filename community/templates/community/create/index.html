@@ -26,8 +26,8 @@
     </head>
     <body>
         {% if request.user.is_authenticated %}
-            <div ng-app="createApp">
-                <div id="wrapper" ng-controller="CreateController as createCtrl">
+            <div ng-app="updateApp">
+                <div id="wrapper" ng-controller="UpdateController as updateCtrl">
                     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
                         {% include 'community/create/head.html' %}
                         {% include 'community/create/sidebar.html' %}
@@ -63,12 +63,13 @@
             var user_id = null;
             {% endif %}
 
+            var url_update_community = null;
             var community_url_post = "{% url 'community:list' %}";
             var community_detail_url = "{% url 'communityPage:detail' 0 %}";
             community_detail_url = community_detail_url.substring(0, community_detail_url.length-2);
 
         </script>
 
-        <script src="{% static 'community/create_controller.js' %}"></script>
+        <script src="{% static 'community/update_controller.js' %}"></script>
     </body>
 </html>

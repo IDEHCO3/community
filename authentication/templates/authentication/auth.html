@@ -24,6 +24,7 @@
         var url_authetication_token = '{% url 'authentication:token' %}';
         var url_authetication_me = '{% url 'authentication:me' %}';
         var url_authetication_index = '{% url 'authentication:index' %}'
+        var url_next = '{{ next }}';
     </script>
     <script src="{% static 'authentication/user_controller.js' %}"></script>
 {% endblock scripts %}

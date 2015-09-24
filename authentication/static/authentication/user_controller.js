@@ -30,7 +30,7 @@
     app.controller('UserCtrl', function ($scope, $http, $window) {
         $scope.user = {username: '', password: '', name: ''};
         $scope.message = '';
-        $scope.next = '';
+        $scope.next = url_next;
 
         if($window.sessionStorage.token != null){
             $http.get(url_authetication_me)

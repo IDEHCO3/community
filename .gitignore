@@ -9,3 +9,6 @@
 
 #migrations
 */migrations/*
+
+#static
+geo1/static_root/*

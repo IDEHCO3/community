@@ -2,7 +2,6 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import DeleteView
 from community_api.models import Community
 
-from community_layer_api.forms import FactoryForm
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 

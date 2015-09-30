@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'community_api',
     'community_layer_api',
     'users',
+    'discussion_list',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True

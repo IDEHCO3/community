@@ -89,25 +89,77 @@ function zoomOut (e) {
     map.zoomOut();
 }
 
+function splitURL(url_string){
+
+    var url_divided = url_string.split('?');
+    var url_basic = url_divided[0];
+    var parameters_string = url_divided[1];
+
+    var parameters_key_value = parameters_string.split('&');
+
+    var parameters = {};
+
+    for(var i=0; i<parameters_key_value.length; i++){
+        var key_value = parameters_key_value[i].split('=');
+        parameters[key_value[0]] = key_value[1];
+    }
+
+    return {
+        url: url_basic,
+        parameters: parameters
+    };
+}
+
+function isWMS(url_splitted){
+    return url_splitted.parameters.service == 'WMS';
+}
+
+function isWFS(url_splitted){
+    return url_splitted.parameters.service == 'WFS';
+}
+
 function loadReadOnlyLayer() {
 
     var overlays = {"layer": null};
     var url_string = $("#layers").val();
-    $.ajax({ method: "GET",
-             url: url_string
-    }).done(function(data){
 
-        overlays.layer= L.geoJson(data,{ });
-        a_controlayer.addOverlay(overlays.layer, url_string, {groupName : "GeoJson", expanded: true});
-       // overlays.layer.overlay = true;
+    var url_splitted = splitURL(url_string);
 
-       //console.log(a_controlayer._layers.length);
+    if(isWMS(url_splitted)){
+        console.log("WMS");
 
+        console.log(url_splitted.url);
+        console.log(url_splitted.parameters);
 
+        var wms_layer = L.tileLayer.wms(url_splitted.url, {
+            layers: url_splitted.parameters.layers,
+            format: url_splitted.parameters.format,
+            transparent: true,
+            attribution: ""
+        });
 
-    }).fail(function(data){
+        wms_layer.setParams(url_splitted.parameters);
+        console.log(wms_layer);
+        wms_layer.addTo(map);
+    }
+    else if(isWFS(url_splitted)){
+        console.log("WFS");
+    }
+    else{
+        console.log("GeoJson");
 
-    });
+        $.ajax({ method: "GET",
+                 url: url_string
+        }).done(function(data){
+            overlays.layer= L.geoJson(data,{ });
+            a_controlayer.addOverlay(overlays.layer, url_string, {groupName : "GeoJson", expanded: true});
+           // overlays.layer.overlay = true;
+           //console.log(a_controlayer._layers.length);
+
+        }).fail(function(data){
+            console.log('Erro to load GeoJson!');
+        });
+    }
 
 }
 

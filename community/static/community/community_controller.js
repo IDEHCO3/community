@@ -122,7 +122,7 @@
         return false;
     };
 
-    app.controller("LayerController",['$http','$scope', function($http, $scope){
+    app.controller("LayerController",['$http','$scope', '$location', function($http, $scope, $location){
         $scope.schema = [];
         $scope.layers = [];
         $scope.geometry = null;

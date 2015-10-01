@@ -122,11 +122,14 @@
         return false;
     };
 
-    app.controller("LayerController",['$http','$scope', '$location', function($http, $scope, $location){
+    app.controller("LayerController",['$http','$scope', function($http, $scope){
         $scope.schema = [];
         $scope.layers = [];
         $scope.geometry = null;
         $scope.emptyProperties = {};
+        $scope.comment = '';
+        $scope.discussionList = [{id: 1, title: 'project', user: 'Jorge', issue: 'Any idea!', reply: []},
+                                 {id: 2, title: 'garrou', user: 'Yaco', issue: 'no one, guy!', reply: []}];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
 
         $http.get(url_community)
@@ -169,6 +172,11 @@
             }
 
             return properties;
+        };
+
+        $scope.postComment = function(){
+            console.log("comment!", $scope.comment);
+            $scope.comment = '';
         };
 
         $scope.populateForm = function(layer){

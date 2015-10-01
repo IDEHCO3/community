@@ -24,4 +24,27 @@
             <h2>{% trans 'Discussion List' %}</h2>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-9 col-lg-6">
+            <div class="input-group">
+                <textarea type="" class="form-control" placeholder="{% trans 'comment' %}" ng-model="comment"></textarea>
+                <span class="input-group-addon btn btn-default" ng-click="postComment()">
+                    {% trans 'post' %}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="page-header">
+        </div>
+    </div>
+    <div class="row" ng-repeat="answer in discussionList">
+        <h4>{$ answer.user $}</h4>
+        <p>{$ answer.issue $}</p>
+        <a href="">{% trans 'reply' %}</a>
+    </div>
+    <div class="row">
+        <div class="page-header">
+        </div>
+    </div>
 </div>

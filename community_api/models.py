@@ -2,15 +2,16 @@ from django.db import models
 import datetime
 from geo1 import settings
 from django_pgjson.fields import JsonBField
+from discussion_list.models import DiscussionThread
 
 class Community(models.Model):
 
-    name = models.CharField(max_length = 150)
+    name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     need_invitation = models.BooleanField(default=False)
     date_creation = models.DateTimeField(default=datetime.datetime.now(), null=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='MembershipCommunity', related_name='communities')
-    manager = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='manager_of_community', db_column='id_manager')
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_of_community', db_column='id_manager')
 
     def users(self):
         return self.members.all()
@@ -38,11 +39,18 @@ class RoleMembership(models.Model):
     name = models.CharField(max_length=255)
     actions = JsonBField()
 
+class DiscussionListCommunity(models.Model):
+
+    community = models.ForeignKey(Community)
+    issue = models.ForeignKey(DiscussionThread)
+
+
 class MembershipCommunity(models.Model):
 
     member = models.ForeignKey(settings.AUTH_USER_MODEL)
     community = models.ForeignKey(Community)
     role = models.ForeignKey(RoleMembership)
+
     date_joined = models.DateField(default=datetime.datetime.now())
     is_blocked = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)

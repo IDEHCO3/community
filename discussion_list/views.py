@@ -15,6 +15,10 @@ class DiscussionThreadList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
     authentication_classes = (JSONWebTokenAuthentication, )
 
+    def get_queryset(self):
+        query = DiscussionThread.objects.filter(parent=None)
+        return query
+
 
 class DiscussionThreadDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = DiscussionThread.objects.all()
@@ -22,3 +26,13 @@ class DiscussionThreadDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
     authentication_classes = (JSONWebTokenAuthentication, )
+
+
+class DiscussionThreadDetailAnswers(generics.ListAPIView):
+    queryset = DiscussionThread.objects.all()
+    serializer_class = DiscussionThreadSerializer
+
+    def get_queryset(self):
+        issue = self.kwargs.get('pk')
+        query = DiscussionThread.objects.filter(parent=issue)
+        return query

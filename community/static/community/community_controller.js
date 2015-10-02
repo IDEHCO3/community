@@ -128,7 +128,9 @@
         $scope.geometry = null;
         $scope.emptyProperties = {};
         $scope.comment = '';
-        $scope.discussionList = [{id: 1, title: 'project', user: 'Jorge', issue: 'Any idea!', reply: []},
+        $scope.discussionList = [{id: 1, title: 'project', user: 'Jorge', issue: 'Any idea!', reply: [
+
+        ]},
                                  {id: 2, title: 'garrou', user: 'Yaco', issue: 'no one, guy!', reply: []}];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
 

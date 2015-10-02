@@ -10,7 +10,7 @@ class DiscussionThreadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DiscussionThread
-        fields = ('id', 'title', 'issue', 'user', 'reply_count', 'reply', 'parent')
+        fields = ('id', 'title', 'issue', 'user', 'post_date', 'parent', 'reply_count', 'reply')
         extra_kwargs = {'parent': {'write_only': True}}
 
     def create(self, validated_data):

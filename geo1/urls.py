@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^communities/', include('community.urls', namespace='communityPage')),
     url(r'^communities/', include('community_api.urls', namespace='community')),
     url(r'^communities/', include('community_layer_api.urls', namespace='communityLayer')),
+    url(r'^communities/', include('discussion_list.urls', namespace='issue')),
     url(r'^authentication/', include('authentication.urls', namespace='authentication')),
     url(r'^users/', include('users.urls', namespace='user')),
-    url(r'^issues/', include('discussion_list.urls', namespace='issue')),
 ]

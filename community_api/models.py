@@ -2,7 +2,6 @@ from django.db import models
 import datetime
 from geo1 import settings
 from django_pgjson.fields import JsonBField
-from discussion_list.models import DiscussionThread
 
 class Community(models.Model):
 
@@ -34,15 +33,13 @@ class Community(models.Model):
     def join_us(self, interested_user):
         pass
 
+    def __str__(self):
+        return self.name
+
 class RoleMembership(models.Model):
 
     name = models.CharField(max_length=255)
     actions = JsonBField()
-
-class DiscussionListCommunity(models.Model):
-
-    community = models.ForeignKey(Community)
-    issue = models.ForeignKey(DiscussionThread)
 
 
 class MembershipCommunity(models.Model):

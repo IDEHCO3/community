@@ -128,34 +128,10 @@
         $scope.geometry = null;
         $scope.emptyProperties = {};
         $scope.comment = '';
-        $scope.discussionList = [{id: 1, title: 'project', user: 'Jorge', issue: 'Any idea!', reply: [
-
-        ]},
-                                 {id: 2, title: 'garrou', user: 'Yaco', issue: 'no one, guy!', reply: []}];
+        $scope.url_issues = null;
+        $scope.url_layer = null;
+        $scope.discussionList = [];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
-
-        $http.get(url_community)
-            .success(function(data){
-                $scope.community = data;
-                var schema = data.schema;
-                var attributes = [];
-
-                for(var i=0; i<schema.length; i++){
-                    if(!isGeometryField(schema[i].type_field)){
-                        attributes.push(schema[i]);
-                    }
-                    else{
-                        $scope.geometry = schema[i];
-                    }
-
-                    $scope.emptyProperties[schema[i].name_field] = "";
-                }
-
-                $scope.community.schema = attributes;
-            })
-            .error(function(data){
-                console.log(data);
-            });
 
         var getProperties = function () {
 
@@ -246,14 +222,51 @@
                 });
         };
 
-        $http.get(url_json)
+        $http.get(url_community)
             .success(function(data){
-                $scope.layers = data;
-                initializeEditableGeoJson($scope.layers);
-                $.jsontotable(json_properties, { id: '#json_table', header: false });
+                $scope.community = data;
+                $scope.url_issues = data.issues;
+                $scope.url_layer = data.layer;
+                var schema = data.schema;
+                var attributes = [];
 
-            }).error(function(data){
-                console.log("Error to load layers data!");
+                for(var i=0; i<schema.length; i++){
+                    if(!isGeometryField(schema[i].type_field)){
+                        attributes.push(schema[i]);
+                    }
+                    else{
+                        $scope.geometry = schema[i];
+                    }
+
+                    $scope.emptyProperties[schema[i].name_field] = "";
+                }
+
+                $scope.community.schema = attributes;
+
+                $http.get($scope.url_issues)
+                    .success(function(data){
+                        $scope.discussionList = data;
+                        console.log(data);
+                    })
+                    .error(function(data){
+                        console.log(data);
+                    });
+
+                $http.get($scope.url_layer)
+                    .success(function(data){
+                        $scope.layers = data;
+                        initializeEditableGeoJson($scope.layers);
+                        $.jsontotable(json_properties, { id: '#json_table', header: false });
+
+                    }).error(function(data){
+                        console.log("Error to load layers data!");
+                        console.log(data);
+                    });
+
+                delete $scope.community.issues;
+                delete $scope.community.layer;
+            })
+            .error(function(data){
                 console.log(data);
             });
 

@@ -45,7 +45,7 @@
         <div class="col-md-8 col-lg-8">
             <p>{$ answer.issue $}</p>
             <a href="" ng-if="answer.reply.length > 0" class="margin-right-3">
-                {% trans 'answers' %} <span class="badge">{$ answer.reply.length $}</span>
+                {% trans 'answers' %} <span class="badge">{$ answer.reply_count $}</span>
             </a>
             <a href=""> {% trans 'reply' %}</a>
         </div>

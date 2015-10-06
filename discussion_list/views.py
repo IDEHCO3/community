@@ -16,7 +16,7 @@ class DiscussionThreadList(generics.ListCreateAPIView):
     authentication_classes = (JSONWebTokenAuthentication, )
 
     def get_queryset(self):
-        community = self.kwargs.get('community')
+        community = self.kwargs.get('pk')
         query = DiscussionThread.objects.filter(community_id=community, parent=None)
         return query
 

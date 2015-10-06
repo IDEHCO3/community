@@ -58,13 +58,13 @@ class CommunityInformationList(generics.ListCreateAPIView):
     authentication_classes = (JSONWebTokenAuthentication, )
 
     def post(self, request, *args, **kwargs):
-        community = kwargs.get("community", None)
+        community = kwargs.get("pk", None)
         request.data['properties']['community'] = community
         return self.create(request, *args, **kwargs)
 
     def get_queryset(self):
 
-        community = self.kwargs.get("community")
+        community = self.kwargs.get("pk")
         if community is not None:
             queryset_filter = CommunityInformation.objects.filter(community_id=community)
             return queryset_filter

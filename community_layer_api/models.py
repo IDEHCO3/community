@@ -8,7 +8,7 @@ class CommunityInformation(models.Model):
 
     properties = JsonBField()  # can pass attributes like null, blank, ecc.
     geom = models.GeometryField(null=True)
-    community = models.ForeignKey(Community, blank=True)
+    community = models.ForeignKey(Community, blank=True, related_name='layer')
 
 class CommunityInformationFieldSchema(models.Model):
     name_field = models.CharField(max_length=100)

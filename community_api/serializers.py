@@ -5,9 +5,12 @@ from community_layer_api.serializers import CommunityInformationFieldSchemaSeria
 
 class CommunitySerializer(serializers.ModelSerializer):
     schema = CommunityInformationFieldSchemaSerializer(many=True)
+    issues = serializers.HyperlinkedIdentityField(read_only=True, view_name='issue:list')
+    layer = serializers.HyperlinkedIdentityField(read_only=True, view_name='communityLayer:listLayer')
+
     class Meta:
         model = Community
-        fields = ('id', 'name', 'description', 'need_invitation', 'manager', 'schema')
+        fields = ('id', 'name', 'description', 'need_invitation', 'manager', 'schema', 'issues', 'layer')
 
     def create(self, validated_data):
         schema = validated_data.pop('schema')

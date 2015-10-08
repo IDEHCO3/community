@@ -122,6 +122,49 @@
         return false;
     };
 
+    var commentsTemplate = '<div class="row margin-bottom-5" ng-repeat="item in list">'+
+                                '<div class="col-md-1 col-lg-1">'+
+                                    '<h4>{$ item.user $}</h4>'+
+                                '</div>'+
+                                '<div class="col-md-8 col-lg-8">'+
+                                    '<p>{$ item.issue $}</p>'+
+                                    '<a id=show_answers href="" ng-if="item.reply.length > 0" ng-click="showAnswers(item)" class="margin-right-3">'+
+                                        'answers <span class="badge">{$ item.reply_count $}</span>'+
+                                    '</a>'+
+                                    '<a href="" ng-click="reply(item)">reply</a>'+
+                                    '<div class="col-md-offset-1 margin-top-5">'+
+                                        '<div sub-comments="item.answers"></div>'+
+                                    '</div>'+
+                                '</div>'+
+                           '</div>';
+
+    app.directive('comments', function(){
+        return {
+            restrict: 'A',
+            scope: {
+                discussionList: '=comments'
+            },
+            replace: true,
+            template: commentsTemplate.replace('list','discussionList').replace(/item/g, 'comment')
+        }
+    });
+
+    app.directive('subComments', function($compile){
+        return {
+            restrict: 'A',
+            scope:{
+                list: '=subComments'
+            },
+            replace: true,
+            template: "<div></div>",
+            link: function (scope, element, attrs) {
+                element.append(commentsTemplate);
+                element.find('#show_answers').attr('ng-click','showAnswers(item)');
+                $compile(element.contents())(scope);
+            }
+        }
+    });
+
     app.controller("LayerController",['$http','$scope', function($http, $scope){
         $scope.schema = [];
         $scope.layers = [];
@@ -150,6 +193,24 @@
             }
 
             return properties;
+        };
+
+        $scope.showAnswers = function(comment){
+            console.log("asdfa");
+            $http.get(comment.reply)
+                .success(function(data){
+                    console.log(data);
+                    comment['answers'] = data;
+                })
+                .error(function(data){
+                    console.log("Error to load answers: ",data);
+                });
+
+        };
+
+        $scope.reply = function(comment){
+            console.log(comment);
+            console.log("reply");
         };
 
         $scope.postComment = function(){
@@ -246,7 +307,6 @@
                 $http.get($scope.url_issues)
                     .success(function(data){
                         $scope.discussionList = data;
-                        console.log(data);
                     })
                     .error(function(data){
                         console.log(data);

@@ -38,18 +38,7 @@
         <div class="page-header">
         </div>
     </div>
-    <div class="row margin-bottom-5" ng-repeat="answer in discussionList">
-        <div class="col-md-1 col-lg-1">
-            <h4>{$ answer.user $}</h4>
-        </div>
-        <div class="col-md-8 col-lg-8">
-            <p>{$ answer.issue $}</p>
-            <a href="" ng-if="answer.reply.length > 0" class="margin-right-3">
-                {% trans 'answers' %} <span class="badge">{$ answer.reply_count $}</span>
-            </a>
-            <a href=""> {% trans 'reply' %}</a>
-        </div>
-    </div>
+    <div comments="discussionList"></div>
     <div class="row">
         <div class="page-header">
         </div>

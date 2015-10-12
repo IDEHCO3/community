@@ -15,19 +15,27 @@ class CustomerHyperlink(serializers.HyperlinkedIdentityField):
 class DiscussionThreadSerializer(serializers.ModelSerializer):
 
     user = serializers.SlugRelatedField(read_only=True, slug_field='first_name')
-    community = serializers.HyperlinkedRelatedField(view_name='community:detail', queryset=Community.objects.all())
+    community = serializers.HyperlinkedRelatedField(read_only=True, view_name='community:detail')
     reply = CustomerHyperlink(read_only=True, view_name='issue:answers')
 
     reply_count = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = DiscussionThread
-        fields = ('id', 'title', 'issue', 'user', 'community', 'post_date', 'parent', 'reply_count', 'reply')
-        extra_kwargs = {'parent': {'write_only': True}}
+        fields = ('id', 'title', 'issue', 'user', 'community', 'post_date', 'reply_count', 'reply')
+        read_only_fields = ('post_date',)
 
     def create(self, validated_data):
         user = self.context['request'].user
-        reply = DiscussionThread.objects.create(user=user, **validated_data)
+        community = self.context['view'].kwargs['community']
+
+        if 'pk' in self.context['view'].kwargs:
+            parent = self.context['view'].kwargs['pk']
+            parent = DiscussionThread.objects.filter(id=parent)[0]
+            validated_data['parent'] = parent
+
+        community = Community.objects.filter(id=community)[0]
+        reply = DiscussionThread.objects.create(user=user, community=community, **validated_data)
 
         return reply
 

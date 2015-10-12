@@ -16,7 +16,7 @@ class DiscussionThreadList(generics.ListCreateAPIView):
     authentication_classes = (JSONWebTokenAuthentication, )
 
     def get_queryset(self):
-        community = self.kwargs.get('pk')
+        community = self.kwargs.get('community')
         query = DiscussionThread.objects.filter(community_id=community, parent=None)
         return query
 
@@ -35,7 +35,7 @@ class DiscussionThreadDetail(generics.RetrieveUpdateDestroyAPIView):
         return query
 
 
-class DiscussionThreadDetailAnswers(generics.ListAPIView):
+class DiscussionThreadDetailAnswers(generics.ListCreateAPIView):
     queryset = DiscussionThread.objects.all()
     serializer_class = DiscussionThreadSerializer
 

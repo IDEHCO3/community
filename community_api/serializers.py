@@ -4,8 +4,9 @@ from community_layer_api.models import CommunityInformationFieldSchema
 from community_layer_api.serializers import CommunityInformationFieldSchemaSerializer
 
 class CommunitySerializer(serializers.ModelSerializer):
+
     schema = CommunityInformationFieldSchemaSerializer(many=True)
-    issues = serializers.HyperlinkedIdentityField(read_only=True, view_name='issue:list')
+    issues = serializers.HyperlinkedIdentityField(read_only=True, view_name='issue:list', lookup_url_kwarg='community')
     layer = serializers.HyperlinkedIdentityField(read_only=True, view_name='communityLayer:listLayer')
 
     class Meta:

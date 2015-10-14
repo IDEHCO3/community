@@ -43,4 +43,21 @@
         <div class="page-header">
         </div>
     </div>
+    <div class="hidden" id="model_comments_list">
+        <div class="row margin-bottom-5" ng-repeat="item in list">
+            <div class="col-md-1 col-lg-1">
+                <h4>{$ item.user $}</h4>
+            </div>
+            <div class="col-md-8 col-lg-8">
+                <p>{$ item.issue $}</p>
+                <a id=show_answers href="" ng-if="item.reply.length > 0" ng-click="showAnswers(item)" class="margin-right-3">
+                    answers <span class="badge">{$ item.reply_count $}</span>
+                </a>
+                <a href="" ng-click="reply(item)">reply</a>
+                <div class="col-md-offset-1 margin-top-5">
+                    <div sub-comments="item.answers"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

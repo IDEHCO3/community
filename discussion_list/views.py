@@ -39,6 +39,9 @@ class DiscussionThreadDetailAnswers(generics.ListCreateAPIView):
     queryset = DiscussionThread.objects.all()
     serializer_class = DiscussionThreadSerializer
 
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+    authentication_classes = (JSONWebTokenAuthentication, )
+
     def get_queryset(self):
         issue = self.kwargs.get('pk')
         community = self.kwargs.get('community')

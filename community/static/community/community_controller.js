@@ -196,8 +196,22 @@
         };
 
         $scope.reply = function(comment){
-            console.log(comment);
-            console.log("reply");
+            var data = {
+                'title': '',
+                'issue': comment.comment
+            };
+
+            $http.post(comment.reply, data)
+                .success(function(data){
+                    if(comment.answers){
+                        comment.answers.push(data);
+                    }
+                })
+                .error(function(data){
+                    console.log("Error to reply comment!");
+                });
+
+            comment.comment = '';
         };
 
         $scope.postComment = function(){

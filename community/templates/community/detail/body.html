@@ -48,14 +48,33 @@
             <div class="col-md-1 col-lg-1">
                 <h4>{$ item.user $}</h4>
             </div>
-            <div class="col-md-8 col-lg-8">
-                <p>{$ item.issue $}</p>
-                <a id=show_answers href="" ng-if="item.reply.length > 0" ng-click="showAnswers(item)" class="margin-right-3">
-                    answers <span class="badge">{$ item.reply_count $}</span>
-                </a>
-                <a href="" ng-click="reply(item)">reply</a>
-                <div class="col-md-offset-1 margin-top-5">
-                    <div sub-comments="item.answers"></div>
+            <div class="col-md-11 col-lg-11">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>{$ item.issue $}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="{% trans 'comment' %}" ng-model="item.comment"/>
+                            <span class="input-group-addon btn btn-default" ng-click="reply(item)">
+                                {% trans 'reply' %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <a id=show_answers href="" ng-if="item.reply.length > 0" ng-click="showAnswers(item)" class="margin-right-3">
+                            answers <span class="badge">{$ item.reply_count $}</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1 margin-top-5">
+                        <div sub-comments="item.answers"></div>
+                    </div>
                 </div>
             </div>
         </div>

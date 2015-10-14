@@ -53,6 +53,7 @@
         };
 
         $scope.login = function(){
+            $scope.logout();
             path = $window.location.pathname;
             $window.location = '/authentication/?next='+path;
         };
@@ -214,7 +215,19 @@
         };
 
         $scope.postComment = function(){
-            console.log("comment!", $scope.comment);
+            var data = {
+                'title': '',
+                'issue': $scope.comment
+            };
+
+            $http.post($scope.url_issues, data)
+                .success(function(data){
+                    $scope.discussionList.push(data);
+                })
+                .error(function(data){
+                    console.log("Error to post comment!");
+                });
+
             $scope.comment = '';
         };
 

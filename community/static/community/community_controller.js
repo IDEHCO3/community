@@ -184,7 +184,6 @@
         };
 
         $scope.showAnswers = function(comment){
-            console.log("entrei!", comment);
             if(comment.answers) return;
 
             if(comment.reply_count > 0) {

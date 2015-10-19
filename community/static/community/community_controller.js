@@ -129,10 +129,10 @@
         return {
             restrict: 'A',
             scope: {
-                discussionList: '=comments'
+                list: '=comments'
             },
             replace: true,
-            template: commentsTemplate.replace('list','discussionList').replace(/item/g, 'comment')
+            template: commentsTemplate
         }
     });
 
@@ -140,13 +140,14 @@
         return {
             restrict: 'A',
             scope:{
-                list: '=subComments'
+                list: '=subComments',
+                showAnswers: '=show',
+                reply: '=reply'
             },
             replace: true,
             template: "<div></div>",
             link: function (scope, element, attrs) {
                 element.append(commentsTemplate);
-                element.find('#show_answers').attr('ng-click','showAnswers(item)');
                 $compile(element.contents())(scope);
             }
         }
@@ -183,16 +184,19 @@
         };
 
         $scope.showAnswers = function(comment){
-            console.log("asdfa");
-            $http.get(comment.reply)
-                .success(function(data){
-                    console.log(data);
-                    comment['answers'] = data;
-                })
-                .error(function(data){
-                    console.log("Error to load answers: ",data);
-                });
+            console.log("entrei!", comment);
+            if(comment.answers) return;
 
+            if(comment.reply_count > 0) {
+                $http.get(comment.reply)
+                    .success(function (data) {
+                        console.log(data);
+                        comment['answers'] = data;
+                    })
+                    .error(function (data) {
+                        console.log("Error to load answers: ", data);
+                    });
+            }
         };
 
         $scope.reply = function(comment){
@@ -203,6 +207,7 @@
 
             $http.post(comment.reply, data)
                 .success(function(data){
+                    comment.reply_count++;
                     if(comment.answers){
                         comment.answers.push(data);
                     }

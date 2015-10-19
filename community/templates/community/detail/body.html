@@ -66,14 +66,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2">
-                        <a id=show_answers href="" ng-if="item.reply.length > 0" ng-click="showAnswers(item)" class="margin-right-3">
+                        <a href="" ng-if="item.reply.length > 0" ng-click="showAnswers(item)" class="margin-right-3">
                             answers <span class="badge">{$ item.reply_count $}</span>
                         </a>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-offset-1 margin-top-5">
-                        <div sub-comments="item.answers"></div>
+                        <div sub-comments="item.answers" show="showAnswers" reply="reply"></div>
                     </div>
                 </div>
             </div>

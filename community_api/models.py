@@ -9,7 +9,7 @@ class Community(models.Model):
     description = models.TextField(null=True, blank=True)
     need_invitation = models.BooleanField(default=False)
     date_creation = models.DateTimeField(default=datetime.datetime.now(), null=True)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='MembershipCommunity', related_name='communities')
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='MembershipCommunity', through_fields=('member', 'community'), related_name='communities')
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_of_community', db_column='id_manager')
 
     def users(self):

@@ -1,5 +1,4 @@
 from django.db import models
-import datetime
 from geo1 import settings
 from django_pgjson.fields import JsonBField
 
@@ -8,8 +7,8 @@ class Community(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     need_invitation = models.BooleanField(default=False)
-    date_creation = models.DateTimeField(default=datetime.datetime.now(), null=True)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='MembershipCommunity', through_fields=('member', 'community'), related_name='communities')
+    date_creation = models.DateTimeField(auto_now_add=True, null=True)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='MembershipCommunity', related_name='communities')
     manager = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='manager_of_community', db_column='id_manager')
 
     def users(self):
@@ -48,7 +47,7 @@ class MembershipCommunity(models.Model):
     community = models.ForeignKey(Community)
     role = models.ForeignKey(RoleMembership)
 
-    date_joined = models.DateField(default=datetime.datetime.now())
+    date_joined = models.DateField(auto_now_add=True)
     is_blocked = models.BooleanField(default=False)
     is_banned = models.BooleanField(default=False)
     invite_reason = models.CharField(max_length=100, null=True, default='Joined us')

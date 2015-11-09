@@ -59,7 +59,40 @@
         };
     }]);
 
-    app.updateController = function($scope, $http, $window){
+    app.directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
+
+    app.service('fileUpload', ['$http', function ($http) {
+        this.uploadFileToUrl = function(file, uploadUrl){
+            var fd = new FormData();
+            fd.append('file', file);
+            $http.put(uploadUrl+"/"+file.name+"/", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(){
+                    console.log("Success!");
+            })
+            .error(function(){
+                    console.log("Error!");
+            });
+        }
+    }]);
+
+    app.updateController = function($scope, $http, $window, fileUpload){
 
         $scope.community = {
             name: "",
@@ -71,6 +104,8 @@
         $scope.layerType = 'point';
         $scope.attributeName = '';
         $scope.attributeType = 'CharField';
+
+        $scope.geoFile = null;
 
         if(url_update_community != null) {
             $http.get(url_update_community)
@@ -124,6 +159,10 @@
         };
 
         $scope.save = function(){
+            var url_upload = '/communities/upload/';
+            fileUpload.uploadFileToUrl($scope.geoFile, url_upload);
+            //$scope.community['filename'] = $scope.geoFile.name;
+
             loadGeometryType();
 
             $http.post(community_url_post, $scope.community)
@@ -148,6 +187,6 @@
         };
     };
 
-    app.controller("UpdateController",['$scope', '$http', '$window', app.updateController]);
+    app.controller("UpdateController",['$scope', '$http', '$window', 'fileUpload', app.updateController]);
 
 })();

@@ -18,7 +18,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-STATIC_ROOT= os.path.join(PROJECT_ROOT, 'static_root/')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static_root/')
+
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media_root/')
+
+DEFAULT_FILE_STORAGE = os.path.join(PROJECT_ROOT, 'tmp/')
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, "static"),

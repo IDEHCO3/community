@@ -12,3 +12,6 @@
 
 #static
 geo1/static_root/*
+
+#tmp folder
+geo1/tmp/*

@@ -161,7 +161,7 @@
         $scope.save = function(){
             var url_upload = '/communities/upload/';
             fileUpload.uploadFileToUrl($scope.geoFile, url_upload);
-            //$scope.community['filename'] = $scope.geoFile.name;
+            $scope.community['filename'] = $scope.geoFile.name;
 
             loadGeometryType();
 

@@ -1,6 +1,6 @@
 from .models import Community
 
-from permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 
 from rest_framework import generics
@@ -14,6 +14,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from geo1 import settings
 import os
+from .geoprocessing import GeoProcessing
 
 class CommunityList(generics.ListCreateAPIView):
     queryset = Community.objects.all()
@@ -24,7 +25,21 @@ class CommunityList(generics.ListCreateAPIView):
 
     def post(self, request, *args, **kwargs):
         request.data['manager'] = request.user.id
-        return self.create(request, *args, **kwargs)
+        geodata = None
+        community = None
+        if 'filename' in request.data and request.data['filename'] != '':
+            filename_with_path = unicode(settings.DEFAULT_FILE_STORAGE, 'utf-8') + request.data['filename']
+            geodata = GeoProcessing(filename_with_path)
+            request.data['schema'] = geodata.getAttributes()
+            del request.data['filename']
+
+            community = self.create(request, *args, **kwargs)
+
+            #here will be the code to save the shapes coordinates
+        else:
+            community = self.create(request, *args, **kwargs)
+
+        return community
 
 class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Community.objects.all()
@@ -42,7 +57,7 @@ class FileUploadView(APIView):
         if not os.path.exists(settings.DEFAULT_FILE_STORAGE):
             os.makedirs(settings.DEFAULT_FILE_STORAGE)
 
-        filename_with_path = unicode(settings.DEFAULT_FILE_STORAGE, 'utf-8')+filename
+        filename_with_path = unicode(settings.DEFAULT_FILE_STORAGE, 'utf-8') + filename
 
 
         with open(filename_with_path, 'wb+') as destination:

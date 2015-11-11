@@ -14,13 +14,13 @@
             <div class="modal-body">
                 <p ng-repeat="(index, attr) in community.schema">
                     <label ng-if="attr.type_field == 'BooleanField'">
-                        <input id="attribute_{$index$}" type="checkbox" />
+                        <input id="attribute_{$ index $}" type="checkbox" />
                         {$ attr.name_field $}
                     </label>
 
 
                     <label ng-if="attr.type_field != 'BooleanField'">{$ attr.name_field $}</label>
-                    <input ng-if="attr.type_field != 'BooleanField'" id="attribute_{$index$}" type="{$convertTypeField(attr.type_field)$}" class="form-control"/>
+                    <input ng-if="attr.type_field != 'BooleanField'" id="attribute_{$ index $}" type="{$convertTypeField(attr.type_field)$}" class="form-control"/>
                 </p>
             </div>
             <div class="modal-footer">

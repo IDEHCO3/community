@@ -154,7 +154,6 @@
     });
 
     app.controller("LayerController",['$http','$scope', function($http, $scope){
-        $scope.schema = [];
         $scope.layers = [];
         $scope.geometry = null;
         $scope.emptyProperties = {};
@@ -167,7 +166,7 @@
         var getProperties = function () {
 
             var properties = {};
-            for(var i=0; i<$scope.schema.length; i++){
+            for(var i=0; i<$scope.community.schema.length; i++){
                 var $attr = $("#attribute_"+i);
                 var value = null;
                 if($attr.attr("type") == "checkbox"){
@@ -177,7 +176,7 @@
                     value = $attr.val();
                 }
 
-                properties[$scope.schema[i].name_field] = value;
+                properties[$scope.community.schema[i].name_field] = value;
             }
 
             return properties;
@@ -236,14 +235,13 @@
         };
 
         $scope.populateForm = function(layer){
-            console.log("it's that!");
             actuallayer = layer;
             var aFeature = layer.feature;
 
             var properties = angular.fromJson(aFeature.properties.properties);
 
-            for (i = 0; i < $scope.schema.length; i++) {
-                var field_name = $scope.schema[i].name_field;
+            for (var i = 0; i < $scope.community.schema.length; i++) {
+                var field_name = $scope.community.schema[i].name_field;
                 var field_value = properties[field_name];
                 var $attr = $('#attribute_' + i);
 

@@ -5,6 +5,7 @@ from rest_framework import permissions
 
 from rest_framework import generics
 from .serializers import CommunitySerializer
+from community_layer_api.serializers import CommunityInformationSerializer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -36,6 +37,13 @@ class CommunityList(generics.ListCreateAPIView):
             community = self.create(request, *args, **kwargs)
 
             #here will be the code to save the shapes coordinates
+            for feature in geodata.getFeatures():
+                geojson_feature = geodata.getGeoJsonFeature(community.data['id'], feature)
+                community_information = CommunityInformationSerializer(data=geojson_feature)
+                if community_information.is_valid():
+                    community_information.save()
+
+            geodata.deleteFiles()
         else:
             community = self.create(request, *args, **kwargs)
 

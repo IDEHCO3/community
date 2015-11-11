@@ -81,7 +81,7 @@
             fd.append('file', file);
             $http.put(uploadUrl+"/"+file.name+"/", fd, {
                 transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
+                headers: {'Content-Type': '*/*'}
             })
             .success(function(){
                     console.log("Success!");
@@ -127,7 +127,7 @@
                     $scope.community.schema = attributes;
                 })
                 .error(function (data) {
-                    console.log(data);
+                    console.log("Error to load data!");
                 });
         }
 
@@ -159,9 +159,12 @@
         };
 
         $scope.save = function(){
-            var url_upload = '/communities/upload/';
-            fileUpload.uploadFileToUrl($scope.geoFile, url_upload);
-            $scope.community['filename'] = $scope.geoFile.name;
+            var url_upload = '/communities/upload';
+
+            if($scope.geoFile != null) {
+                fileUpload.uploadFileToUrl($scope.geoFile, url_upload);
+                $scope.community['filename'] = $scope.geoFile.name;
+            }
 
             loadGeometryType();
 
@@ -169,8 +172,8 @@
                 .success(function(community){
                     $window.location.href = community_detail_url + community.id + "/";
                 })
-                .error(function(data){
-                    console.log("Error:",data);
+                .error(function(){
+                    console.log("Error to save community!");
                 });
         };
 
@@ -181,8 +184,8 @@
                 .success(function(data){
                     $window.location.href = community_detail_url;
                 })
-                .error(function(data){
-                    console.log(data);
+                .error(function(){
+                    console.log("Error to update community!");
                 });
         };
     };

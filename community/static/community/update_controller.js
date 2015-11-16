@@ -159,7 +159,7 @@
         };
 
         $scope.save = function(){
-            var url_upload = '/communities/upload';
+            var url_upload = '/communities/files/upload';
 
             if($scope.geoFile != null) {
                 fileUpload.uploadFileToUrl($scope.geoFile, url_upload);

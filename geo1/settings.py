@@ -19,10 +19,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static_root/')
+if not os.path.exists(STATIC_ROOT):
+    os.makedirs(STATIC_ROOT)
+
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media_root/')
+if not os.path.exists(MEDIA_ROOT):
+    os.makedirs(MEDIA_ROOT)
 
-DEFAULT_FILE_STORAGE = os.path.join(PROJECT_ROOT, 'tmp/')
+
+TEMPORARY_STORAGE = os.path.join(PROJECT_ROOT, 'tmp/')
+if not os.path.exists(TEMPORARY_STORAGE):
+    os.makedirs(TEMPORARY_STORAGE)
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, "static"),
@@ -59,6 +67,7 @@ INSTALLED_APPS = (
     'community_layer_api',
     'users',
     'discussion_list',
+    'community_files_api',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -144,6 +153,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),

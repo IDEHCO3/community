@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
+import settings
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -22,6 +24,7 @@ urlpatterns = [
     url(r'^communities/', include('community_api.urls', namespace='community')),
     url(r'^communities/', include('community_layer_api.urls', namespace='communityLayer')),
     url(r'^communities/', include('discussion_list.urls', namespace='issue')),
+    url(r'^communities/', include('community_files_api.urls', namespace='files')),
     url(r'^authentication/', include('authentication.urls', namespace='authentication')),
     url(r'^users/', include('users.urls', namespace='user')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

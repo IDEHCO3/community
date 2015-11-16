@@ -13,5 +13,8 @@
 #static
 geo1/static_root/*
 
+#media
+geo1/media_root/*
+
 #tmp folder
 geo1/tmp/*

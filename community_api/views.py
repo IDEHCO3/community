@@ -55,21 +55,3 @@ class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     authentication_classes = (JSONWebTokenAuthentication, )
-
-class FileUploadView(APIView):
-    parser_classes = (FileUploadParser,)
-
-    def put(self, request, filename, format=None):
-        file_obj = request.data['file']
-
-        if not os.path.exists(settings.DEFAULT_FILE_STORAGE):
-            os.makedirs(settings.DEFAULT_FILE_STORAGE)
-
-        filename_with_path = unicode(settings.DEFAULT_FILE_STORAGE, 'utf-8') + filename
-
-
-        with open(filename_with_path, 'wb+') as destination:
-            for chunk in file_obj.chunks():
-                destination.write(chunk)
-
-        return Response(status=204)

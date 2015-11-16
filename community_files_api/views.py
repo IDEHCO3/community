@@ -5,8 +5,8 @@ from rest_framework.response import Response
 
 from geo1 import settings
 
-from .serializers import FileSerializer
-from .models import File
+from .serializers import FileSerializer, FileLayerSerializer
+from .models import File, FileLayer
 
 # Create your views here.
 
@@ -31,9 +31,32 @@ class FileList(generics.ListCreateAPIView):
     serializer_class = FileSerializer
     parser_classes = (MultiPartParser, FormParser,)
 
+    def get_queryset(self):
+        community_id = self.kwargs.get('community')
+        return File.objects.filter(community_id=community_id)
+
 
 class FileDetail(generics.RetrieveDestroyAPIView):
 
     queryset = File.objects.all()
     serializer_class = FileSerializer
+
+
+
+
+class FileLayerList(generics.ListCreateAPIView):
+
+    queryset = FileLayer.objects.all()
+    serializer_class = FileLayerSerializer
+    parser_classes = (MultiPartParser, FormParser,)
+
+    def get_queryset(self):
+        layer_id = self.kwargs.get('layer')
+        return FileLayer.objects.filter(layer_id=layer_id)
+
+
+class FileLayerDetail(generics.RetrieveDestroyAPIView):
+
+    queryset = FileLayer.objects.all()
+    serializer_class = FileLayerSerializer
 

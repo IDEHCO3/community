@@ -7,11 +7,12 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     schema = CommunityInformationFieldSchemaSerializer(many=True)
     issues = serializers.HyperlinkedIdentityField(read_only=True, view_name='issue:list', lookup_url_kwarg='community')
-    layer = serializers.HyperlinkedIdentityField(read_only=True, view_name='communityLayer:listLayer')
+    layers = serializers.HyperlinkedIdentityField(read_only=True, view_name='communityLayer:listLayer')
+    files = serializers.HyperlinkedIdentityField(read_only=True, view_name='files:listCommunity', lookup_url_kwarg='community')
 
     class Meta:
         model = Community
-        fields = ('id', 'name', 'description', 'need_invitation', 'manager', 'schema', 'issues', 'layer')
+        fields = ('id', 'name', 'description', 'need_invitation', 'manager', 'schema', 'issues', 'layers', 'files')
 
     def create(self, validated_data):
         schema = validated_data.pop('schema')

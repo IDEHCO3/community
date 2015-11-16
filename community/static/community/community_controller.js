@@ -159,7 +159,8 @@
         $scope.emptyProperties = {};
         $scope.comment = '';
         $scope.url_issues = null;
-        $scope.url_layer = null;
+        $scope.url_layers = null;
+        $scope.url_files = null;
         $scope.discussionList = [];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
 
@@ -302,7 +303,8 @@
             .success(function(data){
                 $scope.community = data;
                 $scope.url_issues = data.issues;
-                $scope.url_layer = data.layer;
+                $scope.url_layers = data.layers;
+                $scope.url_files = data.files;
                 var schema = data.schema;
                 var attributes = [];
 
@@ -327,7 +329,7 @@
                         console.log(data);
                     });
 
-                $http.get($scope.url_layer)
+                $http.get($scope.url_layers)
                     .success(function(data){
                         $scope.layers = data;
                         initializeEditableGeoJson($scope.layers);

@@ -14,7 +14,6 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from geo1 import settings
-import os
 from .geoprocessing import GeoProcessing
 
 class CommunityList(generics.ListCreateAPIView):

@@ -153,6 +153,22 @@
         }
     });
 
+    app.directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
+
     app.controller("LayerController",['$http','$scope', function($http, $scope){
         $scope.layers = [];
         $scope.geometry = null;
@@ -163,6 +179,15 @@
         $scope.url_files = null;
         $scope.discussionList = [];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
+
+        $scope.file = {
+            name: '',
+            file: null
+        };
+
+        $scope.uploadFile = function(){
+            console.log('upload nothing at moment!', $scope.file);
+        };
 
         var getProperties = function () {
 

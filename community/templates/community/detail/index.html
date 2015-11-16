@@ -32,12 +32,14 @@
     </head>
     <body>
         <div id="wrapper" ng-app="community_app">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
-                {% include 'community/detail/head.html' %}
-                {% include 'community/detail/sidebar.html' %}
-            </nav>
-            {% include 'community/detail/body.html' %}
-            {% include 'community/detail/footer.html' %}
+            <div ng-controller="LayerController as layerCtrl">
+                <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
+                    {% include 'community/detail/head.html' %}
+                    {% include 'community/detail/sidebar.html' %}
+                </nav>
+                {% include 'community/detail/body.html' %}
+                {% include 'community/detail/footer.html' %}
+            </div>
         </div>
 
         <script src="{% static 'jquery-2.1.4/jquery.min.js' %}"></script>

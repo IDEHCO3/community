@@ -267,8 +267,8 @@
                         console.log(data);
                         comment['answers'] = data;
                     })
-                    .error(function (data) {
-                        console.log("Error to load answers: ", data);
+                    .error(function () {
+                        console.log("Error to load answers");
                     });
             }
         };

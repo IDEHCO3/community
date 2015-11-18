@@ -203,15 +203,24 @@ function binderMenuContextTo(layer) {
             {
                 text: 'Marker ',
                 callback: function () { alert('Marker: ' + layer.feature.id);      }
-            }, {
+            },
+            {
                 text: 'Edit attributes',
                 callback: function () {
                     if(!$editable.prop("checked")) return;
 
-                    var controllerScope = angular.element($('#page-wrapper')).scope();
+                    var controllerScope = angular.element($('#layer_controller')).scope();
                     controllerScope.populateForm(layer);
                 }
-            }, {
+            },
+            {
+                text: 'Upload files',
+                callback: function(){
+                    var controllerScope = angular.element($('#layer_controller')).scope();
+                    controllerScope.prepareToUpload(layer);
+                }
+            },
+            {
                 separator: true
             }]
     });
@@ -220,7 +229,7 @@ function binderMenuContextTo(layer) {
 
 function editableMode(activate){
     if(activate){
-        var controllerScope = angular.element($("#page-wrapper")).scope();
+        var controllerScope = angular.element($("#layer_controller")).scope();
         var geometry = controllerScope.geometry.type_field;
 
         var options = function(editableLayer) {
@@ -266,7 +275,7 @@ function initializeEditableGeoJson(geoJsons) {
 
     editableMode($editable.prop("checked"));
 
-    var controllerScope = angular.element($('#page-wrapper')).scope();
+    var controllerScope = angular.element($('#layer_controller')).scope();
 
     map.on('draw:created', function (e) {
         var type = e.layerType;

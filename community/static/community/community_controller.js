@@ -169,8 +169,30 @@
         };
     }]);
 
+    app.service('fileUpload', ['$http', function ($http) {
+        this.uploadFileToUrl = function(uploadUrl, data){
+            var fd = new FormData();
+
+            for(var key in data)
+                fd.append(key, data[key]);
+
+            $http.post(uploadUrl, fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': '*/*'}
+            })
+            .success(function(){
+                    console.log("Success!");
+            })
+            .error(function(){
+                    console.log("Error!");
+            });
+        }
+    }]);
+
     app.controller("LayerController",['$http','$scope', function($http, $scope){
         $scope.layers = [];
+        $scope.files = [];
+        $scope.files_layer = [];
         $scope.geometry = null;
         $scope.emptyProperties = {};
         $scope.comment = '';
@@ -180,13 +202,41 @@
         $scope.discussionList = [];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
 
+        $scope.url_file_layer = null;
         $scope.file = {
             name: '',
             file: null
         };
 
         $scope.uploadFile = function(){
-            console.log('upload nothing at moment!', $scope.file);
+            var url = null;
+            if($scope.url_file_layer == null){
+                url = $scope.url_files;
+            }
+            else{
+                url = $scope.url_file_layer;
+                $scope.url_file_layer = null;
+            }
+
+
+            var fd = new FormData();
+            for(var key in $scope.file)
+                fd.append(key, $scope.file[key]);
+
+            $http.post(url, fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(data){
+                    console.log("Success to save file!", data);
+            })
+            .error(function(data){
+                    console.log("Error to save file!", data);
+            });
+
+            $scope.files_layer = $scope.files;
+            $scope.file.name = '';
+            $scome.file.file = null;
         };
 
         var getProperties = function () {
@@ -236,7 +286,7 @@
                         comment.answers.push(data);
                     }
                 })
-                .error(function(data){
+                .error(function(){
                     console.log("Error to reply comment!");
                 });
 
@@ -253,11 +303,32 @@
                 .success(function(data){
                     $scope.discussionList.push(data);
                 })
-                .error(function(data){
+                .error(function(){
                     console.log("Error to post comment!");
                 });
 
             $scope.comment = '';
+        };
+
+        $scope.clearFilesListLayer = function(){
+            $scope.files_layer = $scope.files;
+        };
+
+        $scope.prepareToUpload = function(layer){
+            $('#upload_file').modal('show');
+            var url = layer.feature.properties.files;
+
+            $scope.url_file_layer = url;
+
+            $http.get(url)
+                .success(function(data){
+                    $scope.files_layer = data;
+                }).error(function(){
+                    console.log("Error to load files of this instance.");
+                    $scope.files_layer = $scope.files;
+                });
+
+            console.log(layer);
         };
 
         $scope.populateForm = function(layer){
@@ -350,8 +421,8 @@
                     .success(function(data){
                         $scope.discussionList = data;
                     })
-                    .error(function(data){
-                        console.log(data);
+                    .error(function(){
+                        console.log("Error to load issues!");
                     });
 
                 $http.get($scope.url_layers)
@@ -360,11 +431,20 @@
                         initializeEditableGeoJson($scope.layers);
                         $.jsontotable(json_properties, { id: '#json_table', header: false });
 
-                    }).error(function(data){
+                    }).error(function(){
                         console.log("Error to load layers data!");
-                        console.log(data);
                     });
 
+                $http.get($scope.url_files)
+                    .success(function(data){
+                        $scope.files = data;
+                        $scope.files_layer = $scope.files;
+                    })
+                    .error(function(){
+                        console.log("Erro to load community files!");
+                    });
+
+                delete $scope.community.files;
                 delete $scope.community.issues;
                 delete $scope.community.layer;
             })

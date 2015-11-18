@@ -50,7 +50,9 @@
                             <span class="glyphicon glyphicon-upload"></span> {% trans 'Upload file' %}
                         </a>
                     </li>
-                    <li>{$  $}</li>
+                    <li ng-repeat="file in files">
+                        <a href="{$ file.file $}">{$ file.name $}</a>
+                    </li>
                 </ul>
             </li>
         </ul>

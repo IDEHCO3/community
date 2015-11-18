@@ -28,7 +28,7 @@ class CommunityList(generics.ListCreateAPIView):
         geodata = None
         community = None
         if 'filename' in request.data and request.data['filename'] != '':
-            filename_with_path = unicode(settings.DEFAULT_FILE_STORAGE, 'utf-8') + request.data['filename']
+            filename_with_path = unicode(settings.TEMPORARY_STORAGE, 'utf-8') + request.data['filename']
             geodata = GeoProcessing(filename_with_path)
             request.data['schema'] = geodata.getAttributes()
             del request.data['filename']

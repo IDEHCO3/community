@@ -18,10 +18,10 @@ class Community(models.Model):
         return self.name
 
     def invite_someone_to_community(self):
-        pass
+        pass #send a email to the person.
 
     def invite_user_to_community(self):
-        pass
+        pass #send a notification to user and a email.
 
     def manager_community(self):
         pass
@@ -30,7 +30,11 @@ class Community(models.Model):
         self.members.remove(a_member)
 
     def join_us(self, interested_user):
-        pass
+        membership = MembershipCommunity.objects.get(member=interested_user, community=self)
+        if membership is not None:
+            membership = MembershipCommunity.join_us(interested_user, self, "Sing up")
+
+        return membership
 
     def __str__(self):
         return self.name
@@ -100,5 +104,6 @@ class MembershipCommunity(models.Model):
 
     def join_us(self, a_person, a_community, an_invited_reason):
         if self.is_not_included(a_person, a_community):
-            return self.objects.create(member=a_person, community=a_community, invited_reason=an_invited_reason)
+            role = RoleMembership.objects.get(name="common")
+            return self.objects.create(member=a_person, community=a_community, role=role, invited_reason=an_invited_reason)
         return None

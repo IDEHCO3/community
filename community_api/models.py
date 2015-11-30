@@ -40,6 +40,46 @@ class RoleMembership(models.Model):
     name = models.CharField(max_length=255)
     actions = JsonBField()
 
+    @staticmethod
+    def generate_default_instances():
+        entries = [
+            {
+                "name": "all",
+                "actions": "['create', 'delete', 'update', 'retrieve']"
+            },
+            {
+                "name": "admin",
+                "actions": "['create', 'delete', 'update', 'retrieve']"
+            },
+            {
+                "name": "common",
+                "actions": "['create', 'update', 'retrieve']"
+            },
+            {
+                "name": "basic",
+                "actions": "['create', 'retrieve']"
+            },
+            {
+                "name": "create",
+                "actions": "['create']"
+            },
+            {
+                "name": "delete",
+                "actions": "['delete']"
+            },
+            {
+                "name": "update",
+                "actions": "['update']"
+            },
+            {
+                "name": "retrieve",
+                "actions": "['retrieve']"
+            }
+        ]
+
+        for one in entries:
+            entry = RoleMembership(**one)
+            entry.save()
 
 class MembershipCommunity(models.Model):
 
@@ -60,5 +100,5 @@ class MembershipCommunity(models.Model):
 
     def join_us(self, a_person, a_community, an_invited_reason):
         if self.is_not_included(a_person, a_community):
-            return self.objects.create(member=a_person,community=a_community, invited_reason=an_invited_reason)
+            return self.objects.create(member=a_person, community=a_community, invited_reason=an_invited_reason)
         return None

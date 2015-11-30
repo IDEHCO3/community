@@ -55,6 +55,9 @@
                     </li>
                 </ul>
             </li>
+            <li ng-if="!community.need_invitation && authenticated">
+                <a href="#" ng-click="joinUs()">{% trans 'Join us' %}</a>
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

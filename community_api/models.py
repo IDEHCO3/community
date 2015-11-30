@@ -31,7 +31,7 @@ class Community(models.Model):
 
     def join_us(self, interested_user):
         membership = MembershipCommunity.objects.get(member=interested_user, community=self)
-        if membership is not None:
+        if membership is not None and not self.need_invitation:
             membership = MembershipCommunity.join_us(interested_user, self, "Sing up")
 
         return membership

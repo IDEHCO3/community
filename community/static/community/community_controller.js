@@ -208,6 +208,12 @@
             file: null
         };
 
+        $scope.joinUs = function(){
+            if(!$scope.community.need_invitation){
+                console.log("Send the solicitation!");
+            }
+        };
+
         $scope.uploadFile = function(){
             var url = null;
             if($scope.url_file_layer == null){

@@ -212,7 +212,7 @@
             if(!$scope.community.need_invitation){
                 if(authenticated){
 
-                    var url = url_community + "joinus/"
+                    var url = url_community + "joinus/";
                     $http.post(url)
                         .success(function(){
                             console.log("You joined to community with successfull!");

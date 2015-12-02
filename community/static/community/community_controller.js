@@ -211,14 +211,17 @@
         $scope.joinUs = function(authenticated){
             if(!$scope.community.need_invitation){
                 if(authenticated){
+                    $('#loading').modal('show');
 
                     var url = url_community + "joinus/";
                     $http.post(url)
                         .success(function(){
                             console.log("You joined to community with successfull!");
+                            $('#loading').modal('hide');
                         })
                         .error(function(){
                             console.log("Error to the join the community!");
+                            $('#loading').modal('hide');
                         });
                 }
                 else{

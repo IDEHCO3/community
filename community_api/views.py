@@ -9,12 +9,32 @@ from community_layer_api.serializers import CommunityInformationSerializer
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.parsers import FileUploadParser
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from geo1 import settings
 from .geoprocessing import GeoProcessing
+
+class JoinUs(APIView):
+
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = (JSONWebTokenAuthentication, )
+
+    def post(self, request, *args, **kwargs):
+        community_id = kwargs.get('community')
+        try:
+            community = Community.objects.get(id=community_id)
+        except Community.DoesNotExist:
+            community = None
+
+        user = request.user
+        if community is not None:
+            community.join_us(user)
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class CommunityList(generics.ListCreateAPIView):
     queryset = Community.objects.all()

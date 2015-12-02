@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
+from rest_framework import status
 
 from geo1 import settings
 
@@ -23,7 +24,7 @@ class FileUploadView(APIView):
             for chunk in file_obj.chunks():
                 destination.write(chunk)
 
-        return Response(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class FileList(generics.ListCreateAPIView):
 

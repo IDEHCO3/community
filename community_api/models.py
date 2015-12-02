@@ -30,8 +30,12 @@ class Community(models.Model):
         self.members.remove(a_member)
 
     def join_us(self, interested_user):
-        membership = MembershipCommunity.objects.get(member=interested_user, community=self)
-        if membership is not None and not self.need_invitation:
+        try:
+            membership = MembershipCommunity.objects.get(member=interested_user, community=self)
+        except MembershipCommunity.DoesNotExist:
+            membership = None
+
+        if membership is None and not self.need_invitation:
             membership = MembershipCommunity.join_us(interested_user, self, "Sing up")
 
         return membership
@@ -96,14 +100,28 @@ class MembershipCommunity(models.Model):
     is_banned = models.BooleanField(default=False)
     invite_reason = models.CharField(max_length=100, null=True, default='Joined us')
 
-    def is_included(self, a_person, a_community):
-        return (self.objects.get(member=a_person, community=a_community)) is not None
+    @staticmethod
+    def is_included(a_person, a_community):
+        try:
+            member = MembershipCommunity.objects.get(member=a_person, community=a_community)
+        except MembershipCommunity.DoesNotExist:
+            member = None
+        return member is not None
 
-    def is_not_included(self, a_person, a_community):
-        return not self.is_person_included_in_community(self, a_person, a_community)
+    @staticmethod
+    def is_not_included(a_person, a_community):
+        try:
+            member = MembershipCommunity.objects.get(member=a_person, community=a_community)
+        except MembershipCommunity.DoesNotExist:
+            member = None
+        return member is None
 
-    def join_us(self, a_person, a_community, an_invited_reason):
-        if self.is_not_included(a_person, a_community):
-            role = RoleMembership.objects.get(name="common")
-            return self.objects.create(member=a_person, community=a_community, role=role, invited_reason=an_invited_reason)
-        return None
+    @staticmethod
+    def join_us(a_person, a_community, an_invited_reason):
+        if MembershipCommunity.is_not_included(a_person, a_community) and a_person != a_community.manager:
+            try:
+                role = RoleMembership.objects.get(name="common")
+                member = MembershipCommunity.objects.create(member=a_person, community=a_community, role=role, invite_reason=an_invited_reason)
+            except RoleMembership.DoesNotExist:
+                member = None
+        return member

@@ -189,7 +189,7 @@
         }
     }]);
 
-    app.controller("LayerController",['$http','$scope', function($http, $scope){
+    app.controller("LayerController",['$http','$scope', '$window', function($http, $scope, $window){
         $scope.layers = [];
         $scope.files = [];
         $scope.files_layer = [];
@@ -208,9 +208,23 @@
             file: null
         };
 
-        $scope.joinUs = function(){
+        $scope.joinUs = function(authenticated){
             if(!$scope.community.need_invitation){
-                console.log("Send the solicitation!");
+                if(authenticated){
+
+                    var url = url_community + "joinus/"
+                    $http.post(url)
+                        .success(function(){
+                            console.log("You joined to community with successfull!");
+                        })
+                        .error(function(){
+                            console.log("Error to the join the community!");
+                        });
+                }
+                else{
+                    var path = $window.location.pathname;
+                    $window.location = '/authentication/?next='+path;
+                }
             }
         };
 

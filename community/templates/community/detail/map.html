@@ -110,21 +110,22 @@
     </div>
 </div>
 
-<div id="loading" class="modal fade" role="dialog">
+<div id="loaded" class="modal fade" role="dialog">
     <div class="modal-dialog">
-        <div class="modal-header">
-           <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="alert alert-success modal-content" ng-if="loadedSuccessful">
+            <strong>
+                {% trans 'Success!' %}
+            </strong>
+            {% trans 'The operation was done.' %}
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
-        <div class="modal-content">
-            <div class="modal-body" style="opacity: 0.5; text-align: center;">
-                <img src="/media/gifs/Preloader_10.gif"/>
-            </div>
-        </div>
-        <div class="modal-content">
-            <div class="alert alert-success">
-              <strong>Success!</strong> Indicates a successful or positive action.
-            </div>
+        <div class="alert alert-danger modal-content" ng-if="!loadedSuccessful">
+            <strong>
+              {% trans 'Error!' %}
+            </strong>
+            {% trans "The operation wasn't done." %}
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
     </div>
 </div>

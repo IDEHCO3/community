@@ -1,10 +1,10 @@
-from .models import Community
+from .models import Community, MembershipCommunity
 
 from .permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 
 from rest_framework import generics
-from .serializers import CommunitySerializer
+from .serializers import CommunitySerializer, MembershipSerializer
 from community_layer_api.serializers import CommunityInformationSerializer
 
 from rest_framework.views import APIView
@@ -16,6 +16,28 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from geo1 import settings
 from .geoprocessing import GeoProcessing
+
+class MembershipDetail(generics.RetrieveAPIView):
+
+    queryset = MembershipCommunity.objects.all()
+    serializer_class = MembershipSerializer
+
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = (JSONWebTokenAuthentication, )
+
+    lookup_field = "community"
+    lookup_url_kwarg = "community"
+
+    def get_queryset(self):
+        user = self.request.user
+        community = self.kwargs.get("community")
+        membership = None
+        try:
+            membership = MembershipCommunity.objects.filter(member=user, community=community)
+        except MembershipCommunity.DoesNotExist:
+            membership = None
+
+        return membership
 
 class JoinUs(APIView):
 

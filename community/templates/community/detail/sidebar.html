@@ -55,7 +55,7 @@
                     </li>
                 </ul>
             </li>
-            <li ng-if="!community.need_invitation">
+            <li ng-if="!community.need_invitation && membership == null">
                 <a href="#" ng-click="joinUs(authenticated)">{% trans 'Join us' %}</a>
             </li>
         </ul>

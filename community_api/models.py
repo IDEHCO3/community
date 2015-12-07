@@ -30,6 +30,7 @@ class Community(models.Model):
         self.members.remove(a_member)
 
     def join_us(self, interested_user):
+        membership = None
         try:
             membership = MembershipCommunity.objects.get(member=interested_user, community=self)
         except MembershipCommunity.DoesNotExist:
@@ -118,6 +119,7 @@ class MembershipCommunity(models.Model):
 
     @staticmethod
     def join_us(a_person, a_community, an_invited_reason):
+        member = None
         if MembershipCommunity.is_not_included(a_person, a_community) and a_person != a_community.manager:
             try:
                 role = RoleMembership.objects.get(name="common")

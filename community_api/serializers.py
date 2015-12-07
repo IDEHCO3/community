@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Community
+from .models import *
 from community_layer_api.models import CommunityInformationFieldSchema
 from community_layer_api.serializers import CommunityInformationFieldSchemaSerializer
 
@@ -39,3 +39,17 @@ class CommunitySerializer(serializers.ModelSerializer):
             CommunityInformationFieldSchema.objects.create(community=instance, **attribute)
 
         return instance
+
+class RoleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RoleMembership
+        fields = ('id', 'name', 'actions')
+
+class MembershipSerializer(serializers.ModelSerializer):
+
+    role = RoleSerializer(read_only=True)
+
+    class Meta:
+        model = MembershipCommunity
+        fields = ('id', 'member', 'community', 'role', 'date_joined', 'is_blocked', 'is_banned',  'invite_reason')

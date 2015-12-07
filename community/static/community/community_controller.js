@@ -189,6 +189,14 @@
         }
     }]);
 
+    var startLoading = function(){
+        $('body').addClass('loading');
+    };
+
+    var stoptLoading = function(){
+        $('body').removeClass('loading');
+    };
+
     app.controller("LayerController",['$http','$scope', '$window', function($http, $scope, $window){
         $scope.layers = [];
         $scope.files = [];
@@ -202,27 +210,38 @@
         $scope.discussionList = [];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
 
+        $scope.membership = null;
+
+        $scope.loadedSuccessful = false;
+
         $scope.url_file_layer = null;
         $scope.file = {
             name: '',
             file: null
         };
 
+        var operations = function(type){
+            stoptLoading();
+            $scope.loadedSuccessful = type;
+            $("#loaded").modal('show');
+        };
+
         $scope.joinUs = function(authenticated){
             if(!$scope.community.need_invitation){
                 if(authenticated){
-                    $('#loading').modal('show');
+                    startLoading();
 
                     var url = url_community + "joinus/";
                     $http.post(url)
                         .success(function(){
                             console.log("You joined to community with successfull!");
-                            $('#loading').modal('hide');
+                            operations(true);
                         })
                         .error(function(){
                             console.log("Error to the join the community!");
-                            $('#loading').modal('hide');
+                            operations(false);
                         });
+
                 }
                 else{
                     var path = $window.location.pathname;
@@ -473,6 +492,16 @@
             })
             .error(function(data){
                 console.log(data);
+            });
+
+        var url = url_community + "membership/";
+        $http.get(url)
+            .success(function(data){
+                $scope.membership = data;
+                console.log(data);
+            })
+            .error(function(){
+                console.log("Error to load the data of membership.");
             });
 
         $scope.convertTypeField = function(type){

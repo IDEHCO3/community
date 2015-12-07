@@ -26,11 +26,13 @@
         <link rel="stylesheet" href="{% static 'leaflet/contextmenu/leaflet.contextmenu.css' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'leaflet/styledLayerControl/css/styledLayerControl.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'custom/css/useful.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/default.css' %}" />
 
         <title>{% trans 'Community' %}</title>
 
     </head>
     <body>
+        <div class="loader"></div>
         <div id="wrapper" ng-app="community_app">
             <div id="layer_controller" ng-controller="LayerController as layerCtrl">
                 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">

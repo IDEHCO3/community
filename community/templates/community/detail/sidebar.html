@@ -43,7 +43,10 @@
                 </ul>
             </li>
             <li>
-                <a href="#">{% trans 'Documents' %}<span class="fa arrow"></span></a>
+                <a href="#">
+                    <span class="glyphicon glyphicon-folder-open"></span> {% trans 'Documents' %}
+                    <span class="fa arrow"></span>
+                </a>
                 <ul class="nav nav-second-level">
                     <li>
                         <a href="#" data-toggle="modal" data-target="#upload_file">
@@ -55,8 +58,10 @@
                     </li>
                 </ul>
             </li>
-            <li ng-if="!community.need_invitation && membership == null">
-                <a href="#" ng-click="joinUs(authenticated)">{% trans 'Join us' %}</a>
+            <li ng-if="community.manager == user.id">
+                <a href="#" data-toggle="modal" data-target="#invitesomeone">
+                    <span class="glyphicon glyphicon-envelope"></span> {% trans 'Invite Someone' %}
+                </a>
             </li>
         </ul>
     </div>

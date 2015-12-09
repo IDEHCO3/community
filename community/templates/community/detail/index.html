@@ -35,12 +35,14 @@
         <div class="loader"></div>
         <div id="wrapper" ng-app="community_app">
             <div id="layer_controller" ng-controller="LayerController as layerCtrl">
-                <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
-                    {% include 'community/detail/head.html' %}
-                    {% include 'community/detail/sidebar.html' %}
-                </nav>
-                {% include 'community/detail/body.html' %}
-                {% include 'community/detail/footer.html' %}
+                <div ng-controller="UserController">
+                    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" >
+                        {% include 'community/detail/head.html' %}
+                        {% include 'community/detail/sidebar.html' %}
+                    </nav>
+                    {% include 'community/detail/body.html' %}
+                    {% include 'community/detail/footer.html' %}
+                </div>
             </div>
         </div>
 

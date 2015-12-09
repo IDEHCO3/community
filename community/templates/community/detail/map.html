@@ -129,3 +129,25 @@
         </div>
     </div>
 </div>
+
+<div id="invitesomeone" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>
+                    {% trans 'Invite Someone' %}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>{% trans 'Type the email of the guest:' %}</label>
+                    <input type="text" class="form-control" ng-model="invite.email" placeholder="email@email.com"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="inviteSomeone()">{% trans 'Invite' %}</button>
+            </div>
+        </div>
+    </div>
+</div>

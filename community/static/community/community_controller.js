@@ -214,6 +214,8 @@
 
         $scope.loadedSuccessful = false;
 
+        $scope.invite = {email: ''};
+
         $scope.url_file_layer = null;
         $scope.file = {
             name: '',
@@ -226,6 +228,10 @@
             $("#loaded").modal('show');
         };
 
+        $scope.inviteSomeone = function(){
+            console.log("Invite: ", $scope.invite.email);
+        };
+
         $scope.joinUs = function(authenticated){
             if(!$scope.community.need_invitation){
                 if(authenticated){
@@ -233,7 +239,7 @@
 
                     var url = url_community + "joinus/";
                     $http.post(url)
-                        .success(function(){
+                        .success(function(data){
                             console.log("You joined to community with successfull!");
                             operations(true);
                         })

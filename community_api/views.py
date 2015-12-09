@@ -53,8 +53,9 @@ class JoinUs(APIView):
 
         user = request.user
         if community is not None:
-            community.join_us(user)
-            return Response(status=status.HTTP_200_OK)
+            membership = community.join_us(user)
+            membership_serializer = MembershipSerializer(membership)
+            return Response(status=status.HTTP_200_OK, data=membership_serializer.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 

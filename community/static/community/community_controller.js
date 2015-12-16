@@ -29,7 +29,7 @@
 
     app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
 
-        $scope.user = {username: "unknown", first_name: "Unknown"}
+        $scope.user = {username: "unknown", first_name: "Unknown"};
         var url_authentication_me = "/authentication/me/";
         $scope.authenticated = false;
 
@@ -230,6 +230,11 @@
 
         $scope.inviteSomeone = function(){
             console.log("Invite: ", $scope.invite.email);
+            var data = {
+                'email': $scope.invite.email
+            };
+            var url = url_community + 'invitesomeone/';
+            $http.post(url, data);
         };
 
         $scope.joinUs = function(authenticated){

@@ -10,12 +10,14 @@ from community_layer_api.serializers import CommunityInformationSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.parsers import FileUploadParser
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from geo1 import settings
 from .geoprocessing import GeoProcessing
+
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
 
 class MembershipDetail(generics.RetrieveAPIView):
 
@@ -97,3 +99,37 @@ class CommunityDetail(generics.RetrieveUpdateDestroyAPIView):
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     authentication_classes = (JSONWebTokenAuthentication, )
+
+class InviteSomeone(APIView):
+
+    permission_classes = (permissions.IsAuthenticated, )
+    authentication_classes = (JSONWebTokenAuthentication, )
+
+    def post(self, request, *args, **kwargs):
+        email = request.data['email']
+        try:
+            user = User.objects.get(username=email)
+        except User.DoesNotExist:
+            user = None
+
+        if user is None:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                user = None
+
+        subject = "Invite to community"
+        message = "You was invited to participate of community x."
+        sender = "idehco3@gmail.com"
+        recipients = []
+
+        if user is None:
+            recipients.append(email)
+        else:
+            recipients.append(user.email)
+
+        print "before email."
+        send_mail(subject, message, sender, recipients, fail_silently=True)
+        print "after email."
+
+        return Response(status=status.HTTP_200_OK)

@@ -28,17 +28,6 @@ class CommunityDelete(DeleteView):
     template_name = 'community/delete/index.html'
     success_url = '/communities/index'
 
-class InviteSomeone():
-    """
-    subject = form.cleaned_data['subject']
-    message = form.cleaned_data['message']
-    sender = form.cleaned_data['sender']
-    cc_myself = form.cleaned_data['cc_myself']
-
-    recipients = ['info@example.com']
-    """
-   # send_mail("subject", "message", "sender", ["recipients"])
-
 
 def community_detail(request, pk, lat=0, lng=0, zoom=0):
     community = Community.objects.get(pk=pk)

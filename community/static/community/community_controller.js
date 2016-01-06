@@ -234,7 +234,19 @@
                 'email': $scope.invite.email
             };
             var url = url_community + 'invitesomeone/';
-            $http.post(url, data);
+            startLoading();
+
+            $http.post(url, data)
+                .success(function(data){
+                    console.log("You invited someone to the community with successfull!");
+                    operations(true);
+                    $scope.invite.email = "";
+                })
+                .error(function(data){
+                    console.log("Error to invite user!", data);
+                    operations(false);
+                    $scope.invite.email = "";
+                });
         };
 
         $scope.joinUs = function(authenticated){

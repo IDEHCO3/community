@@ -127,3 +127,7 @@ class MembershipCommunity(models.Model):
             except RoleMembership.DoesNotExist:
                 member = None
         return member
+
+class Invitation(models.Model):
+    community = models.ForeignKey(Community)
+    email = models.CharField(max_length=255)

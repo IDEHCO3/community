@@ -128,8 +128,9 @@ class InviteSomeone(APIView):
         else:
             recipients.append(user.email)
 
-        print "before email."
-        send_mail(subject, message, sender, recipients, fail_silently=True)
-        print "after email."
+        try:
+            send_mail(subject, message, sender, recipients, fail_silently=True)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)

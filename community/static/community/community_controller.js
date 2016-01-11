@@ -264,7 +264,6 @@
                             console.log("Error to the join the community!");
                             operations(false);
                         });
-
                 }
                 else{
                     var path = $window.location.pathname;

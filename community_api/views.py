@@ -1,4 +1,4 @@
-from .models import Community, MembershipCommunity
+from .models import *
 
 from .permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
@@ -107,6 +107,13 @@ class InviteSomeone(APIView):
 
     def post(self, request, *args, **kwargs):
         email = request.data['email']
+        authenticated_user = request.user
+
+        try:
+            community = Community.objects.get(id=kwargs.get('community'))
+        except Community.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         try:
             user = User.objects.get(username=email)
         except User.DoesNotExist:
@@ -118,19 +125,34 @@ class InviteSomeone(APIView):
             except User.DoesNotExist:
                 user = None
 
-        subject = "Invite to community"
-        message = "You was invited to participate of community x."
+        subject = "IDEHCO3: Invite to Community "
+        message = "You was invited by " + authenticated_user.first_name + " " + authenticated_user.last_name + " to participate of community " + community.name + ".\n"
         sender = "idehco3@gmail.com"
         recipients = []
 
-        if user is None:
-            recipients.append(email)
-        else:
+
+        link = ""
+        invite = None
+
+        if user is not None:
             recipients.append(user.email)
+            invite = Invitation(email=user.email, community=community)
+            invite.save()
+            link = "Link to participate of community:\n"
+            link += "http://ecoide.cos.ufrj.br/idehco3/community/" + str(community.id) + "/invitesomeone/" + str(invite.id) + "/"
+        else:
+            recipients.append(email)
+            invite = Invitation(email=email, community=community)
+            invite.save()
+            link = "Link to create a new user before participate of community:\n"
+            link += "http://ecoide.cos.ufrj.br/idehco3/users/create?next=/community/" + str(community.id) + "/invitesomeone/" + str(invite.id) + "/"
+
+        message += link
 
         try:
             send_mail(subject, message, sender, recipients, fail_silently=True)
         except:
+            invite.delete()
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)

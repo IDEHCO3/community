@@ -53,3 +53,10 @@ class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = MembershipCommunity
         fields = ('id', 'member', 'community', 'role', 'date_joined', 'is_blocked', 'is_banned',  'invite_reason')
+
+
+class InitationSerialiazer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Invitation
+        fields = ('id', 'email', 'community')

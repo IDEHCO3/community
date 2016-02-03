@@ -4,6 +4,7 @@ from .models import *
 
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from .metadata import LayerMetadata
 
 # Create your views here.
 
@@ -53,6 +54,7 @@ class CommunityInformationFieldSchemaDetail(generics.RetrieveUpdateDestroyAPIVie
 class CommunityInformationList(generics.ListCreateAPIView):
     queryset = CommunityInformation.objects.all()
     serializer_class = CommunityInformationSerializer
+    metadata_class = LayerMetadata
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
     authentication_classes = (JSONWebTokenAuthentication, )

@@ -127,18 +127,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'geo1.wsgi.application'
 
 
+if not 'IP_SGBD' in os.environ:
+    os.environ['IP_SGBD'] = 'localhost'
+    os.environ['DATABASE_NAME'] = 'idehco3'
+    os.environ['USER_NAME_DATABASE'] = 'idehco3'
+    os.environ['PASSWORD_DATABASE'] = 'idehco3'
+
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+ip_sgbd = os.environ['IP_SGBD']
+database_name = os.environ['DATABASE_NAME']
+user_name_database = os.environ['USER_NAME_DATABASE']
+password_database = os.environ['PASSWORD_DATABASE']
 
 DATABASES = {
     'default': {
-         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-         'HOST': 'localhost',
-         'NAME': 'idehco3',
-         'USER': 'idehco3',
-         'PASSWORD': 'idehco3'
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'HOST': ip_sgbd,
+         'NAME': database_name,
+         'USER': user_name_database,
+         'PASSWORD': password_database
      }
-
 }
 
 

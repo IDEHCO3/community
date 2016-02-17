@@ -129,8 +129,14 @@ WSGI_APPLICATION = 'geo1.wsgi.application'
 
 if not 'IP_SGBD' in os.environ:
     os.environ['IP_SGBD'] = 'localhost'
+
+if not 'DATABASE_NAME' in os.environ:
     os.environ['DATABASE_NAME'] = 'idehco3'
+
+if not 'USER_NAME_DATABASE' in os.environ:
     os.environ['USER_NAME_DATABASE'] = 'idehco3'
+
+if not 'PASSWORD_DATABASE' in os.environ:
     os.environ['PASSWORD_DATABASE'] = 'idehco3'
 
 # Database

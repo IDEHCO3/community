@@ -148,7 +148,7 @@ password_database = os.environ['PASSWORD_DATABASE']
 
 DATABASES = {
     'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'ENGINE': 'django.contrib.gis.db.backends.postgis',
          'HOST': ip_sgbd,
          'NAME': database_name,
          'USER': user_name_database,

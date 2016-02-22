@@ -12,4 +12,4 @@ WORKDIR /code
 ADD . .
 RUN pip install -r requirements.txt
 EXPOSE 8000
-CMD python manage.py runserver 172.17.0.2:8000
+CMD run.sh

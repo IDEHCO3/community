@@ -19,12 +19,12 @@ from django.contrib import admin
 import settings
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^communities/', include('community.urls', namespace='communityPage')),
-    url(r'^communities/', include('community_api.urls', namespace='community')),
-    url(r'^communities/', include('community_layer_api.urls', namespace='communityLayer')),
-    url(r'^communities/', include('discussion_list.urls', namespace='issue')),
-    url(r'^communities/', include('community_files_api.urls', namespace='files')),
-    url(r'^authentication/', include('authentication.urls', namespace='authentication')),
-    url(r'^users/', include('users.urls', namespace='user')),
+    url(r'^idehco3/community/admin/', include(admin.site.urls)),
+    url(r'^idehco3/community/communities/', include('community.urls', namespace='communityPage')),
+    url(r'^idehco3/community/communities/', include('community_api.urls', namespace='community')),
+    url(r'^idehco3/community/communities/', include('community_layer_api.urls', namespace='communityLayer')),
+    url(r'^idehco3/community/communities/', include('discussion_list.urls', namespace='issue')),
+    url(r'^idehco3/community/communities/', include('community_files_api.urls', namespace='files')),
+    url(r'^idehco3/community/authentication/', include('authentication.urls', namespace='authentication')),
+    url(r'^idehco3/community/users/', include('users.urls', namespace='user')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

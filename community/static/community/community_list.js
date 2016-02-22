@@ -30,7 +30,7 @@
     app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
 
         $scope.user = {username: "unknown", first_name: "Unknown"}
-        var url_authentication_me = "/authentication/me/";
+        var url_authentication_me = "/idehco3/community/authentication/me/";
         $scope.authenticated = false;
 
         if($window.sessionStorage.token != null){
@@ -49,12 +49,12 @@
                 delete $window.sessionStorage.token;
             }
 
-            $window.location = '';
+            $window.location = '/idehco3/community/communities/index';
         };
 
         $scope.login = function(){
             path = $window.location.pathname;
-            $window.location = '/authentication/?next='+path;
+            $window.location = '/idehco3/community/authentication/?next='+path;
         };
     }]);
 

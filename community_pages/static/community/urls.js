@@ -1,8 +1,8 @@
 var base = "/idehco3/community";
 var urls = {
     home : base+"/communities/index",
-    authetication : base+"/authentication",
-    authentication_me : base+"/authentication/me",
+    authetication : "/idehco3/universaluser/authentication/index",
+    authentication_me : "/idehco3/universaluser/authentication/me",
     communitties : base+"/communities",
     community_create: base+"/communities/create",
     community_detail: base+"/communities/detail",

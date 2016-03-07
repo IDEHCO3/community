@@ -25,6 +25,4 @@ urlpatterns = [
     url(r'^idehco3/community/communities/', include('community_layer_api.urls', namespace='communityLayer')),
     url(r'^idehco3/community/communities/', include('discussion_list.urls', namespace='issue')),
     url(r'^idehco3/community/communities/', include('community_files_api.urls', namespace='files')),
-    url(r'^idehco3/community/authentication/', include('authentication.urls', namespace='authentication')),
-    url(r'^idehco3/community/users/', include('users.urls', namespace='user')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

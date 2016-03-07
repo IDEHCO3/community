@@ -4,7 +4,7 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 
-from geo1 import settings
+from community import settings
 
 from .serializers import FileSerializer, FileLayerSerializer
 from .models import File, FileLayer

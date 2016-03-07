@@ -13,7 +13,7 @@ from rest_framework import status
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from geo1 import settings
+from community import settings
 from .geoprocessing import GeoProcessing
 
 from django.contrib.auth.models import User

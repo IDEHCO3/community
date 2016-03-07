@@ -1,5 +1,5 @@
 from django.db import models
-from geo1 import settings
+from community import settings
 from django_pgjson.fields import JsonBField
 
 class Community(models.Model):

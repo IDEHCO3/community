@@ -106,7 +106,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'geo1.urls'
+ROOT_URLCONF = 'community.urls'
 
 TEMPLATES = [
     {
@@ -124,7 +124,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'geo1.wsgi.application'
+WSGI_APPLICATION = 'community.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:

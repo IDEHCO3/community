@@ -44,11 +44,10 @@
         <script src="{% static 'startbootstrap/dist/js/sb-admin-2.js' %}"></script>
 
         <script src="{% static 'angular/angular.min.js' %}"></script>
-        <script>
-            var url_communities = '{% url 'community:list' %}';
-            var url_detail = '{% url 'communityPage:detail' 0 %}';
-            url_detail = url_detail.substring(0, url_detail.length -2);
-        </script>
+
+        <!-- Personal scripts -->
+        <script src="{% static 'community/urls.js' %}"></script>
+        <script src="{% static 'community/auth.js' %}"></script>
         <script src="{% static 'community/community_list.js' %}"></script>
     </body>
 </html>

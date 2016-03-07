@@ -24,7 +24,7 @@
 
     </head>
     <body>
-        <div id="wrapper" ng-app="deleteApp">
+        <div id="wrapper" ng-app="auth">
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
                 {% include 'community/delete/head.html' %}
                 {% include 'community/delete/sidebar.html' %}
@@ -46,6 +46,9 @@
         <!-- AngularJS -->
         <script src="{% static 'angular/angular.min.js' %}"></script>
 
-        <script src="{% static 'community/delete_controller.js' %}"></script>
+
+        <!-- Personal scripts -->
+        <script src="{% static 'community/urls.js' %}"></script>
+        <script src="{% static 'community/auth.js' %}"></script>
     </body>
 </html>

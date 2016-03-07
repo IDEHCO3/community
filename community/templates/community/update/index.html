@@ -48,18 +48,19 @@
         <!-- Angular library -->
         <script src="{% static 'angular/angular.min.js' %}"></script>
 
+        <!-- Personal scripts -->
+        <script src="{% static 'community/urls.js' %}"></script>
         <script>
             {% if request.user.is_authenticated %}
             var user_id = {{ request.user.id }};
             {% else %}
             var user_id = null;
             {% endif %}
-
-            var url_update_community = "{% url 'community:detail' community.id %}";
-            var community_detail_url = "{% url 'communityPage:detail' community.id %}";
-
+            var community_id = "{{ community.id }}";
+            var is_update = true;
         </script>
 
+        <script src="{% static 'community/auth.js' %}"></script>
         <script src="{% static 'community/update_controller.js' %}"></script>
     </body>
 </html>

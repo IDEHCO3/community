@@ -325,7 +325,7 @@ function initializeEditableGeoJson(geoJsons) {
             //do whatever you want, most likely save back to db
             var id = layer.feature.id;
             if(id != null){
-                var url = url_update+id;
+                var url = urls.communitties+'/'+community_id+'/layers/'+id;
                 controllerScope.deleteGeometry(url);
             }
         });

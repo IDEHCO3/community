@@ -1,63 +1,10 @@
 (function(){
 
-    var app = angular.module("updateApp",[])
+    var app = angular.module("updateApp",['auth'])
         .config(function($interpolateProvider){
             $interpolateProvider.startSymbol('{$');
             $interpolateProvider.endSymbol('$}');
         });
-
-    app.factory('authInterceptor', function ($rootScope, $q, $window) {
-        return {
-            request: function (config) {
-                config.headers = config.headers || {};
-                if ($window.sessionStorage.token) {
-                    config.headers.Authorization = 'JWT ' + $window.sessionStorage.token;
-                }
-                return config;
-            },
-            response: function (response) {
-                if (response.status === 401) {
-                // handle the case where the user is not authenticated
-                }
-                return response || $q.when(response);
-            }
-        };
-    });
-
-    app.config(function ($httpProvider) {
-        $httpProvider.interceptors.push('authInterceptor');
-    });
-
-    app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
-
-        $scope.user = {username: "unknown", first_name: "Unknown"}
-        var url_authentication_me = "/idehco3/community/authentication/me/";
-        $scope.authenticated = false;
-
-        if($window.sessionStorage.token != null){
-            $http.get(url_authentication_me)
-                .success(function(data){
-                    $scope.user = data;
-                    $scope.authenticated = true;
-                })
-                .error(function(data){
-                    console.log(data);
-                });
-        }
-
-        $scope.logout = function(){
-            if($window.sessionStorage.token != null){
-                delete $window.sessionStorage.token;
-            }
-
-            $window.location = '/idehco3/community/communities/index';
-        };
-
-        $scope.login = function(){
-            path = $window.location.pathname;
-            $window.location = '/idehco3/community/authentication/?next='+path;
-        };
-    }]);
 
     app.directive('fileModel', ['$parse', function ($parse) {
         return {
@@ -107,7 +54,9 @@
 
         $scope.geoFile = null;
 
-        if(url_update_community != null) {
+        var url_update_community = urls.communitties + '/' + community_id;
+
+        if(is_update != null) {
             $http.get(url_update_community)
                 .success(function (data) {
                     $scope.community = data;
@@ -159,7 +108,7 @@
         };
 
         $scope.save = function(){
-            var url_upload = '/communities/files/upload';
+            var url_upload = urls.community_file_upload;
 
             if($scope.geoFile != null) {
                 fileUpload.uploadFileToUrl($scope.geoFile, url_upload);
@@ -168,9 +117,10 @@
 
             loadGeometryType();
 
-            $http.post(community_url_post, $scope.community)
+            var url = urls.communitties + "/";
+            $http.post(url, $scope.community)
                 .success(function(community){
-                    $window.location.href = community_detail_url + community.id + "/";
+                    $window.location.href = urls.community_detail + '/' + community.id + "/";
                 })
                 .error(function(){
                     console.log("Error to save community!");
@@ -181,8 +131,8 @@
             loadGeometryType();
 
             $http.put(url_update_community, $scope.community)
-                .success(function(data){
-                    $window.location.href = community_detail_url;
+                .success(function(community){
+                    $window.location.href = urls.community_detail + '/' + community.id + "/";
                 })
                 .error(function(){
                     console.log("Error to update community!");

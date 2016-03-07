@@ -1,68 +1,14 @@
 (function(){
-    var app = angular.module("community_app",[])
+    var app = angular.module("community_app",['auth'])
         .config(function($interpolateProvider){
             $interpolateProvider.startSymbol('{$');
             $interpolateProvider.endSymbol('$}');
         });
 
-    app.factory('authInterceptor', function ($rootScope, $q, $window) {
-        return {
-            request: function (config) {
-                config.headers = config.headers || {};
-                if ($window.sessionStorage.token) {
-                    config.headers.Authorization = 'JWT ' + $window.sessionStorage.token;
-                }
-                return config;
-            },
-            response: function (response) {
-                if (response.status === 401) {
-                // handle the case where the user is not authenticated
-                }
-                return response || $q.when(response);
-            }
-        };
-    });
-
-    app.config(function ($httpProvider) {
-        $httpProvider.interceptors.push('authInterceptor');
-    });
-
-    app.controller("UserController", ['$http', '$scope', '$window', function($http, $scope, $window){
-
-        $scope.user = {username: "unknown", first_name: "Unknown"};
-        var url_authentication_me = "/idehco3/community/authentication/me/";
-        $scope.authenticated = false;
-
-        if($window.sessionStorage.token != null){
-            $http.get(url_authentication_me)
-                .success(function(data){
-                    $scope.user = data;
-                    $scope.authenticated = true;
-                })
-                .error(function(data){
-                    console.log(data);
-                });
-        }
-
-        $scope.logout = function(){
-            if($window.sessionStorage.token != null){
-                delete $window.sessionStorage.token;
-            }
-
-            $window.location = '/idehco3/community/communities/index';
-        };
-
-        $scope.login = function(){
-            $scope.logout();
-            path = $window.location.pathname;
-            $window.location = '/idehco3/community/authentication/?next='+path;
-        };
-    }]);
-
     app.controller("BookmarkerController",['$http','$scope', function($http, $scope){
         $scope.bookmarks = [];
 
-        $http.get("http://127.0.0.1:8000/bookmarks/")
+        $http.get(urls.bookmarks)
             .success(function(data){
                 data.forEach(function(d){
                     if(d.resourceType == "communities") {
@@ -83,22 +29,20 @@
 
 
         $scope.bookmarker = function(){
-
-            //var absUrl = $location.absUrl();
             var center = angular.toJson(dicToArray(map.getCenter()));
             var name = $("#bookmark_name").val();
 
             var bookmark = {
                 "name": name,
-                "url_visual": url_visual,
-                "url_api": url_community,
+                "url_visual": urls.community_detail + "/" + community_id + "/",
+                "url_api": urls.communitties + "/" + community_id + "/",
                 "zoom": map.getZoom(),
                 "resourceType": "communities",
                 "coordinates": center,
                 "owner": user_id
             };
 
-            $http.post("http://127.0.0.1:8000/bookmarks/", bookmark)
+            $http.post(urls.bookmarks, bookmark)
                 .success(function(data){
                     console.log(data);
                     var coord = angular.fromJson(data.coordinates);
@@ -221,6 +165,10 @@
             name: '',
             file: null
         };
+
+        var url_community = urls.communitties + "/" + community_id + "/";
+
+
 
         var operations = function(type){
             stoptLoading();
@@ -420,7 +368,7 @@
             var content = layer.feature;
 
             if(content.id == null){
-                var url = url_create;
+                var url = urls.communitties + '/' + community_id + '/layers/';
                 $http.post(url, content)
                     .success(function(data){
                         layer.feature.id = data.id;
@@ -431,7 +379,7 @@
                     });
             }
             else{
-                var url = url_update+content.id+"/";
+                var url = urls.communitties + '/' + community_id + '/layers/'+content.id+"/";
                 $http.put(url, content)
                     .success(function(data){
                         layer.feature.id = data.id;

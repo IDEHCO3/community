@@ -1,5 +1,5 @@
 (function() {
-    var app = angular.module("deleteApp", [])
+    var app = angular.module("auth", [])
         .config(function ($interpolateProvider) {
             $interpolateProvider.startSymbol('{$');
             $interpolateProvider.endSymbol('$}');
@@ -30,7 +30,7 @@
     app.controller("UserController", ['$http', '$scope', '$window', function ($http, $scope, $window) {
 
         $scope.user = {username: "unknown", first_name: "Unknown"}
-        var url_authentication_me = "/idehco3/community/authentication/me/";
+        var url_authentication_me = urls.authentication_me+"/";
         $scope.authenticated = false;
 
         if ($window.sessionStorage.token != null) {
@@ -49,12 +49,12 @@
                 delete $window.sessionStorage.token;
             }
 
-            $window.location = '/idehco3/community/communities/index';
+            $window.location = urls.home;
         };
 
         $scope.login = function(){
             path = $window.location.pathname;
-            $window.location = '/idehco3/community/authentication/?next='+path;
+            $window.location = urls.authetication+'/?next='+path;
         };
     }]);
 

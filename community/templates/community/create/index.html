@@ -52,13 +52,13 @@
 
         <script>
             var user_id = null;
-            var url_update_community = null;
-            var community_url_post = "{% url 'community:list' %}";
-            var community_detail_url = "{% url 'communityPage:detail' 0 %}";
-            community_detail_url = community_detail_url.substring(0, community_detail_url.length-2);
-
+            var is_update = true;
+            var community_id = null;
         </script>
 
+        <!-- Personal scripts -->
+        <script src="{% static 'community/urls.js' %}"></script>
+        <script src="{% static 'community/auth.js' %}"></script>
         <script src="{% static 'community/update_controller.js' %}"></script>
     </body>
 </html>

@@ -6,7 +6,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 
-
 #List communities
 class CommunityList(ListView):
     model = Community
@@ -26,7 +25,7 @@ class CommunityUpdate(DetailView):
 class CommunityDelete(DeleteView):
     model = Community
     template_name = 'community/delete/index.html'
-    success_url = '/communities/index'
+    success_url = '/idehco3/community/communities/index'
 
 
 def community_detail(request, pk, lat=0, lng=0, zoom=0):

@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, url
-from community import views
+from community_pages import views
 
 urlpatterns = patterns('',
     url(r'^index$', views.CommunityList.as_view(), name='list'),

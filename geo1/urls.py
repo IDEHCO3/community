@@ -20,7 +20,7 @@ import settings
 
 urlpatterns = [
     url(r'^idehco3/community/admin/', include(admin.site.urls)),
-    url(r'^idehco3/community/communities/', include('community.urls', namespace='communityPage')),
+    url(r'^idehco3/community/communities/', include('community_pages.urls', namespace='communityPage')),
     url(r'^idehco3/community/communities/', include('community_api.urls', namespace='community')),
     url(r'^idehco3/community/communities/', include('community_layer_api.urls', namespace='communityLayer')),
     url(r'^idehco3/community/communities/', include('discussion_list.urls', namespace='issue')),

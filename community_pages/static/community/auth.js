@@ -41,6 +41,7 @@
                 })
                 .error(function (data) {
                     console.log(data);
+                    delete $window.sessionStorage.token;
                 });
         }
 

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-ET="eth0"
 if [ "$1" != "" ]; then
-	ET=$1
+	python manage.py $@
+	exit
 fi
 
-IP=""
+ET="eth0"
 IP="$(ifconfig $ET | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1 }')"
 if [ "$IP" != "" ]; then
 	python manage.py runserver $IP:8000

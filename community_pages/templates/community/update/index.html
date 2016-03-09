@@ -1,6 +1,5 @@
 {% load i18n %}
 {% load  staticfiles %}
-{% load auth_tag %}
 <html>
     <head>
         <meta charset="utf-8" />
@@ -28,7 +27,7 @@
         <div ng-app="updateApp">
             <div id="wrapper" ng-controller="UpdateController as updateCtrl">
                 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" ng-controller="UserController">
-                    {% include 'community/update/head.html' %}
+                    {% include 'community/user/head.html' %}
                     {% include 'community/update/sidebar.html' %}
                 </nav>
                 {% include 'community/update/body.html' %}

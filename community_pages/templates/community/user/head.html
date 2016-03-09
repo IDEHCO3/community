@@ -126,20 +126,20 @@
     </li>
     <!-- /.dropdown -->
     <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <a href="#" ng-click="login()" ng-if="!authenticated">
+            <span class="glyphicon glyphicon-user"></span>
+        </a>
+
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" ng-if="authenticated">
             <span class="glyphicon glyphicon-user"></span> <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu dropdown-user">
+        <ul class="dropdown-menu dropdown-user" ng-if="authenticated">
             <li><a href="#"><i class="fa fa-user fa-fw"></i> {$ user.first_name $}</a>
             </li>
-            <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+            <li><a href="#"><i class="fa fa-gear fa-fw"></i> {% trans 'Settings' %}</a>
             </li>
             <li class="divider"></li>
-            <li ng-if="authenticated">
-                <a href="#" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-            </li>
-            <li ng-if="!authenticated">
-                <a href="#" ng-click="login()"><i class="fa fa-sign-in fa-fw"></i> Login</a>
+            <li><a href="#" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i> {% trans 'Logout' %}</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->

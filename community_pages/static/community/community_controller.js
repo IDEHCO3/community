@@ -8,7 +8,7 @@
     app.controller("BookmarkerController",['$http','$scope', function($http, $scope){
         $scope.bookmarks = [];
 
-        $http.get(urls.bookmarks)
+        $http.get(urls.bookmarks+"/")
             .success(function(data){
                 data.forEach(function(d){
                     if(d.resourceType == "communities") {
@@ -42,7 +42,7 @@
                 "owner": user_id
             };
 
-            $http.post(urls.bookmarks, bookmark)
+            $http.post(urls.bookmarks+"/", bookmark)
                 .success(function(data){
                     console.log(data);
                     var coord = angular.fromJson(data.coordinates);
@@ -50,8 +50,7 @@
                     data.lng = coord[1];
                     $scope.bookmarks.push(data);
                 })
-                .error(function(data){
-                    console.log(data);
+                .error(function(){
                     console.log("Error in save bookmark.");
                 });
         };

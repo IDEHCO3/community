@@ -1,23 +1,19 @@
-from .models import *
-
-from .permissions import IsOwnerOrReadOnly
-from rest_framework import permissions
-
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from rest_framework import generics
-from .serializers import CommunitySerializer, MembershipSerializer
-from community_layer_api.serializers import CommunityInformationSerializer
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import permissions
 from rest_framework import status
-
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from community import settings
+from community_layer_api.serializers import CommunityInformationSerializer
+from documentation.hydraSerializers import CommunityHydraSerializerList
 from .geoprocessing import GeoProcessing
-
-from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from .models import *
+from .permissions import IsOwnerOrReadOnly
+from .serializers import CommunitySerializer, MembershipSerializer
 
 class MembershipDetail(generics.RetrieveAPIView):
 
@@ -64,6 +60,8 @@ class JoinUs(APIView):
 class CommunityList(generics.ListCreateAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
+
+    metadata_class = CommunityHydraSerializerList
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
     authentication_classes = (JSONWebTokenAuthentication, )

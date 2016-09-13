@@ -12,9 +12,19 @@
 
 #static
 community/static_root/*
+static_root/*
 
 #media
 community/media_root/*
+media_root/*
 
 #tmp folder
 community/tmp/*
+tmp/*
+
+#others
+hydra/*
+community_api/fixtures/*
+
+#socket file
+app.sock

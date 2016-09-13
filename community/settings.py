@@ -18,17 +18,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static_root/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root/')
 if not os.path.exists(STATIC_ROOT):
     os.makedirs(STATIC_ROOT)
 
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media_root/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root/')
 if not os.path.exists(MEDIA_ROOT):
     os.makedirs(MEDIA_ROOT)
 
 
-TEMPORARY_STORAGE = os.path.join(PROJECT_ROOT, 'tmp/')
+TEMPORARY_STORAGE = os.path.join(BASE_DIR, 'tmp/')
 if not os.path.exists(TEMPORARY_STORAGE):
     os.makedirs(TEMPORARY_STORAGE)
 
@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'community_layer_api',
     'discussion_list',
     'community_files_api',
+    'documentation',
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -126,7 +127,10 @@ WSGI_APPLICATION = 'community.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = 'localhost'
+    os.environ['IP_SGBD'] = '172.17.0.2'
+
+if not 'PORT_SGBD' in os.environ:
+    os.environ['PORT_SGBD'] = '5432'
 
 if not 'DATABASE_NAME' in os.environ:
     os.environ['DATABASE_NAME'] = 'idehco3'
@@ -140,6 +144,7 @@ if not 'PASSWORD_DATABASE' in os.environ:
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 ip_sgbd = os.environ['IP_SGBD']
+port_sgbd = os.environ['PORT_SGBD']
 database_name = os.environ['DATABASE_NAME']
 user_name_database = os.environ['USER_NAME_DATABASE']
 password_database = os.environ['PASSWORD_DATABASE']
@@ -148,6 +153,7 @@ DATABASES = {
     'default': {
          'ENGINE': 'django.contrib.gis.db.backends.postgis',
          'HOST': ip_sgbd,
+         'PORT': port_sgbd,
          'NAME': database_name,
          'USER': user_name_database,
          'PASSWORD': password_database

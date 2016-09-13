@@ -29,7 +29,7 @@
 
     app.controller("UserController", ['$http', '$scope', '$window', function ($http, $scope, $window) {
 
-        $scope.user = {username: "unknown", first_name: "Unknown"}
+        $scope.user = {username: "unknown", first_name: "Unknown"};
         var url_authentication_me = urls.authentication_me+"/";
         $scope.authenticated = false;
 

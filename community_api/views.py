@@ -9,7 +9,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from community import settings
 from community_layer_api.serializers import CommunityInformationSerializer
-from documentation.hydraSerializers import CommunityHydraSerializerList
+#from documentation.hydraSerializers import CommunityHydraSerializerList
 from .geoprocessing import GeoProcessing
 from .models import *
 from .permissions import IsOwnerOrReadOnly
@@ -61,7 +61,7 @@ class CommunityList(generics.ListCreateAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
-    metadata_class = CommunityHydraSerializerList
+    #metadata_class = CommunityHydraSerializerList
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly, )
     authentication_classes = (JSONWebTokenAuthentication, )

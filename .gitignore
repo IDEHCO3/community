@@ -28,3 +28,6 @@ community_api/fixtures/*
 
 #socket file
 app.sock
+
+#nginx
+nginx/*

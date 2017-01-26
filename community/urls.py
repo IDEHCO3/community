@@ -19,11 +19,10 @@ from django.contrib import admin
 import settings
 
 urlpatterns = [
-    #url(r'^idehco3/community/admin/', include(admin.site.urls)),
-    url(r'^idehco3/community/communities/', include('community_pages.urls', namespace='communityPage')),
-    url(r'^idehco3/community/communities/', include('community_api.urls', namespace='community')),
-    url(r'^idehco3/community/communities/', include('community_layer_api.urls', namespace='communityLayer')),
-    url(r'^idehco3/community/communities/', include('discussion_list.urls', namespace='issue')),
-    url(r'^idehco3/community/communities/', include('community_files_api.urls', namespace='files')),
-    #url(r'^idehco3/community/vocab/', include('documentation.urls', namespace='documentation')),
+    url(r'^community/communities/', include('community_pages.urls', namespace='communityPage')),
+    url(r'^community/communities/', include('community_api.urls', namespace='community')),
+    url(r'^community/communities/', include('community_layer_api.urls', namespace='communityLayer')),
+    url(r'^community/communities/', include('discussion_list.urls', namespace='issue')),
+    url(r'^community/communities/', include('community_files_api.urls', namespace='files')),
+    #url(r'^community/vocab/', include('documentation.urls', namespace='documentation')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

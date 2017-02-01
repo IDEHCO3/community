@@ -50,7 +50,7 @@ EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -132,22 +132,22 @@ if not 'IP_SGBD' in os.environ:
 if not 'PORT_SGBD' in os.environ:
     os.environ['PORT_SGBD'] = '5432'
 
-if not 'DATABASE_NAME' in os.environ:
-    os.environ['DATABASE_NAME'] = 'idehco3'
+if not 'DB_NAME' in os.environ:
+    os.environ['DB_NAME'] = 'idehco3'
 
-if not 'USER_NAME_DATABASE' in os.environ:
-    os.environ['USER_NAME_DATABASE'] = 'idehco3'
+if not 'DB_USERNAME' in os.environ:
+    os.environ['DB_USERNAME'] = 'idehco3'
 
-if not 'PASSWORD_DATABASE' in os.environ:
-    os.environ['PASSWORD_DATABASE'] = 'idehco3'
+if not 'DB_PASSWORD' in os.environ:
+    os.environ['DB_PASSWORD'] = 'idehco3'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 ip_sgbd = os.environ['IP_SGBD']
 port_sgbd = os.environ['PORT_SGBD']
-database_name = os.environ['DATABASE_NAME']
-user_name_database = os.environ['USER_NAME_DATABASE']
-password_database = os.environ['PASSWORD_DATABASE']
+database_name = os.environ['DB_NAME']
+user_name_database = os.environ['DB_USERNAME']
+password_database = os.environ['DB_PASSWORD']
 
 DATABASES = {
     'default': {

@@ -19,7 +19,7 @@ from django.contrib import admin
 import settings
 
 urlpatterns = [
-    url(r'^community/communities/', include('community_pages.urls', namespace='communityPage')),
+    url(r'^community/', include('community_pages.urls', namespace='communityPage')),
     url(r'^community/communities/', include('community_api.urls', namespace='community')),
     url(r'^community/communities/', include('community_layer_api.urls', namespace='communityLayer')),
     url(r'^community/communities/', include('discussion_list.urls', namespace='issue')),

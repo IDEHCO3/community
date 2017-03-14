@@ -9,7 +9,7 @@
         <div class="col-md-8">
             <p>{$ community.description $}</p>
         </div>
-        <div class="col-md-2" ng-if="!community.need_invitation && membership == null && community.manager != user.id">
+        <div class="col-md-2" ng-if="isToShowJoinUsButton(user)">
             <button class="btn btn-default" ng-click="joinUs(authenticated)">{% trans 'Join us' %}</button>
         </div>
     </div>

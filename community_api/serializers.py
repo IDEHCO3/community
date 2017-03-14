@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from community_layer_api.models import CommunityInformationFieldSchema
 from community_layer_api.serializers import CommunityInformationFieldSchemaSerializer
+from community import settings
 
 class CommunitySerializer(serializers.ModelSerializer):
 
@@ -44,18 +45,25 @@ class RoleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RoleMembership
-        fields = ('id', 'name', 'actions')
+        fields = ('name', 'actions')
+
+class CustomerHyperlinkMembership(serializers.HyperlinkedRelatedField):
+
+    def get_url(self, obj, view_name, request, format):
+        url = request.scheme + "://" + request.get_host() + settings.USER_DATA_URL + str(obj.pk)
+        return url
 
 class MembershipSerializer(serializers.ModelSerializer):
 
     role = RoleSerializer(read_only=True)
+    member = CustomerHyperlinkMembership(read_only=True, view_name='community:membershipDetail')
 
     class Meta:
         model = MembershipCommunity
         fields = ('id', 'member', 'community', 'role', 'date_joined', 'is_blocked', 'is_banned',  'invite_reason')
 
 
-class InitationSerialiazer(serializers.ModelSerializer):
+class InvitationSerialiazer(serializers.ModelSerializer):
 
     class Meta:
         model = Invitation

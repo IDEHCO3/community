@@ -50,42 +50,26 @@ class RoleMembership(models.Model):
     actions = JsonBField()
 
     @staticmethod
-    def generate_default_instances():
-        entries = [
-            {
-                "name": "all",
-                "actions": "['create', 'delete', 'update', 'retrieve']"
-            },
-            {
-                "name": "admin",
-                "actions": "['create', 'delete', 'update', 'retrieve']"
-            },
-            {
-                "name": "common",
-                "actions": "['create', 'update', 'retrieve']"
-            },
-            {
-                "name": "basic",
-                "actions": "['create', 'retrieve']"
-            },
-            {
-                "name": "create",
-                "actions": "['create']"
-            },
-            {
-                "name": "delete",
-                "actions": "['delete']"
-            },
-            {
-                "name": "update",
-                "actions": "['update']"
-            },
-            {
-                "name": "retrieve",
-                "actions": "['retrieve']"
-            }
-        ]
+    def get_entry(name=None):
+        entries = {
+            "all": "['create', 'delete', 'update', 'retrieve']",
+            "admin": "['create', 'delete', 'update', 'retrieve']",
+            "common": "['create', 'update', 'retrieve']",
+            "basic": "['create', 'retrieve']",
+            "create": "['create']",
+            "delete": "['delete']",
+            "update": "['update']",
+            "retrieve": "['retrieve']"
+        }
 
+        out = entries.get(name)
+        if out is None:
+            return [{"name": key, "actions": entries[key]} for key in entries]
+        return out
+
+    @staticmethod
+    def generate_default_instances():
+        entries = RoleMembership.get_entry()
         for one in entries:
             entry = RoleMembership(**one)
             entry.save()

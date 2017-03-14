@@ -15,7 +15,7 @@ from .models import *
 from .permissions import IsOwnerOrReadOnly
 from .serializers import CommunitySerializer, MembershipSerializer
 
-class MembershipDetail(generics.RetrieveAPIView):
+class MembershipOfCommunityList(generics.ListAPIView):
 
     queryset = MembershipCommunity.objects.all()
     serializer_class = MembershipSerializer
@@ -23,15 +23,11 @@ class MembershipDetail(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = (JSONWebTokenAuthentication, )
 
-    lookup_field = "community"
-    lookup_url_kwarg = "community"
-
     def get_queryset(self):
-        user = self.request.user
         community = self.kwargs.get("community")
-        membership = None
+
         try:
-            membership = MembershipCommunity.objects.filter(member=user, community=community)
+            membership = MembershipCommunity.objects.filter(community=community)
         except MembershipCommunity.DoesNotExist:
             membership = None
 
@@ -52,7 +48,9 @@ class JoinUs(APIView):
         user = request.user
         if community is not None:
             membership = community.join_us(user)
-            membership_serializer = MembershipSerializer(membership)
+            if membership is None:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            membership_serializer = MembershipSerializer(membership, context={'request': request})
             return Response(status=status.HTTP_200_OK, data=membership_serializer.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)

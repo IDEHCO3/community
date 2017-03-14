@@ -153,7 +153,7 @@
         $scope.discussionList = [];
         $scope.community = {name: "Unknown", description: "unknown", schema: []};
 
-        $scope.membership = null;
+        $scope.memberships = null;
 
         $scope.loadedSuccessful = false;
 
@@ -194,6 +194,10 @@
                     operations(false);
                     $scope.invite.email = "";
                 });
+        };
+
+        $scope.isToShowJoinUsButton = function(user){
+            return !$scope.community.need_invitation && $scope.memberships == null && $scope.community.manager != user.id
         };
 
         $scope.joinUs = function(authenticated){
@@ -463,10 +467,10 @@
                 console.log(data);
             });
 
-        var url = url_community + "membership/";
+        var url = url_community + "memberships/";
         $http.get(url)
             .success(function(data){
-                $scope.membership = data;
+                $scope.memberships = data;
                 console.log(data);
             })
             .error(function(){

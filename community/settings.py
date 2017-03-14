@@ -182,6 +182,8 @@ STATIC_URL = '/community/static/'
 
 MEDIA_URL = '/community/media/'
 
+USER_DATA_URL = '/universaluser/users/'
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )

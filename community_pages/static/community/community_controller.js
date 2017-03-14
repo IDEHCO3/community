@@ -247,7 +247,7 @@
 
             $scope.files_layer = $scope.files;
             $scope.file.name = '';
-            $scome.file.file = null;
+            $scope.file.file = null;
         };
 
         var getProperties = function () {

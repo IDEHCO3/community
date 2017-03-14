@@ -11,11 +11,9 @@
 */migrations/*
 
 #static
-community/static_root/*
 static_root/*
 
 #media
-community/media_root/*
 media_root/*
 
 #tmp folder

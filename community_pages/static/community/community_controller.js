@@ -316,12 +316,12 @@
             $http.post($scope.url_issues, data)
                 .success(function(data){
                     $scope.discussionList.push(data);
+                    $scope.comment = '';
                 })
                 .error(function(){
                     console.log("Error to post comment!");
                 });
 
-            $scope.comment = '';
         };
 
         $scope.clearFilesListLayer = function(){

@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-md-9 col-lg-6">
             <div class="input-group">
-                <textarea type="" class="form-control" placeholder="{% trans 'comment' %}" ng-model="comment"></textarea>
+                <input type="text" class="form-control" placeholder="{% trans 'comment' %}" ng-model="$parent.comment"/>
                 <span class="input-group-addon btn btn-default" ng-click="postComment()">
                     {% trans 'post' %}
                 </span>

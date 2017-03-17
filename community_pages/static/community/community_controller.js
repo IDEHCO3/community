@@ -168,7 +168,6 @@
         var url_community = urls.communitties + "/" + community_id + "/";
 
 
-
         var operations = function(type){
             stoptLoading();
             $scope.loadedSuccessful = type;

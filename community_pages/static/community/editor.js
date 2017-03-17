@@ -26,8 +26,8 @@ var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 
 var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
     landMap = L.tileLayer(landUrl, {attribution: thunAttrib});
-//var a_controlayer = L.control.layers().addTo(map);
-var a_controlayer  = L.Control.styledLayerControl();
+var a_controlayer = L.control.layers();
+//var a_controlayer  = L.Control.styledLayerControl();
 map.addControl(a_controlayer);
 a_controlayer.addBaseLayer(osmMap,'OSM Mapnik', {groupName : "Fixed Layers", expanded: true});
 a_controlayer.addBaseLayer(landMap,'Landscape', {groupName : "Fixed Layers", expanded: true});
@@ -95,7 +95,10 @@ function splitURL(url_string){
     var url_basic = url_divided[0];
     var parameters_string = url_divided[1];
 
-    var parameters_key_value = parameters_string.split('&');
+    var parameters_key_value = [];
+    if(parameters_string != null){
+        parameters_key_value = parameters_string.split('&');
+    }
 
     var parameters = {};
 
@@ -105,17 +108,18 @@ function splitURL(url_string){
     }
 
     return {
-        url: url_basic,
+        originalURL: url_string,
+        basicURL: url_basic,
         parameters: parameters
     };
 }
 
 function isWMS(url_splitted){
-    return url_splitted.parameters.service == 'WMS';
+    return url_splitted.parameters['service'] == 'WMS';
 }
 
 function isWFS(url_splitted){
-    return url_splitted.parameters.service == 'WFS';
+    return url_splitted.parameters['service'] == 'WFS';
 }
 
 function loadReadOnlyLayer() {
@@ -153,6 +157,7 @@ function loadReadOnlyLayer() {
         }).done(function(data){
             overlays.layer= L.geoJson(data,{ });
             a_controlayer.addOverlay(overlays.layer, url_string, {groupName : "GeoJson", expanded: true});
+            $('#loadLayerModal').modal('hide');
            // overlays.layer.overlay = true;
            //console.log(a_controlayer._layers.length);
 

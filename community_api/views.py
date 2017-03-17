@@ -20,7 +20,7 @@ class MembershipOfCommunityList(generics.ListAPIView):
     queryset = MembershipCommunity.objects.all()
     serializer_class = MembershipSerializer
 
-    permission_classes = (permissions.IsAuthenticated, )
+    #permission_classes = (permissions.IsAuthenticated, )
     authentication_classes = (JSONWebTokenAuthentication, )
 
     def get_queryset(self):
